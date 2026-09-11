@@ -1,0 +1,20 @@
+[
+  {
+    "id": "usr_1001",
+    "name": "Alex Hunter",
+    "email": "alex.hunter@example.com",
+    "password": "$2b$10$Yib2RnIvYYTyI7rXT7ll5ukwXaeC4jI9./1279loGnjc55SiWnbN2",
+    "role": "user",
+    "joinedDate": "Jan 2026",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+  },
+  {
+    "id": "usr_1002",
+    "name": "Rahul Sharma",
+    "email": "rahul.sharma@example.com",
+    "password": "$2b$10$Yib2RnIvYYTyI7rXT7ll5ukwXaeC4jI9./1279loGnjc55SiWnbN2",
+    "role": "user",
+    "joinedDate": "Feb 2026",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
+  }
+]

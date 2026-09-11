@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — ShopScout Control Panel</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="brand-icon-wrap" style="width: 32px; height: 32px; font-size: 0.9rem;"><i class="fa-solid fa-bag-shopping"></i></div>
+      <div style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: var(--text);">
+        ShopScout <span style="font-size: 0.65rem; background: var(--primary-light); color: var(--primary); padding: 0.15rem 0.4rem; border-radius: var(--radius-xs); vertical-align: middle;">ADMIN</span>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="dashboard.html" class="admin-nav-link active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="products.html" class="admin-nav-link"><i class="fa-solid fa-box-archive"></i> Products</a>
+      <a href="categories.html" class="admin-nav-link"><i class="fa-solid fa-shapes"></i> Categories</a>
+      <a href="deals.html" class="admin-nav-link"><i class="fa-solid fa-fire"></i> Deals</a>
+      <a href="users.html" class="admin-nav-link"><i class="fa-solid fa-users"></i> Users</a>
+      <a href="analytics.html" class="admin-nav-link"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <a href="../index.html" class="btn btn-outline btn-sm" style="width: 100%; justify-content: center;">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> View Live Site
+      </a>
+    </div>
+  </aside>
+
+  <!-- Admin Main Content Area -->
+  <div class="admin-main">
+    
+    <!-- Admin Topbar -->
+    <header class="admin-topbar">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="btn-icon" onclick="document.getElementById('admin-sidebar').classList.toggle('active')" style="display: none;" id="admin-sidebar-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div style="font-size: 1.15rem; font-weight: 700; color: var(--text);">Admin Overview</div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="header-action-btn theme-toggle-btn" title="Toggle Theme"><i class="fa-regular fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700;">A</div>
+          <span style="font-size: 0.875rem; font-weight: 600;">Super Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      
+      <!-- KPI Metric Cards -->
+      <div class="stat-cards-grid">
+        
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Total Products</span>
+            <span class="stat-value" id="admin-kpi-products">16</span>
+            <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-arrow-up"></i> Active in catalog</span>
+          </div>
+          <div class="stat-icon-wrap stat-icon-primary"><i class="fa-solid fa-boxes-stacked"></i></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Registered Users</span>
+            <span class="stat-value" id="admin-kpi-users">1,248</span>
+            <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-arrow-up"></i> +14% this month</span>
+          </div>
+          <div class="stat-icon-wrap stat-icon-info"><i class="fa-solid fa-users"></i></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Affiliate Clicks</span>
+            <span class="stat-value" id="admin-kpi-clicks">142</span>
+            <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Logged outbound redirects</span>
+          </div>
+          <div class="stat-icon-wrap stat-icon-warning"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Estimated Earnings</span>
+            <span class="stat-value" id="admin-kpi-earnings">₹16,840</span>
+            <span style="font-size: 0.7rem; color: var(--muted); font-weight: 600;">*Estimated commission</span>
+          </div>
+          <div class="stat-icon-wrap stat-icon-success"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+        </div>
+
+      </div>
+
+      <!-- Recent Outbound Affiliate Clicks Table -->
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div>
+            <h2 class="admin-card-title">Recent Outbound Affiliate Clicks</h2>
+            <div style="font-size: 0.8rem; color: var(--muted);">Real-time tracking of shoppers redirected to Amazon, Flipkart, etc.</div>
+          </div>
+          <a href="analytics.html" class="btn btn-outline btn-sm">Full Analytics &rarr;</a>
+        </div>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Destination Store</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-clicks-tbody">
+              <!-- Dynamically populated from admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Platform Actions -->
+      <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Admin Quick Shortcuts</h3>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="products.html" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> Add New Product</a>
+          <a href="deals.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-bolt"></i> Configure Deal</a>
+          <a href="categories.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-shapes"></i> Manage Categories</a>
+          <a href="../pages/affiliate-disclosure.html" target="_blank" class="btn btn-ghost btn-sm"><i class="fa-solid fa-shield-halved"></i> Review Disclosure</a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

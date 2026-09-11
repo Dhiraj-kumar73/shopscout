@@ -1,0 +1,352 @@
+/* ==========================================================================
+   SHOPSCOUT — AUTHENTIC E-COMMERCE PRODUCT CARD
+   ========================================================================== */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: #93C5FD;
+}
+
+[data-theme="dark"] .product-card:hover {
+  border-color: #3B82F6;
+}
+
+/* Card Image Viewport */
+.product-card-img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 85%;
+  background-color: var(--surface-subtle);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: 0.5rem;
+  transition: transform 0.35s ease;
+}
+
+.product-card:hover .product-card-img {
+  transform: scale(1.06);
+}
+
+/* Floating Deal & Category Badges */
+.product-card-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-badge-discount {
+  background: #DC2626;
+  color: #FFFFFF;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+}
+
+.card-badge-hot {
+  background: #0F172A;
+  color: #F8FAFC;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-xs);
+}
+
+[data-theme="dark"] .card-badge-hot {
+  background: #334155;
+}
+
+/* Floating Wishlist & Compare Buttons */
+.product-card-actions {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  z-index: 2;
+}
+
+.card-action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+[data-theme="dark"] .card-action-btn {
+  background-color: rgba(24, 34, 54, 0.95);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.card-action-btn:hover {
+  transform: scale(1.1);
+  color: var(--deal-orange);
+  border-color: var(--deal-orange);
+}
+
+.card-action-btn.active {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border-color: #FCA5A5;
+}
+
+.card-action-btn.active.compare-btn {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Card Body Content */
+.product-card-body {
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.45rem;
+}
+
+.product-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.product-brand-tag {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+}
+
+/* Product Store Badge */
+.store-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-xs);
+}
+
+.store-pill.amazon {
+  background-color: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FED7AA;
+}
+
+.store-pill.flipkart {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.store-pill.croma {
+  background-color: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+.product-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.7rem;
+  margin-top: 0.15rem;
+}
+
+.product-title a:hover {
+  color: var(--primary);
+}
+
+/* Star Rating Strip */
+.product-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0;
+}
+
+.star-rating-stars {
+  color: var(--star-yellow);
+  font-size: 0.8rem;
+  display: flex;
+  gap: 0.1rem;
+}
+
+.star-rating-score {
+  font-weight: 700;
+  font-size: 0.825rem;
+  color: var(--text);
+}
+
+.star-rating-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Pricing Presentation Box */
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+.product-current-price {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.product-original-price {
+  font-size: 0.875rem;
+  color: var(--muted-light);
+  text-decoration: line-through;
+}
+
+.product-savings-pill {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--success);
+}
+
+/* Multi-Store Comparison Micro-Summary */
+.card-stores-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--surface-subtle);
+  border: 1px dashed var(--border);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.725rem;
+  color: var(--text-body);
+  margin-top: 0.2rem;
+}
+
+.card-stores-preview strong {
+  color: var(--success);
+}
+
+/* Card Bottom Buttons */
+.product-card-footer {
+  padding: 0.65rem 1.15rem 1.15rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  background-color: var(--surface);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.btn-card-details {
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.825rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: var(--transition);
+}
+
+.btn-card-details:hover {
+  background-color: var(--surface);
+  border-color: var(--muted-light);
+  color: var(--primary);
+}
+
+.btn-card-buy {
+  background: linear-gradient(135deg, #FF9900, #E68A00);
+  color: #111111;
+  font-weight: 800;
+  font-size: 0.825rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 2px 6px rgba(255, 153, 0, 0.25);
+}
+
+.btn-card-buy:hover {
+  background: linear-gradient(135deg, #FFA41C, #FF8C00);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(255, 153, 0, 0.35);
+}
+
+.btn-card-buy.flipkart {
+  background: linear-gradient(135deg, #2874F0, #185ADB);
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(40, 116, 240, 0.25);
+}
+
+.btn-card-buy.flipkart:hover {
+  background: linear-gradient(135deg, #3884FF, #1554CD);
+  box-shadow: 0 4px 10px rgba(40, 116, 240, 0.35);
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details & Price Comparison — ShopScout</title>
+  <meta name="description" content="View product specifications, live marketplace comparison prices, user ratings, and deals from Amazon, Flipkart, and more.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/product-card.css">
+  <link rel="stylesheet" href="../css/product-details.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+
+  <!-- ==================== TOP ANNOUNCEMENT STRIP ==================== -->
+  <div class="top-announcement-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-ticker">
+        <span style="background:#FF5200; color:#fff; font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:4px; font-weight:800; flex-shrink:0;">LIVE DEALS</span>
+        <span>⚡ Mega Electronics Sale: Up to 70% Off on Laptops, Mobiles &amp; Audio &bull; Verified Price Drops Updated 5 Mins Ago</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="deals.html"><i class="fa-solid fa-fire" style="color:#FBBF24;"></i> Today's Deals</a>
+        <a href="profile.html#alerts-section"><i class="fa-solid fa-bell" style="color:#FBBF24;"></i> Price Alerts</a>
+        <a href="about.html">How It Works</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN HEADER ==================== -->
+  <header class="site-header" id="main-header">
+    <div class="header-main-row">
+
+      <!-- Brand Logo & Mobile Toggle -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="../index.html" class="brand-logo">
+          <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
+          <span>ShopScout<span class="brand-tagline-dot">.</span></span>
+        </a>
+      </div>
+
+      <!-- Mega Search Bar -->
+      <div class="mega-search-container">
+        <form class="mega-search-bar" onsubmit="event.preventDefault(); const q=this.querySelector('input').value.trim(); if(q) window.location.href='search.html?q='+encodeURIComponent(q);">
+          <select class="search-dept-select" onchange="if(this.value) window.location.href='products.html?category='+encodeURIComponent(this.value)">
+            <option value="">All Categories</option>
+            <option value="Mobiles">Mobiles</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Audio">Audio</option>
+            <option value="Watches">Watches</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Fashion">Fashion</option>
+          </select>
+          <input type="text" class="mega-search-input header-search-input" placeholder="Search products, brands, models..." aria-label="Search products">
+          <button type="submit" class="mega-search-btn" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+        <div class="search-suggestions-dropdown" id="search-dropdown"></div>
+      </div>
+
+      <!-- Header Right Actions -->
+      <div class="header-actions">
+        <a href="wishlist.html" class="header-action-item" title="Wishlist">
+          <div class="header-action-icon-wrap">
+            <i class="fa-regular fa-heart"></i>
+            <span class="wishlist-badge-count action-badge-count" style="display:none;">0</span>
+          </div>
+          <span class="header-action-label">Wishlist</span>
+        </a>
+        <a href="compare.html" class="header-action-item" title="Compare">
+          <div class="header-action-icon-wrap">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <span class="compare-badge-count action-badge-count" style="display:none;">0</span>
+          </div>
+          <span class="header-action-label">Compare</span>
+        </a>
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
+          <i class="fa-regular fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+        <a href="profile.html" class="header-action-item" title="My Profile & Watchlist">
+          <div class="header-action-icon-wrap"><i class="fa-regular fa-user"></i></div>
+          <span class="header-action-label">Profile</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CATEGORY SUBNAV STRIP ==================== -->
+  <nav class="category-subnav" aria-label="Category Navigation">
+    <div class="category-subnav-list">
+      <a href="deals.html" class="category-subnav-item deal-highlight"><i class="fa-solid fa-bolt"></i> Flash Deals</a>
+      <a href="products.html?category=Mobiles" class="category-subnav-item"><i class="fa-solid fa-mobile-screen"></i> Mobiles &amp; Tablets</a>
+      <a href="products.html?category=Laptops" class="category-subnav-item"><i class="fa-solid fa-laptop"></i> Laptops &amp; PCs</a>
+      <a href="products.html?category=Audio" class="category-subnav-item"><i class="fa-solid fa-headphones"></i> Audio &amp; Soundbars</a>
+      <a href="products.html?category=Watches" class="category-subnav-item"><i class="fa-solid fa-stopwatch"></i> Smartwatches</a>
+      <a href="products.html?category=Gaming" class="category-subnav-item"><i class="fa-solid fa-gamepad"></i> Gaming Consoles</a>
+      <a href="products.html?category=Fashion" class="category-subnav-item"><i class="fa-solid fa-shirt"></i> Fashion &amp; Shoes</a>
+      <a href="compare.html" class="category-subnav-item" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-scale-balanced"></i> Price Compare</a>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE SLIDE DRAWER ==================== -->
+  <div class="mobile-nav-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <a href="../index.html" class="brand-logo" style="font-size: 1.2rem;">
+        <span class="brand-icon-wrap" style="width:32px; height:32px; font-size:0.9rem;"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span>ShopScout</span>
+      </a>
+      <button class="drawer-close-btn">&times;</button>
+    </div>
+    <div style="padding: 1rem 1.25rem;">
+      <div class="mega-search-bar" style="border-radius: var(--radius-sm);">
+        <input type="text" class="mega-search-input header-search-input" placeholder="Search products..." onkeydown="if(event.key==='Enter') window.location.href='search.html?q='+encodeURIComponent(this.value)">
+      </div>
+    </div>
+    <nav class="drawer-nav-list">
+      <a href="../index.html" class="drawer-nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="products.html" class="drawer-nav-link active"><i class="fa-solid fa-layer-group"></i> All Products</a>
+      <a href="categories.html" class="drawer-nav-link"><i class="fa-solid fa-shapes"></i> Categories</a>
+      <a href="deals.html" class="drawer-nav-link" style="color:var(--deal-orange);font-weight:700;"><i class="fa-solid fa-fire"></i> Today's Deals</a>
+      <a href="compare.html" class="drawer-nav-link"><i class="fa-solid fa-scale-balanced"></i> Price Compare</a>
+      <a href="wishlist.html" class="drawer-nav-link"><i class="fa-regular fa-heart"></i> My Wishlist</a>
+      <a href="profile.html" class="drawer-nav-link"><i class="fa-regular fa-user"></i> My Account</a>
+    </nav>
+  </div>
+
+  <!-- Product Details Main Layout -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumb-nav" id="product-breadcrumbs" aria-label="Breadcrumb"></nav>
+
+      <!-- Details Top Grid -->
+      <div class="product-detail-layout">
+        
+        <!-- Left: Image Gallery with Multi-Angle Viewer -->
+        <div class="product-gallery">
+          <div class="main-image-viewport" id="gallery-main">
+            <!-- Main preview image & floating angle badge injected by JS -->
+          </div>
+          <div class="angle-navigation-bar" id="gallery-angle-chips">
+            <!-- Multi-angle chips injected by JS -->
+          </div>
+          <div class="gallery-thumbnails-rail" id="gallery-thumbs">
+            <!-- Thumbnails injected by JS -->
+          </div>
+        </div>
+
+        <!-- Right: Info Panel & Buy Actions -->
+        <div class="product-info-panel">
+          
+          <div>
+            <span class="product-detail-brand" id="detail-brand">Brand</span>
+            <h1 class="product-detail-title" id="detail-title">Loading product...</h1>
+          </div>
+
+          <div class="product-rating-reviews">
+            <span class="rating-pill" id="detail-rating-pill">4.5</span>
+            <span id="detail-reviews-text">0 ratings</span>
+          </div>
+
+          <!-- Price Box -->
+          <div class="detail-price-box">
+            <div>
+              <span class="detail-price-current" id="detail-price-current">₹0</span>
+              <span class="detail-price-original" id="detail-price-original"></span>
+            </div>
+            <span class="badge badge-discount" id="detail-discount-badge" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;"></span>
+          </div>
+
+          <!-- Color Swatches & RAM/Storage Variant Selector (Flipkart & Amazon UI) -->
+          <div class="product-variants-container" id="product-variants-container" style="display: none;">
+            <!-- Injected by js/product-details.js -->
+          </div>
+
+          <!-- Live Multi-Marketplace Comparison Table Card -->
+          <div class="marketplace-compare-card">
+            <div class="compare-card-title">
+              <span><i class="fa-solid fa-store text-primary"></i> Marketplace Prices</span>
+              <span style="font-size: 0.75rem; color: var(--muted); font-weight: 500;">Live multi-store comparison</span>
+            </div>
+            
+            <div class="market-price-list" id="market-prices-list">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Available Bank Offers (Matching Flipkart / Amazon UI) -->
+          <div class="product-offers-box" id="product-offers-box">
+            <div class="offers-box-header">
+              <i class="fa-solid fa-tag text-success"></i>
+              <span>Available Marketplace Offers</span>
+            </div>
+            <div class="offers-list" id="offers-list">
+              <div class="offer-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div><strong>Bank Offer:</strong> 5% Unlimited Cashback on Flipkart Axis Bank Card</div>
+              </div>
+              <div class="offer-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div><strong>Special Discount:</strong> Flat ₹1,000 Off on Leading Bank Credit Cards &amp; EMI</div>
+              </div>
+              <div class="offer-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div><strong>Partner Perk:</strong> Extra ₹4,500 off on exchange bonus &amp; free Prime perks</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust & Service Perks -->
+          <div class="product-trust-perks">
+            <div class="trust-perk-item">
+              <div class="trust-perk-icon"><i class="fa-solid fa-rotate-left"></i></div>
+              <span class="trust-perk-title">7 Days Return</span>
+              <span class="trust-perk-sub">Hassle-free</span>
+            </div>
+            <div class="trust-perk-item">
+              <div class="trust-perk-icon"><i class="fa-solid fa-truck-fast"></i></div>
+              <span class="trust-perk-title">Fast Delivery</span>
+              <span class="trust-perk-sub">Free shipping</span>
+            </div>
+            <div class="trust-perk-item">
+              <div class="trust-perk-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <span class="trust-perk-title">1 Year Brand</span>
+              <span class="trust-perk-sub">Official warranty</span>
+            </div>
+            <div class="trust-perk-item">
+              <div class="trust-perk-icon"><i class="fa-solid fa-lock"></i></div>
+              <span class="trust-perk-title">Safe Checkout</span>
+              <span class="trust-perk-sub">100% genuine</span>
+            </div>
+          </div>
+
+          <!-- Outbound Action Row & Wishlist / Compare / Price Alert -->
+          <div class="detail-action-buttons">
+            <button class="btn btn-primary btn-lg" id="detail-primary-buy" style="flex: 1; min-width: 220px;">
+              Buy on Marketplace <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </button>
+            <button class="btn btn-outline" id="detail-wishlist-btn">
+              <i class="fa-regular fa-heart"></i> Add to Wishlist
+            </button>
+            <button class="btn btn-outline" id="detail-compare-btn">
+              <i class="fa-solid fa-scale-balanced"></i> Compare
+            </button>
+            <button class="btn btn-outline" id="detail-alert-trigger" title="Set Price Drop Alert">
+              <i class="fa-solid fa-bell"></i> Set Alert
+            </button>
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.4;">
+            <i class="fa-solid fa-circle-info text-primary"></i> <strong>Affiliate Notice:</strong> Purchases are made directly on external marketplace checkout systems. ShopScout does not process payments or store personal financial data.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Detail Tabs Section -->
+      <section class="detail-tabs-section">
+        <div class="detail-tab-nav">
+          <button class="tab-btn active" data-tab="overview">Features & Overview</button>
+          <button class="tab-btn" data-tab="specs">Technical Specifications</button>
+          <button class="tab-btn" data-tab="reviews">Verified Marketplace Reviews</button>
+        </div>
+
+        <!-- Overview Pane -->
+        <div class="tab-pane active" id="pane-overview">
+          <p id="tab-description-text" style="font-size: 1.05rem; line-height: 1.7; color: var(--text-body); margin-bottom: 1.5rem;"></p>
+          
+          <!-- Dynamic A+ Visual Showcase & Bento Grid (Matching Flipkart & Amazon EBC Content) -->
+          <div id="product-rich-showcase-container">
+            <!-- Injected by js/product-details.js -->
+          </div>
+
+          <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem;">Key Feature Highlights</h3>
+          <ul class="features-list" id="tab-features-list"></ul>
+
+          <!-- In The Box Contents -->
+          <div style="margin-top: 2rem; padding: 1.25rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);">
+            <h4 style="font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-box-open text-primary"></i> What's In The Box
+            </h4>
+            <div class="in-the-box-grid" id="in-the-box-list">
+              <span class="box-item-chip"><i class="fa-solid fa-mobile-screen"></i> Handset</span>
+              <span class="box-item-chip"><i class="fa-solid fa-bolt"></i> 44W Fast Charger</span>
+              <span class="box-item-chip"><i class="fa-solid fa-cable-car"></i> Type-C Cable</span>
+              <span class="box-item-chip"><i class="fa-solid fa-shield"></i> Protective Case</span>
+              <span class="box-item-chip"><i class="fa-solid fa-sim-card"></i> SIM Eject Tool</span>
+              <span class="box-item-chip"><i class="fa-solid fa-book-open"></i> User Manual &amp; Warranty</span>
+            </div>
+          </div>
+
+          <!-- Real Customer Unboxing Photos Rail (Matching user's screenshot) -->
+          <div class="customer-photos-section" id="customer-photos-section">
+            <div class="customer-photos-header">
+              <div class="customer-photos-title">
+                <i class="fa-solid fa-camera-retro text-primary"></i>
+                <span>Customer Photos &amp; Real Unboxing (6 photos)</span>
+              </div>
+              <span style="font-size: 0.8rem; color: var(--muted);"><i class="fa-solid fa-circle-check text-success"></i> Verified Buyers</span>
+            </div>
+            <div class="customer-photos-rail" id="customer-photos-rail">
+              <!-- Rendered by js/product-details.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Pane -->
+        <div class="tab-pane" id="pane-specs">
+          <div class="card" style="overflow: hidden;">
+            <table class="specs-table">
+              <tbody id="tab-specs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reviews Pane -->
+        <div class="tab-pane" id="pane-reviews">
+          <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start;">
+            <div class="card" style="padding: 1.5rem; text-align: center;">
+              <div style="font-size: 3rem; font-weight: 800; color: var(--text); line-height: 1;">4.8</div>
+              <div class="rating-stars" style="margin: 0.5rem 0;">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              </div>
+              <div style="font-size: 0.85rem; color: var(--muted);">Aggregated from verified marketplace buyers</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div class="card" style="padding: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                  <strong>Verified Amazon Buyer</strong>
+                  <span style="font-size: 0.75rem; color: var(--muted);">2 days ago</span>
+                </div>
+                <div class="rating-stars" style="font-size: 0.75rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p style="font-size: 0.9rem; color: var(--text-body);">Amazing quality and battery life. Bought it via ShopScout's price comparison when Amazon dropped the price by ₹2,000.</p>
+              </div>
+
+              <div class="card" style="padding: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                  <strong>Verified Flipkart Buyer</strong>
+                  <span style="font-size: 0.75rem; color: var(--muted);">1 week ago</span>
+                </div>
+                <div class="rating-stars" style="font-size: 0.75rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                <p style="font-size: 0.9rem; color: var(--text-body);">Superb performance and packaging. Very fast delivery and genuine warranty registration.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Products -->
+      <section class="section" style="border-top: 1px solid var(--border); padding-top: 3rem;">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 class="section-title" style="font-size: 1.6rem;">You Might Also Like</h2>
+            <p class="section-subtitle">Similar products compared in this category.</p>
+          </div>
+        </div>
+        <div class="product-grid" id="related-products-grid"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Price Drop Alert Modal -->
+  <div class="modal-overlay" id="price-alert-modal">
+    <div class="modal-card">
+      <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; margin: 0 auto 1rem;">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.35rem;">Set Price Drop Alert</h3>
+      <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 1.5rem;">
+        We'll monitor Amazon, Flipkart, and other stores and notify you the moment the price drops below your target.
+      </p>
+      
+      <form id="price-alert-form" style="text-align: left;">
+        <div class="form-group">
+          <label class="form-label" for="alert-target-price">Target Price (₹)</label>
+          <input type="number" id="alert-target-price" class="form-control" placeholder="e.g. 24999" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="alert-email">Your Notification Email</label>
+          <input type="email" id="alert-email" class="form-control" placeholder="alex@example.com" required>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline btn-sm" id="alert-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Set Price Alert</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background-color: var(--surface); border-top: 1px solid var(--border); padding: 2.5rem 0 1.5rem; text-align: center; font-size: 0.85rem; color: var(--muted);">
+    <div class="container">
+      <p>&copy; 2026 ShopScout. All rights reserved. <a href="affiliate-disclosure.html" style="color: var(--primary); text-decoration: underline;">Affiliate Disclosure</a></p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/main.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/product-details.js"></script>
+</body>
+</html>

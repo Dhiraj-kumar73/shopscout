@@ -1,0 +1,143 @@
+/* ==========================================================================
+   SHOPSCOUT — RESPONSIVE ADAPTATIONS & MEDIA QUERIES
+   ========================================================================== */
+
+/* Laptop / Small Desktop (<= 1200px) */
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+/* Tablet Layout (<= 992px) */
+@media (max-width: 992px) {
+  :root {
+    --header-height: 64px;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .header-search-wrap {
+    display: none; /* Revealed in mobile sub-bar or drawer */
+  }
+
+  .product-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .admin-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 60px; /* Space for sticky bottom navigation */
+  }
+
+  .mobile-bottom-bar {
+    display: flex;
+  }
+
+  .section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+
+  .product-card-body {
+    padding: 0.85rem;
+  }
+
+  .product-title {
+    font-size: 0.925rem;
+    height: 2.4rem;
+  }
+
+  .product-current-price {
+    font-size: 1.1rem;
+  }
+
+  .product-card-footer {
+    padding: 0.5rem 0.85rem 0.85rem;
+    grid-template-columns: 1fr;
+  }
+
+  .compare-drawer-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .compare-slots {
+    flex-wrap: wrap;
+  }
+
+  .auth-card {
+    padding: 1.75rem;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-topbar {
+    padding: 0 1rem;
+  }
+
+  .admin-content {
+    padding: 1rem;
+  }
+}
+
+/* Small Phones (<= 480px) */
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .main-image-viewport {
+    aspect-ratio: 4 / 3;
+  }
+
+  .detail-price-current {
+    font-size: 1.85rem;
+  }
+}
