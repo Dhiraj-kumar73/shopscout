@@ -24,6 +24,20 @@ const ProductService = {
       return this._cache.filter(p => !deletedIds.includes(p.id));
     }
 
+    // 1. Try Firebase Cloud Firestore first for instant global sync
+    if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
+      try {
+        const cloudProducts = await ShopScoutFirebase.getAllProducts();
+        if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
+          const sanitized = cloudProducts.filter(p => !deletedIds.includes(p.id)).map(p => this._sanitize(p));
+          this._cache = sanitized;
+          return sanitized;
+        }
+      } catch (err) {
+        console.warn('[ProductService] Cloud Firestore read fallback:', err.message);
+      }
+    }
+
     // Determine correct relative path to data/products.json
     let dataUrl = '/data/products.json';
     if (window.location.protocol === 'file:') {
@@ -36,6 +50,11 @@ const ProductService = {
       const res = await fetch(`${dataUrl}?t=${Date.now()}`, { cache: 'no-cache' });
       if (!res.ok) throw new Error('Failed to load products');
       let baseProducts = await res.json();
+
+      // Seed Cloud Firestore with baseline products if empty
+      if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
+        ShopScoutFirebase.seedInitialProducts(baseProducts);
+      }
 
       // Check for any admin added / updated products in localStorage
       const customKey = (typeof ShopScout !== 'undefined' && ShopScout?.KEYS?.CUSTOM_PRODUCTS) ? ShopScout.KEYS.CUSTOM_PRODUCTS : 'shopscout_custom_products';

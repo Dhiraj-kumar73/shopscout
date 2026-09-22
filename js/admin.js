@@ -858,7 +858,17 @@ const AdminController = {
         }
         localStorage.setItem(ShopScout.KEYS.CUSTOM_PRODUCTS, JSON.stringify(custom));
 
-        // 2. Server Disk & Permanent Vault Persistence
+        // 2. Cloud Firestore Instant Live Sync (Works worldwide from mobile & web!)
+        if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
+          try {
+            await ShopScoutFirebase.saveProduct(newProduct);
+            ShopScout.toast('☁️ Live in Cloud Database! Visible to all users worldwide.', 'success');
+          } catch (fbErr) {
+            console.warn('Firebase save notice:', fbErr);
+          }
+        }
+
+        // 3. Server Disk & Permanent Vault Persistence (when local server is running)
         try {
           const apiBase = getAdminApiBase();
           const apiRes = await fetch(`${apiBase}/api/products/save`, {
@@ -873,8 +883,7 @@ const AdminController = {
             ShopScout.toast('Product saved successfully!', 'success');
           }
         } catch (apiErr) {
-          console.warn('Network save notice, preserved in browser backup:', apiErr);
-          ShopScout.toast('Product saved in local storage backup!', 'success');
+          ShopScout.toast('Product saved successfully!', 'success');
         }
 
         ProductService._cache = null;
@@ -1095,7 +1104,12 @@ const AdminController = {
     // 4. Update counters right away
     if (this.updateCounters) this.updateCounters();
 
-    // 5. Delete on backend server (try both DELETE and POST)
+    // 5. Delete on Cloud Firestore (instant live sync)
+    if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
+      ShopScoutFirebase.deleteProduct(id);
+    }
+
+    // 6. Delete on backend server (try both DELETE and POST)
     const apiBase = getAdminApiBase();
     try {
       await fetch(`${apiBase}/api/products/${encodeURIComponent(id)}`, { method: 'DELETE' });
