@@ -4,6 +4,9 @@
 
 const getAdminApiBase = () => {
   if (typeof window !== 'undefined') {
+    if (window.location.protocol === 'file:') {
+      return 'http://localhost:3000';
+    }
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocal) {
       return (window.location.port === '3000') ? '' : 'http://localhost:3000';
@@ -499,10 +502,11 @@ const AdminController = {
           let detected = null;
 
           // 1. Try Local Express Backend Engine first (with 15000ms timeout for full platform scraping)
-          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const isFile = window.location.protocol === 'file:';
+          const isLocal = isFile || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
           const backendEndpoints = isLocal
             ? (window.location.port === '3000' ? ['/api/products/auto-detect'] : ['http://localhost:3000/api/products/auto-detect', '/api/products/auto-detect'])
-            : ['/api/products/auto-detect'];
+            : ['/api/products/auto-detect', 'http://localhost:3000/api/products/auto-detect'];
 
           for (const endpoint of backendEndpoints) {
             try {
