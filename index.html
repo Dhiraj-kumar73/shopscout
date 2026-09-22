@@ -324,9 +324,9 @@
           <div class="price-range-hub-header">
             <div>
               <span class="price-range-hub-badge"><i class="fa-solid fa-bolt"></i> Instant Budget Explorer</span>
+              <span class="price-range-ticker-badge"><i class="fa-solid fa-arrows-left-right"></i> Live Deals Glide</span>
               <h3 class="price-range-hub-title">Shop by Price Range — सिर्फ अपने बजट में डील्स चुनें</h3>
-              <p class="price-range-hub-desc">किसी भी बजट कार्ड पर क्लिक करें और तुरंत उसी कीमत के बेहतरीन प्रोडक्ट्स
-                देखें</p>
+              <p class="price-range-hub-desc">किसी भी बजट कार्ड पर क्लिक करें और तुरंत उसी कीमत के बेहतरीन प्रोडक्ट्स देखें</p>
             </div>
             <div class="price-range-active-indicator" id="price-range-summary-pill">
               <span class="indicator-dot"></span>
@@ -334,8 +334,14 @@
             </div>
           </div>
 
-          <!-- Price Range Selector Cards -->
-          <div class="price-range-selector-grid" id="price-range-buttons">
+          <!-- Price Range Slider Wrap with Controls -->
+          <div class="price-range-slider-wrap">
+            <button class="price-slider-nav prev" id="price-slider-prev" aria-label="Slide Left" title="Scroll Left">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- Price Range Selector Cards -->
+            <div class="price-range-selector-grid" id="price-range-buttons">
 
             <!-- 1. All Deals (ACTIVE DEFAULT) -->
             <button class="price-range-card active" data-range="all" data-min="0" data-max="999999"
@@ -427,6 +433,11 @@
               </div>
             </button>
 
+            </div>
+
+            <button class="price-slider-nav next" id="price-slider-next" aria-label="Slide Right" title="Scroll Right">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
           </div>
 
           <!-- Dynamic Products Grid Area -->

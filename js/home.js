@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SHOPSCOUT - HOME PAGE SCRIPT
  * Renders all product grids on the homepage
  */
@@ -58,6 +58,85 @@ document.addEventListener("DOMContentLoaded", async function() {
       renderPriceRange(parseInt(btn.dataset.min) || 0, parseInt(btn.dataset.max) || 999999, btn.dataset.label || "");
     });
   });
+
+  // 4. Auto-Gliding Rail Engine ("Chalta rahe our dikhta rahe")
+  var priceTrack = document.getElementById("price-range-buttons");
+  var prevBtn = document.getElementById("price-slider-prev");
+  var nextBtn = document.getElementById("price-slider-next");
+
+  if (priceTrack) {
+    var isGlidingPaused = false;
+    var glideTimer = null;
+    var glideSpeed = 0.65; // gentle, readable speed in px per frame
+    var isResetting = false;
+
+    function glideTick() {
+      if (!isGlidingPaused && !isResetting && priceTrack) {
+        var maxScroll = priceTrack.scrollWidth - priceTrack.clientWidth;
+        if (maxScroll > 15) {
+          if (priceTrack.scrollLeft >= maxScroll - 2) {
+            // Reached the end: pause, then smoothly glide back to start
+            isResetting = true;
+            setTimeout(function() {
+              if (priceTrack) {
+                priceTrack.scrollTo({ left: 0, behavior: "smooth" });
+              }
+              setTimeout(function() {
+                isResetting = false;
+              }, 1400);
+            }, 1800);
+          } else {
+            priceTrack.scrollLeft += glideSpeed;
+          }
+        }
+      }
+      requestAnimationFrame(glideTick);
+    }
+
+    // Start auto-gliding after slight delay
+    setTimeout(function() {
+      requestAnimationFrame(glideTick);
+    }, 1000);
+
+    function pauseGlide() {
+      isGlidingPaused = true;
+      if (glideTimer) clearTimeout(glideTimer);
+    }
+
+    function resumeGlide(delay) {
+      if (glideTimer) clearTimeout(glideTimer);
+      glideTimer = setTimeout(function() {
+        isGlidingPaused = false;
+      }, delay || 2200);
+    }
+
+    // Pause on hover or touch
+    priceTrack.addEventListener("mouseenter", pauseGlide);
+    priceTrack.addEventListener("mouseleave", function() { resumeGlide(1500); });
+    priceTrack.addEventListener("touchstart", pauseGlide, { passive: true });
+    priceTrack.addEventListener("touchend", function() { resumeGlide(3000); });
+
+    // Also pause on manual drag or scroll
+    priceTrack.addEventListener("pointerdown", pauseGlide);
+    priceTrack.addEventListener("pointerup", function() { resumeGlide(2500); });
+
+    // Slider arrows
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function() {
+        pauseGlide();
+        priceTrack.scrollBy({ left: -220, behavior: "smooth" });
+        resumeGlide(3500);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function() {
+        pauseGlide();
+        priceTrack.scrollBy({ left: 220, behavior: "smooth" });
+        resumeGlide(3500);
+      });
+    }
+  }
 
   // Initial render
   renderPriceRange(0, 999999, "All Best Deals");
