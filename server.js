@@ -509,7 +509,11 @@ app.post('/api/products/save', (req, res) => {
     } else {
       permanentProducts.unshift(productToSave);
     }
-    fs.writeFileSync(USER_PERMANENT_PATH, JSON.stringify(permanentProducts, null, 2), 'utf8');
+    try {
+      fs.writeFileSync(USER_PERMANENT_PATH, JSON.stringify(permanentProducts, null, 2), 'utf8');
+    } catch (err) {
+      console.warn('File write skipped on read-only serverless environment:', err.message);
+    }
 
     // 2. Save into Main Products Catalog
     let products = [];
@@ -524,10 +528,12 @@ app.post('/api/products/save', (req, res) => {
     } else {
       products.unshift(productToSave);
     }
-    fs.writeFileSync(PRODUCTS_JSON_PATH, JSON.stringify(products, null, 2), 'utf8');
-
-    // 3. Backup copy (async non-blocking)
-    fs.writeFile(PRODUCTS_BACKUP_PATH, JSON.stringify(products, null, 2), 'utf8', () => {});
+    try {
+      fs.writeFileSync(PRODUCTS_JSON_PATH, JSON.stringify(products, null, 2), 'utf8');
+      fs.writeFile(PRODUCTS_BACKUP_PATH, JSON.stringify(products, null, 2), 'utf8', () => {});
+    } catch (err) {
+      console.warn('File write skipped on read-only serverless environment:', err.message);
+    }
 
     console.log(`✅ [Product Saved] Permanently stored "${productToSave.name}" in Vault & Disk Catalog.`);
 

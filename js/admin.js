@@ -2,6 +2,16 @@
  * SHOPSCOUT — ADMIN DASHBOARD & MANAGEMENT CONTROLLER
  */
 
+const getAdminApiBase = () => {
+  if (typeof window !== 'undefined') {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal) {
+      return (window.location.port === '3000') ? '' : 'http://localhost:3000';
+    }
+  }
+  return '';
+};
+
 const AdminController = {
   async init() {
     this.initDashboardKPIs();
@@ -31,7 +41,7 @@ const AdminController = {
     // ── Load current config from server ──
     const loadConfig = async () => {
       try {
-        const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+        const apiBase = getAdminApiBase();
         const res = await fetch(`${apiBase}/api/config/affiliate`);
         if (res.ok) {
           const d = await res.json();
@@ -86,7 +96,7 @@ const AdminController = {
         saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
         try {
-          const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+          const apiBase = getAdminApiBase();
           const res = await fetch(`${apiBase}/api/config/affiliate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -128,7 +138,7 @@ const AdminController = {
   // Auto-sync custom and founder products to server permanent storage vault
   async autoSyncPermanentProducts() {
     try {
-      const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+      const apiBase = getAdminApiBase();
       const deletedKey = ShopScout?.KEYS?.DELETED_PRODUCTS || 'shopscout_deleted_products';
       const deletedIds = JSON.parse(localStorage.getItem(deletedKey)) || [];
 
@@ -489,9 +499,10 @@ const AdminController = {
           let detected = null;
 
           // 1. Try Local Express Backend Engine first (with 15000ms timeout for full platform scraping)
-          const backendEndpoints = (window.location.port === '3000')
-            ? ['/api/products/auto-detect']
-            : ['http://localhost:3000/api/products/auto-detect', '/api/products/auto-detect'];
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const backendEndpoints = isLocal
+            ? (window.location.port === '3000' ? ['/api/products/auto-detect'] : ['http://localhost:3000/api/products/auto-detect', '/api/products/auto-detect'])
+            : ['/api/products/auto-detect'];
 
           for (const endpoint of backendEndpoints) {
             try {
@@ -689,7 +700,7 @@ const AdminController = {
         let amazonPrice = Number(amzPriceInput?.value) || rawPrice || 14999;
         let amazonUrl = amzUrlInput?.value.trim() || '';
 
-        const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+        const apiBase = getAdminApiBase();
 
         if (!amazonUrl || amazonUrl.includes('/s?k=')) {
           amazonUrl = '';
@@ -835,7 +846,7 @@ const AdminController = {
 
         // 2. Server Disk & Permanent Vault Persistence
         try {
-          const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+          const apiBase = getAdminApiBase();
           const apiRes = await fetch(`${apiBase}/api/products/save`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1071,7 +1082,7 @@ const AdminController = {
     if (this.updateCounters) this.updateCounters();
 
     // 5. Delete on backend server (try both DELETE and POST)
-    const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+    const apiBase = getAdminApiBase();
     try {
       await fetch(`${apiBase}/api/products/${encodeURIComponent(id)}`, { method: 'DELETE' });
     } catch (e) {

@@ -59,9 +59,19 @@ const ShopScout = {
     };
   },
 
+  getApiBase() {
+    if (typeof window !== 'undefined') {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocal) {
+        return (window.location.port === '3000') ? '' : 'http://localhost:3000';
+      }
+    }
+    return '';
+  },
+
   async loadServerAffiliateConfig() {
     try {
-      const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+      const apiBase = this.getApiBase();
       const res = await fetch(`${apiBase}/api/config/affiliate`);
       if (res.ok) {
         const data = await res.json();
@@ -298,7 +308,7 @@ const ShopScout = {
     }
     if (!amzUrl || amzUrl === '#' || amzUrl.includes('/s?k=')) {
       try {
-        const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+        const apiBase = this.getApiBase();
         const res = await fetch(`${apiBase}/api/products/direct-link?store=Amazon&query=${cleanEncodedName}`);
         if (res.ok) {
           const d = await res.json();
@@ -331,7 +341,7 @@ const ShopScout = {
     // If target URL is a search page or empty, resolve the exact direct product buy page!
     if (!finalUrl || finalUrl === '#' || finalUrl.includes('/s?k=')) {
       try {
-        const apiBase = (window.location.port === '3000') ? '' : 'http://localhost:3000';
+        const apiBase = this.getApiBase();
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 1800);
         const res = await fetch(`${apiBase}/api/products/direct-link?store=Amazon&query=${cleanSearchQuery}`, {

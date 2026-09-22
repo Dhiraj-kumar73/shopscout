@@ -25,11 +25,11 @@ const ProductService = {
     }
 
     // Determine correct relative path to data/products.json
-    const isPagesSubdir = window.location.pathname.includes('/pages/');
-    const isAdminSubdir = window.location.pathname.includes('/admin/');
-    let dataUrl = 'data/products.json';
-    if (isPagesSubdir || isAdminSubdir) {
-      dataUrl = '../data/products.json';
+    let dataUrl = '/data/products.json';
+    if (window.location.protocol === 'file:') {
+      const isPagesSubdir = window.location.pathname.includes('/pages/');
+      const isAdminSubdir = window.location.pathname.includes('/admin/');
+      dataUrl = (isPagesSubdir || isAdminSubdir) ? '../data/products.json' : 'data/products.json';
     }
 
     try {
