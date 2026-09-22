@@ -102,14 +102,17 @@ async function fetchAmazonLiveImages(asin, query) {
   const images = [];
   try {
     const searchTerms = [];
-    if (asin) searchTerms.push(`${asin} amazon.in`);
-    if (query) searchTerms.push(`${query} amazon.in`);
+    let cleanQ = (query || '').split('|')[0].replace(/[:&]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (cleanQ.length > 50) cleanQ = cleanQ.substring(0, 50).trim();
+    if (cleanQ && cleanQ.length > 3) {
+      searchTerms.push(`${cleanQ} amazon`);
+    }
 
     for (const term of searchTerms) {
       if (images.length >= 4) break;
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 3500);
+        const timeout = setTimeout(() => controller.abort(), 8000);
         
         const tokenRes = await fetch(`https://duckduckgo.com/?q=${encodeURIComponent(term)}`, {
           signal: controller.signal,
@@ -122,7 +125,7 @@ async function fetchAmazonLiveImages(asin, query) {
 
         const vqd = vqdMatch[1];
         const imgCtrl = new AbortController();
-        const imgTimeout = setTimeout(() => imgCtrl.abort(), 3500);
+        const imgTimeout = setTimeout(() => imgCtrl.abort(), 8000);
         const imgRes = await fetch(`https://duckduckgo.com/i.js?l=us-en&o=json&q=${encodeURIComponent(term)}&vqd=${vqd}`, {
           signal: imgCtrl.signal,
           headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
@@ -142,9 +145,10 @@ async function fetchAmazonLiveImages(asin, query) {
             }
           });
         }
-      } catch (e) {}
+      } catch (e) { console.warn('image search err:', e.message); }
     }
-  } catch (err) {}
+  } catch (err) { console.warn('live images err:', err.message); }
+  console.log('[Extractor] Found Amazon images:', images.length);
   return images;
 }
 
@@ -418,9 +422,10 @@ async function extractProductDetails(rawUrl) {
   // ==========================================
   if (!title || galleryImages.length === 0) {
     try {
+      const targetMetaUrl = asin ? `https://www.amazon.in/dp/${asin}` : (cleanUrl || rawUrl);
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 4500);
-      const metaRes = await fetch(`https://api.microlink.io?url=${encodeURIComponent(rawUrl)}`, {
+      const metaRes = await fetch(`https://api.microlink.io?url=${encodeURIComponent(targetMetaUrl)}`, {
         signal: controller.signal
       });
       clearTimeout(timeout);
@@ -433,14 +438,15 @@ async function extractProductDetails(rawUrl) {
             title = cleanTitle(d.title);
           }
           if (!brand && d.author) {
-            brand = d.author.replace(/Visit the\s+/i, '').replace(/\s+Store/i, '').trim();
+            let b = d.author.replace(/Visit the\s*/ig, '').replace(/\s*Store/ig, '').replace(/,/g, ' ').trim();
+            brand = [...new Set(b.split(/\s+/))].join(' ').trim();
           }
           if (!description && d.description) {
             description = d.description.trim();
           }
           if (d.image?.url) {
             let img = d.image.url;
-            if (!img.startsWith('data:') && !img.includes('/images/G/') && !galleryImages.includes(img)) {
+            if (!img.startsWith('data:') && !img.includes('/images/G/') && !img.includes('fls-eu') && !img.includes('uedata') && !img.endsWith('.gif') && !galleryImages.includes(img)) {
               galleryImages.push(img);
             }
           }
@@ -467,6 +473,7 @@ async function extractProductDetails(rawUrl) {
     if (img.startsWith('data:')) return false;
     if (img.includes('/images/G/')) return false;
     if (img.includes('images-na.ssl-images-amazon.com')) return false; // Known empty GIF template
+    if (img.includes('fls-eu') || img.includes('uedata') || img.includes('batch/1/OP') || img.endsWith('.gif')) return false;
     return true;
   });
 
@@ -476,7 +483,9 @@ async function extractProductDetails(rawUrl) {
   if (!title) {
     const pathname = urlObj.pathname;
     const segments = pathname.split('/').filter(Boolean);
-    const slug = segments[0] || 'New Product';
+    const badSegments = new Set(['dp', 'gp', 'product', 'p', 's', 'd', 'dl', 'ref', 'buy', 'offer', 'item', 'search']);
+    const candidate = segments.find(s => !badSegments.has(s.toLowerCase()) && s.length > 3 && !/^[A-Z0-9]{10}$/i.test(s));
+    const slug = candidate || (segments[0] && !badSegments.has(segments[0].toLowerCase()) ? segments[0] : 'New Product');
     title = slug.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
@@ -489,7 +498,9 @@ async function extractProductDetails(rawUrl) {
   // Price & MRP Safeguards
   if (!price || price <= 0) {
     // Sensible defaults based on product class
-    if (category === 'Mobiles') price = 18999;
+    const isAccessory = /case|cover|protector|glass|cable|charger|adapter|pouch|sleeve|strap|skin|stand|holder/i.test(title);
+    if (isAccessory) price = 2499;
+    else if (category === 'Mobiles') price = 18999;
     else if (category === 'Laptops') price = 54990;
     else if (category === 'Audio') price = 3499;
     else if (category === 'Watches') price = 2999;
