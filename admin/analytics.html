@@ -14,6 +14,35 @@
 </head>
 <body class="admin-body">
 
+  <!-- Master Security Lock Barrier -->
+  <div id="admin-security-gate" class="admin-security-gate" style="display: none;">
+    <div class="security-card">
+      <div class="security-shield-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h2>ShopScout Admin Access</h2>
+      <p>This portal is restricted to the platform owner. Please enter your Master Security PIN to continue.</p>
+
+      <form id="security-pin-form">
+        <div class="pin-input-wrap">
+          <input type="password" id="admin-pin-input" class="security-pin-input" placeholder="Enter PIN (e.g. 7373)" maxlength="12" autofocus autocomplete="current-password">
+          <button type="button" class="pin-eye-toggle" onclick="AdminAuth.togglePinVisibility()" title="Show/Hide PIN">
+            <i class="fa-regular fa-eye" id="pin-eye-icon"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary security-submit-btn">
+          <i class="fa-solid fa-lock-open"></i> Unlock Portal
+        </button>
+        <div id="security-error-msg" class="security-error-msg" style="display: none;">
+          <i class="fa-solid fa-circle-exclamation"></i> Incorrect Security PIN. Access Denied.
+        </div>
+      </form>
+      <div class="security-footer-link">
+        <a href="../index.html">&larr; Return to Live Shopping Store</a>
+      </div>
+    </div>
+  </div>
+
   <aside class="admin-sidebar">
     <div class="admin-sidebar-header">
       <div class="brand-icon-wrap" style="width: 32px; height: 32px; font-size: 0.9rem;"><i class="fa-solid fa-bag-shopping"></i></div>
@@ -40,6 +69,10 @@
       <div style="font-size: 1.15rem; font-weight: 700; color: var(--text);">Affiliate Outbound Analytics</div>
       <div style="display: flex; align-items: center; gap: 1rem;">
         <button class="header-action-btn theme-toggle-btn" title="Toggle Theme"><i class="fa-regular fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="AdminAuth.logout()" title="Lock Admin Portal"
+          style="font-size: 0.8rem; font-weight: 700; color: #f87171; border-color: rgba(239, 68, 68, 0.35); display: flex; align-items: center; gap: 5px;">
+          <i class="fa-solid fa-lock"></i> Lock
+        </button>
       </div>
     </header>
 
@@ -161,6 +194,7 @@
   </div>
 
   <script src="../js/main.js"></script>
+  <script src="../js/admin-auth.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>
