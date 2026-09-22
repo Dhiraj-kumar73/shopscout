@@ -484,7 +484,7 @@ const AdminController = {
           return;
         }
 
-        if (rawUrl.includes('amazon.') || rawUrl.includes('amzn.')) {
+        if (rawUrl.includes('amazon') || rawUrl.includes('amzn')) {
           if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
             rawUrl = 'https://' + rawUrl;
             quickUrlInput.value = rawUrl;

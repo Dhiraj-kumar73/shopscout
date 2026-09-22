@@ -1,5 +1,100 @@
 [
   {
+    "id": "prod-1790044223576",
+    "name": "DailyObjects iPhone 18 Pro Stack Leatherette Case Cover | Compatible with MagSafe | Camera & Body Protection | Scratch Proof | Dual Hybrid Protection | Wireless Charging - Dahlia Red",
+    "brand": "DailyObjects",
+    "category": "Mobiles",
+    "price": 2499,
+    "originalPrice": 3099,
+    "discount": 19,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://www.amazon.in/dp/B0HGQWJDCW?tag=dhirajkuma05e-21",
+    "amazonPrice": 2499,
+    "amazonUrl": "https://www.amazon.in/dp/B0HGQWJDCW?tag=dhirajkuma05e-21",
+    "image": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SY355_.jpg",
+        "angle": "Back Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SY450_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SX425_.jpg",
+        "angle": "Angle View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71w6YfpI-OL._SX466_.jpg",
+        "angle": "In-Hand",
+        "icon": "fa-hand"
+      }
+    ],
+    "rating": 4.5,
+    "reviewsCount": 182,
+    "badge": "Hot Deal",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "DailyObjects iPhone 18 Pro Stack Leatherette Case Cover with MagSafe compatibility. Features aluminium camera bezel, responsive metallic buttons, microfiber scratch-proof lining, and dual hybrid drop protection.",
+    "features": [
+      "Smooth exterior crafted from premium leatherite",
+      "Aluminium camera lens bezel and hardy side buttons for added protection",
+      "MagSafe compatible - effortless magnetic charging",
+      "Premium microfiber lining for dust resistance, scratch prevention and shock protection",
+      "Dual hybrid protection with tactile button feedback"
+    ],
+    "specifications": {
+      "Brand": "DailyObjects",
+      "Model": "Stack Leatherette Case Cover",
+      "Category": "Mobiles",
+      "Compatibility": "iPhone 18 Pro / MagSafe",
+      "Warranty": "1 Year Official Warranty",
+      "Marketplace Availability": "Amazon India Verified Store",
+      "Condition": "Brand New, Factory Sealed"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 2499,
+        "originalPrice": 3099,
+        "url": "https://www.amazon.in/dp/B0HGQWJDCW?tag=dhirajkuma05e-21",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 2499,
+        "originalPrice": 3099,
+        "url": "https://www.amazon.in/dp/B0HGQWJDCW?tag=dhirajkuma05e-21",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 2499,
+        "affiliateUrl": "https://www.amazon.in/dp/B0HGQWJDCW?tag=dhirajkuma05e-21",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-09-22T02:30:23.576Z"
+  },
+  {
     "id": "prod-1789953873427",
     "name": "JBL Partybox 110 Wireless Bluetooth 160W Party Speaker, Dynamic Light Show, Upto 12H Playtime, Built-in Powerbank, Guitar+Mic Input, PartyBox App, Splashproof",
     "brand": "JBL",

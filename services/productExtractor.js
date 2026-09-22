@@ -212,6 +212,11 @@ async function extractProductDetails(rawUrl) {
     clearTimeout(timeout);
 
     if (response.ok) {
+      if (response.url && response.url !== cleanUrl) {
+        cleanUrl = response.url;
+        const newAsin = extractAmazonAsin(response.url);
+        if (newAsin) asin = newAsin;
+      }
       const pageText = await response.text();
       if (!pageText.includes('Robot Check') && !pageText.includes('Page Not Found')) {
         html = pageText;
