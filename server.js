@@ -426,7 +426,6 @@ function isCleanAuthenticProduct(p) {
   if (!p || !p.name || typeof p.name !== 'string') return false;
   const n = p.name.toLowerCase();
   if (n.includes('<') || n.includes('>') || n.includes('onerror=') || n.includes('javascript:')) return false;
-  if (n.includes('iphone 17') || n.includes('fold8') || n.includes('flip8') || n.includes('vivo t5') || n.includes('vivo t4') || n.includes('g06 power') || n.includes('10001mah') || n.includes('snapdragon® 8 gen 5') || n.includes('poco x8')) return false;
   return true;
 }
 
@@ -472,8 +471,21 @@ function syncPermanentVault() {
   }
 }
 
-// Run initial vault sync on startup
-syncPermanentVault();
+/**
+ * GET /api/products
+ * Returns the active products catalog JSON
+ */
+app.get('/api/products', (req, res) => {
+  try {
+    let products = [];
+    if (fs.existsSync(PRODUCTS_JSON_PATH)) {
+      products = JSON.parse(fs.readFileSync(PRODUCTS_JSON_PATH, 'utf8'));
+    }
+    return res.status(200).json(products);
+  } catch (err) {
+    return res.status(500).json({ success: false, message: 'Failed to load products' });
+  }
+});
 
 /**
  * POST /api/products/save

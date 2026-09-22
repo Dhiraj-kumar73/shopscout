@@ -1,5 +1,106 @@
 [
   {
+    "id": "prod-1790049743238",
+    "name": "Apple iPhone 17 256 GB: 15.93 cm (6.3″) Display with Promotion, A19 Chip, Center Stage Front Camera for Smarter Group Selfies, Improved Scratch Resistance, All-Day Battery Life; Black",
+    "brand": "Apple",
+    "category": "Mobiles",
+    "price": 98900,
+    "originalPrice": 99900,
+    "discount": 1,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/B07aUK6bg",
+    "amazonPrice": 98900,
+    "amazonUrl": "https://link.amazon/B07aUK6bg",
+    "image": "https://m.media-amazon.com/images/I/617O+RkwdPL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/617O+RkwdPL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/617O+RkwdPL._SX342_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/617O+RkwdPL._SX385_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/617O+RkwdPL._SX425_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/617O+RkwdPL._SX466_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 245,
+    "badge": "Popular",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "Apple Apple iPhone 17 256 GB: 15.93 cm (6.3″) Display with Promotion, A19 Chip, Center Stage Front Camera for Smarter Group Selfies, Improved Scratch Resistance, All-Day Battery Life; Black. Official authentic product offering top-tier performance, sleek modern design, and 100% verified marketplace guarantee.",
+    "features": [
+      "DESIGNED TO DELIGHT. BUILT TO LAST — iPhone 17 comes in five gorgeous colours",
+      "with a brighter 15.93 cm (6.3″) display and a Ceramic Shield 2 front that’s 3x more scratch resistant.",
+      "SMOOTHER. BRIGHTER. BRILLIANT — Smooth scrolling with ProMotion up to 120Hz",
+      "better outdoor contrast with 3",
+      "000 nits peak brightness and 33% fewer reflections compared with previous generation.",
+      "18MP CENTER STAGE FRONT CAMERA — Flexible ways to frame your shot. Smarter group selfies",
+      "Dual Capture video for simultaneous front and rear recording",
+      "and more.",
+      "STUNNING SHOTS — Capture super-high-resolution shots by default with the 48MP Dual Fusion camera system",
+      "4x optical zoom range and 48MP Fusion Ultra Wide camera.",
+      "A19 CHIP. POWER PLAYER. ENERGY EXPERT — With a 5-core GPU",
+      "the enhanced neural engine helps power everything you do on iPhone — from Apple Intelligence to AAA games."
+    ],
+    "specifications": {
+      "Brand": "Apple",
+      "Model": "Apple iPhone 17 256 GB: 15.93 cm (6.3″) Display with Promotion, A19 Chip, Center Stage Front Camera for Smarter Group Selfies, Improved Scratch Resistance, All-Day Battery Life; Black",
+      "Category": "Mobiles",
+      "Warranty": "1 Year Official Warranty",
+      "Marketplace Availability": "Amazon India Verified Store",
+      "Condition": "Brand New, Factory Sealed"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 98900,
+        "originalPrice": 99900,
+        "url": "https://link.amazon/B07aUK6bg",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 98900,
+        "originalPrice": 99900,
+        "url": "https://link.amazon/B07aUK6bg",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 98900,
+        "affiliateUrl": "https://link.amazon/B07aUK6bg",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-09-22T04:02:23.247Z"
+  },
+  {
     "id": "prod-1790049214409",
     "name": "Nothing Phone (3), Black (16GB, 512 GB) | Snapdragon 8s Gen 4 | 50MP + 50MP + 50MP Rear Camera | 1.5K+ 120Hz AMOLED Flexible LTPS Display",
     "brand": "Nothing",
