@@ -165,6 +165,25 @@ async function extractProductDetails(rawUrl) {
     cleanUrl = 'https://' + cleanUrl;
   }
 
+  // ── Step 0: Lightning-Fast Shortlink & Redirect Expander ──
+  if (!cleanUrl.includes('/dp/') && !cleanUrl.includes('/gp/product/')) {
+    try {
+      const fastController = new AbortController();
+      const fastTimeout = setTimeout(() => fastController.abort(), 4000);
+      const resFast = await fetch(cleanUrl, {
+        method: 'GET',
+        redirect: 'follow',
+        signal: fastController.signal
+      });
+      clearTimeout(fastTimeout);
+      if (resFast.url && resFast.url !== cleanUrl) {
+        cleanUrl = resFast.url;
+      }
+    } catch (e) {
+      console.warn('[Extractor] Fast redirect expansion note:', e.message);
+    }
+  }
+
   let urlObj = new URL(cleanUrl);
   const hostname = urlObj.hostname.toLowerCase();
   const isAmazon = hostname.includes('amazon') || hostname.includes('amzn');
