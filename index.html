@@ -496,36 +496,29 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer
-    style="background-color: var(--surface); border-top: 1px solid var(--border); padding-top: 4rem; padding-bottom: 2rem;">
+  <footer class="site-footer">
     <div class="container">
-      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem;">
+      <div class="footer-grid">
 
-        <div>
+        <div class="footer-col footer-col-brand">
           <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
             <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
             <span>ShopScout</span>
           </a>
-          <p
-            style="color: var(--muted); font-size: 0.925rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 320px;">
-            Find Better. Buy Smarter. Discover products worth your money, compare prices, and uncover legitimate deals
-            from trusted marketplaces.
+          <p class="footer-brand-desc">
+            Find Better. Buy Smarter. Discover products worth your money, compare prices, and uncover legitimate deals from trusted marketplaces.
           </p>
-          <div style="display: flex; gap: 0.75rem;">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
-              style="text-decoration:none;" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
-              style="text-decoration:none;" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
-              style="text-decoration:none;" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
-              style="text-decoration:none;" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <div class="footer-social-links">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
           </div>
         </div>
 
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Explore</h4>
-          <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
+        <div class="footer-col">
+          <h4 class="footer-col-title">Explore</h4>
+          <ul class="footer-link-list">
             <li><a href="pages/products.html">All Products</a></li>
             <li><a href="pages/categories.html">Categories</a></li>
             <li><a href="pages/deals.html">Today's Deals</a></li>
@@ -534,52 +527,47 @@
           </ul>
         </div>
 
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Company</h4>
-          <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
+        <div class="footer-col">
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-link-list">
             <li><a href="pages/about.html">About Us</a></li>
             <li><a href="pages/contact.html">Contact Us</a></li>
             <li><a href="pages/wishlist.html">My Wishlist</a></li>
-            <li><a href="admin/dashboard.html" style="color: var(--primary); font-weight:600;">Admin Panel</a></li>
+            <li><a href="admin/products.html" class="admin-link">Admin Panel</a></li>
           </ul>
         </div>
 
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Legal</h4>
-          <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
-            <li><a href="pages/affiliate-disclosure.html" style="font-weight: 700; color: var(--text);">Affiliate
-                Disclosure</a></li>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Legal</h4>
+          <ul class="footer-link-list">
+            <li><a href="pages/affiliate-disclosure.html" style="font-weight: 700; color: var(--text);">Affiliate Disclosure</a></li>
             <li><a href="pages/privacy-policy.html">Privacy Policy</a></li>
             <li><a href="pages/terms.html">Terms &amp; Conditions</a></li>
           </ul>
         </div>
 
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Affiliate
-            Partner</h4>
-          <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
-            <li><span class="store-pill amazon"><i class="fa-brands fa-amazon"></i> Amazon Associates</span></li>
-            <li><span style="font-size:0.75rem; color: var(--muted);"><i class="fa-solid fa-check-circle"
-                  style="color:#10b981;"></i> 100% Genuine Partner</span></li>
-          </ul>
+        <div class="footer-col footer-col-partner">
+          <h4 class="footer-col-title">Affiliate Partner</h4>
+          <div class="partner-badge-card">
+            <span class="store-pill amazon"><i class="fa-brands fa-amazon"></i> Amazon Associates</span>
+            <div class="partner-guarantee">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>100% Genuine Partner</span>
+            </div>
+          </div>
         </div>
 
       </div>
 
-      <div
-        style="border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--muted);">
-        <p style="margin-bottom: 0.5rem;">
-          <strong>Affiliate Transparency Notice:</strong> ShopScout is a participant in affiliate marketing programs.
-          When you click outbound marketplace links and complete qualifying purchases, we may earn an affiliate
-          commission at zero additional cost to you.
+      <div class="footer-bottom">
+        <p class="footer-transparency-notice">
+          <strong>Affiliate Transparency Notice:</strong> ShopScout is a participant in affiliate marketing programs. When you click outbound marketplace links and complete qualifying purchases, we may earn an affiliate commission at zero additional cost to you.
         </p>
-        <p
-          style="margin-top: 0.6rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+        <div class="footer-credits-row">
           <span>&copy; 2026 ShopScout. All rights reserved.</span>
-          <span style="opacity: 0.4;">&bull;</span>
-          <span>Founded &amp; Developed with <i class="fa-solid fa-heart" style="color: #ef4444;"></i> by <strong
-              style="color: var(--text); font-weight: 700;">Dhiraj Kumar</strong></span>
-        </p>
+          <span class="dot-sep">&bull;</span>
+          <span>Founded &amp; Developed with <i class="fa-solid fa-heart text-danger"></i> by <strong>Dhiraj Kumar</strong></span>
+        </div>
       </div>
     </div>
   </footer>

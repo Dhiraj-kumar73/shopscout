@@ -823,6 +823,96 @@ img, video, iframe {
     min-width: auto !important;
     width: 100% !important;
   }
+
+  /* ─── Premium Mobile App Footer (< 768px) ─── */
+  .site-footer,
+  footer {
+    padding-top: 2.75rem !important;
+    /* Safe padding so fixed mobile bottom navigation bar NEVER covers copyright or links! */
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+    background-color: var(--surface) !important;
+    border-top: 1px solid var(--border) !important;
+  }
+
+  .footer-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.75rem 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .footer-col-brand {
+    grid-column: 1 / -1 !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .footer-col-brand .brand-logo {
+    justify-content: center !important;
+    margin: 0 auto 0.75rem auto !important;
+  }
+
+  .footer-brand-desc {
+    margin: 0 auto 1.25rem auto !important;
+    max-width: 320px !important;
+    font-size: 0.875rem !important;
+    text-align: center !important;
+  }
+
+  .footer-social-links {
+    justify-content: center !important;
+  }
+
+  .footer-col-title {
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    color: var(--text) !important;
+    margin-bottom: 0.75rem !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .footer-link-list {
+    gap: 0.55rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .footer-col-partner {
+    grid-column: 1 / -1 !important;
+    text-align: center !important;
+    background: var(--surface-subtle, rgba(255, 255, 255, 0.03)) !important;
+    padding: 1.1rem !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border) !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .partner-badge-card {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .footer-bottom {
+    padding-top: 1.5rem !important;
+    font-size: 0.76rem !important;
+    text-align: center !important;
+  }
+
+  .footer-transparency-notice {
+    font-size: 0.74rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .footer-credits-row {
+    font-size: 0.78rem !important;
+    flex-direction: column !important;
+    gap: 0.35rem !important;
+  }
+
+  .footer-credits-row .dot-sep {
+    display: none !important;
+  }
 }
 
 /* ─── 5. COMPACT SMARTPHONES (<= 480px down to 320px) ────────────────────── */
@@ -902,17 +992,6 @@ img, video, iframe {
   .header-action-btn {
     width: 34px !important;
     height: 34px !important;
-  }
-
-  /* Footer on Mobile */
-  .site-footer {
-    padding-top: 2rem !important;
-    padding-bottom: 1.5rem !important;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
   }
 }
 
