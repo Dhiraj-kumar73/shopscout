@@ -487,12 +487,22 @@ const AdminController = {
           return;
         }
 
-        if (rawUrl.includes('amazon') || rawUrl.includes('amzn')) {
+        // Extract clean URL if user pasted with accompanying text/words (e.g. "https://link.amazon/B0i7BwPtu ye link...")
+        const urlMatch = rawUrl.match(/(https?:\/\/[^\s]+)/i);
+        if (urlMatch) {
+          rawUrl = urlMatch[1];
+        } else if (rawUrl.includes('amazon') || rawUrl.includes('amzn')) {
           if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
             rawUrl = 'https://' + rawUrl;
-            quickUrlInput.value = rawUrl;
           }
         }
+        // Remove trailing punctuation
+        rawUrl = rawUrl.replace(/[.,;!?)\]}]+$/, '');
+
+        // Fix accidental attached words on link.amazon (e.g. B0i7BwPtuye -> B0i7BwPtu)
+        rawUrl = rawUrl.replace(/^(https?:\/\/link\.amazon\/[A-Za-z0-9]{9})[a-zA-Z]+/i, '$1');
+        rawUrl = rawUrl.replace(/^(https?:\/\/amzlinks\.in\/[A-Za-z0-9]{9})[a-zA-Z]+/i, '$1');
+        quickUrlInput.value = rawUrl;
 
         const originalBtnHtml = quickUrlBtn.innerHTML;
         quickUrlBtn.disabled = true;
@@ -1221,7 +1231,9 @@ const AdminController = {
     'B08CFJBZRK': { title: 'Prestige Iris Plus 750 Watt Mixer Grinder with 4 Jars', brand: 'Prestige', category: 'Home & Kitchen', price: 2899, originalPrice: 6295, image: 'https://m.media-amazon.com/images/I/7152-mn8mKL._SL1500_.jpg' },
     'B09YRHV934': { title: 'Prestige Iris Plus 750 Watt Mixer Grinder with 4 Jars', brand: 'Prestige', category: 'Home & Kitchen', price: 2899, originalPrice: 6295, image: 'https://m.media-amazon.com/images/I/7152-mn8mKL._SL1500_.jpg' },
     'B0D7NZM3S1': { title: 'Apple iPhone 16 (128 GB) - Ultramarine', brand: 'Apple', category: 'Mobiles', price: 79900, originalPrice: 79900, image: 'https://m.media-amazon.com/images/I/71657TiFeHL._SL1500_.jpg' },
-    'B0D7NDQCS3': { title: 'Apple iPhone 16 Pro (128 GB) - Desert Titanium', brand: 'Apple', category: 'Mobiles', price: 119900, originalPrice: 119900, image: 'https://m.media-amazon.com/images/I/81+GIkwqLIL._SL1500_.jpg' }
+    'B0D7NDQCS3': { title: 'Apple iPhone 16 Pro (128 GB) - Desert Titanium', brand: 'Apple', category: 'Mobiles', price: 119900, originalPrice: 119900, image: 'https://m.media-amazon.com/images/I/81+GIkwqLIL._SL1500_.jpg' },
+    'B0F7RB8NNL': { title: 'Nothing Phone (3), Black (16GB, 512 GB)', brand: 'Nothing', category: 'Mobiles', price: 51999, originalPrice: 59999, image: 'https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg' },
+    'B0i7BwPtu': { title: 'Nothing Phone (3), Black (16GB, 512 GB)', brand: 'Nothing', category: 'Mobiles', price: 51999, originalPrice: 59999, image: 'https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg' }
   },
 
   // Intelligent Client-Side Link & Query Extractor (Instant 0ms, 100% Amazon Exclusive)
@@ -1279,6 +1291,14 @@ const AdminController = {
       }
 
       // 2. Normalize URLs
+      const urlMatch = clean.match(/(https?:\/\/[^\s]+)/i);
+      if (urlMatch) {
+        clean = urlMatch[1];
+      }
+      clean = clean.replace(/[.,;!?)\]}]+$/, '');
+      clean = clean.replace(/^(https?:\/\/link\.amazon\/[A-Za-z0-9]{9})[a-zA-Z]+/i, '$1');
+      clean = clean.replace(/^(https?:\/\/amzlinks\.in\/[A-Za-z0-9]{9})[a-zA-Z]+/i, '$1');
+
       if (!/^https?:\/\//i.test(clean)) {
         clean = 'https://' + clean;
       }
@@ -1286,9 +1306,10 @@ const AdminController = {
       const urlObj = new URL(clean);
       const pathname = urlObj.pathname;
 
-      // Extract Amazon ASIN if present
+      // Extract Amazon ASIN or Shortcode if present
       const asinMatch = pathname.match(/(?:\/dp\/|\/gp\/product\/|\/ASIN\/)([A-Z0-9]{10})/i);
-      const amazonAsin = asinMatch ? asinMatch[1].toUpperCase() : null;
+      const shortCodeMatch = clean.match(/(?:link\.amazon|amzlinks\.in)\/([A-Za-z0-9]{8,12})/i);
+      const amazonAsin = asinMatch ? asinMatch[1].toUpperCase() : (shortCodeMatch ? shortCodeMatch[1] : null);
 
       // ── STEP 0: Check ASIN Knowledge Base for Instant 0ms Match ──
       if (amazonAsin && this.asinKnowledgeBase && this.asinKnowledgeBase[amazonAsin]) {
@@ -1329,8 +1350,8 @@ const AdminController = {
       // ── STEP 1: Robust Slug Extraction from URL Path ──
       let title = '';
       const segments = pathname.split('/').filter(Boolean);
-      const badSegments = new Set(['dp', 'gp', 'product', 'p', 's', 'd', 'dl', 'ref', 'buy', 'offer', 'item', 'search']);
-      const candidate = segments.find(s => !badSegments.has(s.toLowerCase()) && s.length > 3 && !/^[A-Z0-9]{10}$/i.test(s));
+      const badSegments = new Set(['dp', 'gp', 'product', 'p', 's', 'd', 'dl', 'ref', 'buy', 'offer', 'item', 'search', 'post-tap']);
+      const candidate = segments.find(s => !badSegments.has(s.toLowerCase()) && s.length > 3 && !/^[A-Z0-9]{8,12}$/i.test(s));
 
       if (candidate) {
         try {
@@ -1349,8 +1370,12 @@ const AdminController = {
         }
       }
 
-      if (!title || title.length <= 2) {
-        title = amazonAsin ? `Amazon Verified Product (${amazonAsin})` : 'Featured Product';
+      if (!title || title.length <= 2 || /^[A-Z0-9]{8,12}$/i.test(title) || /^(404|not found|file not found|something went wrong)/i.test(title)) {
+        if (amazonAsin && !/^[A-Z0-9]{8,9}$/i.test(amazonAsin)) {
+          title = `Amazon Verified Product (${amazonAsin})`;
+        } else {
+          return null; // Don't create garbage product for unresolvable shortcode or 404
+        }
       }
 
       // Detect Brand & Category

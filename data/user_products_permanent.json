@@ -1,5 +1,86 @@
 [
   {
+    "id": "prod-1790049214409",
+    "name": "Nothing Phone (3), Black (16GB, 512 GB) | Snapdragon 8s Gen 4 | 50MP + 50MP + 50MP Rear Camera | 1.5K+ 120Hz AMOLED Flexible LTPS Display",
+    "brand": "Nothing",
+    "category": "Mobiles",
+    "price": 51999,
+    "originalPrice": 66559,
+    "discount": 22,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://www.amazon.in/dp/B0F7RB8NNL?tag=dhirajkuma05e-21",
+    "amazonPrice": 51999,
+    "amazonUrl": "https://www.amazon.in/dp/B0F7RB8NNL?tag=dhirajkuma05e-21",
+    "image": "https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/717z2bNF6DL._SL1500_.jpg",
+        "angle": "Back Glyph Interface",
+        "icon": "fa-rotate"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 389,
+    "badge": "Top Flagship",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "Nothing Phone (3) in Black with 16GB RAM and 512GB Storage. Powered by Snapdragon 8s Gen 4, featuring flagship 50MP triple rear camera, 1.5K+ 120Hz Flexible AMOLED display, and iconic Glyph Interface.",
+    "features": [
+      "Snapdragon 8s Gen 4 flagship performance architecture",
+      "Triple 50MP + 50MP + 50MP advanced camera system with OIS",
+      "1.5K+ 120Hz Flexible AMOLED LTPS display with ultra-slim symmetrical bezels",
+      "Glyph Interface 3.0 customizable notification light matrix",
+      "5000mAh battery with 65W fast charging & 15W wireless charging"
+    ],
+    "specifications": {
+      "Brand": "Nothing",
+      "Model": "Phone (3)",
+      "RAM / Storage": "16GB RAM / 512GB Storage",
+      "Processor": "Qualcomm Snapdragon 8s Gen 4",
+      "Display": "1.5K+ 120Hz AMOLED Flexible LTPS",
+      "Camera": "50MP + 50MP + 50MP Rear | 32MP Front",
+      "Warranty": "1 Year Official Nothing India Warranty",
+      "Marketplace Availability": "Amazon India Verified Store"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 51999,
+        "originalPrice": 66559,
+        "url": "https://www.amazon.in/dp/B0F7RB8NNL?tag=dhirajkuma05e-21",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 51999,
+        "originalPrice": 66559,
+        "url": "https://www.amazon.in/dp/B0F7RB8NNL?tag=dhirajkuma05e-21",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 51999,
+        "affiliateUrl": "https://www.amazon.in/dp/B0F7RB8NNL?tag=dhirajkuma05e-21",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-09-22T03:53:34.409Z"
+  },
+  {
     "id": "prod-1790044223576",
     "name": "DailyObjects iPhone 18 Pro Stack Leatherette Case Cover | Compatible with MagSafe | Camera & Body Protection | Scratch Proof | Dual Hybrid Protection | Wireless Charging - Dahlia Red",
     "brand": "DailyObjects",

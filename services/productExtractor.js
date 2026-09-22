@@ -89,7 +89,15 @@ function cleanTitle(rawTitle) {
     .replace(/Buy\s+/i, '')
     .replace(/\s+/g, ' ')
     .trim();
-  if (/^amazon(\.in)?$/i.test(cleaned) || /robot check/i.test(cleaned) || /page not found/i.test(cleaned)) {
+  if (/^amazon(\.in)?$/i.test(cleaned) || 
+      /robot check/i.test(cleaned) || 
+      /page not found/i.test(cleaned) || 
+      /404/i.test(cleaned) || 
+      /file not found/i.test(cleaned) || 
+      /something went wrong/i.test(cleaned) || 
+      /uh oh/i.test(cleaned) || 
+      /server error/i.test(cleaned) || 
+      /access denied/i.test(cleaned)) {
     return '';
   }
   return cleaned;
@@ -161,15 +169,26 @@ async function extractProductDetails(rawUrl) {
   }
 
   let cleanUrl = rawUrl.trim();
+  // Extract URL if user pasted with accompanying words/text
+  const urlMatch = cleanUrl.match(/(https?:\/\/[^\s]+)/i);
+  if (urlMatch) {
+    cleanUrl = urlMatch[1];
+  }
   if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
     cleanUrl = 'https://' + cleanUrl;
   }
+  // Remove trailing punctuation or brackets
+  cleanUrl = cleanUrl.replace(/[.,;!?)\]}]+$/, '');
+
+  // Handle accidental words appended to Amazon shortlinks (e.g., https://link.amazon/B0i7BwPtuye -> https://link.amazon/B0i7BwPtu)
+  cleanUrl = cleanUrl.replace(/^(https?:\/\/link\.amazon\/[A-Za-z0-9]{9})[a-zA-Z]+$/i, '$1');
+  cleanUrl = cleanUrl.replace(/^(https?:\/\/amzlinks\.in\/[A-Za-z0-9]{9})[a-zA-Z]+$/i, '$1');
 
   // ── Step 0: Lightning-Fast Shortlink & Redirect Expander ──
   if (!cleanUrl.includes('/dp/') && !cleanUrl.includes('/gp/product/')) {
     try {
       const fastController = new AbortController();
-      const fastTimeout = setTimeout(() => fastController.abort(), 4000);
+      const fastTimeout = setTimeout(() => fastController.abort(), 6000);
       const resFast = await fetch(cleanUrl, {
         method: 'GET',
         redirect: 'follow',
@@ -177,7 +196,20 @@ async function extractProductDetails(rawUrl) {
       });
       clearTimeout(fastTimeout);
       if (resFast.url && resFast.url !== cleanUrl) {
-        cleanUrl = resFast.url;
+        // If it redirected to a 404 page, check if shortlink has more than 9 chars and retry with 9
+        if (resFast.url.includes('404') || resFast.status === 404) {
+          const shortMatch = cleanUrl.match(/(https?:\/\/(?:link\.amazon|amzlinks\.in)\/)([A-Za-z0-9]{9})([A-Za-z0-9]+)/i);
+          if (shortMatch) {
+            const retryUrl = shortMatch[1] + shortMatch[2];
+            console.log('[Extractor] 404 detected on shortlink, retrying with exact 9-char code:', retryUrl);
+            const retryRes = await fetch(retryUrl, { method: 'GET', redirect: 'follow' });
+            if (retryRes.ok && retryRes.url && !retryRes.url.includes('404')) {
+              cleanUrl = retryRes.url;
+            }
+          }
+        } else {
+          cleanUrl = resFast.url;
+        }
       }
     } catch (e) {
       console.warn('[Extractor] Fast redirect expansion note:', e.message);
@@ -197,7 +229,7 @@ async function extractProductDetails(rawUrl) {
     cleanAffiliateUrl = urlObj.toString();
   }
 
-  let asin = isAmazon ? extractAmazonAsin(rawUrl) : null;
+  let asin = isAmazon ? (extractAmazonAsin(cleanUrl) || extractAmazonAsin(rawUrl)) : null;
 
   let title = '';
   let brand = '';
@@ -486,12 +518,13 @@ async function extractProductDetails(rawUrl) {
     }
   }
 
-  // Filter out any 1x1 GIF / data: / broken images-na templates
+  // Filter out any 1x1 GIF / data: / broken images-na templates / 404 placeholders
   galleryImages = galleryImages.filter(img => {
     if (!img || typeof img !== 'string') return false;
     if (img.startsWith('data:')) return false;
     if (img.includes('/images/G/')) return false;
     if (img.includes('images-na.ssl-images-amazon.com')) return false; // Known empty GIF template
+    if (img.includes('short-link-404') || img.includes('404')) return false;
     if (img.includes('fls-eu') || img.includes('uedata') || img.includes('batch/1/OP') || img.endsWith('.gif')) return false;
     return true;
   });
@@ -502,10 +535,16 @@ async function extractProductDetails(rawUrl) {
   if (!title) {
     const pathname = urlObj.pathname;
     const segments = pathname.split('/').filter(Boolean);
-    const badSegments = new Set(['dp', 'gp', 'product', 'p', 's', 'd', 'dl', 'ref', 'buy', 'offer', 'item', 'search']);
-    const candidate = segments.find(s => !badSegments.has(s.toLowerCase()) && s.length > 3 && !/^[A-Z0-9]{10}$/i.test(s));
-    const slug = candidate || (segments[0] && !badSegments.has(segments[0].toLowerCase()) ? segments[0] : 'New Product');
-    title = slug.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const badSegments = new Set(['dp', 'gp', 'product', 'p', 's', 'd', 'dl', 'ref', 'buy', 'offer', 'item', 'search', 'post-tap']);
+    const candidate = segments.find(s => !badSegments.has(s.toLowerCase()) && s.length > 3 && !/^[A-Z0-9]{9,10}$/i.test(s));
+    if (candidate) {
+      title = candidate.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+  }
+
+  // Reject dead links or 404 error pages
+  if (!title || /^(404|not found|file not found|something went wrong)/i.test(title)) {
+    throw new Error('Could not auto-detect product details from this link. Please check that the Amazon link is valid and active.');
   }
 
   // Detect Brand & Category
