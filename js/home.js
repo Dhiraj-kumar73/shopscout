@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   var prevBtn = document.getElementById("price-slider-prev");
   var nextBtn = document.getElementById("price-slider-next");
 
-  if (priceTrack) {
+  if (priceTrack && window.innerWidth >= 768) {
     var isGlidingPaused = false;
     var glideTimer = null;
     var glideSpeed = 1.75; // brisk, lively, and smooth gliding speed

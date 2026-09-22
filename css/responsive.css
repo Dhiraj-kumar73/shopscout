@@ -348,6 +348,143 @@ img, video, iframe {
     white-space: nowrap;
   }
 
+  /* ─── Modern App-Style Budget Deals Chips Rail (< 768px) ─── */
+  .price-range-hub-wrapper {
+    background: transparent !important;
+    border: none !important;
+    padding: 0.25rem 0 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+    box-shadow: none !important;
+  }
+
+  .price-range-hub-header {
+    margin-bottom: 0.5rem !important;
+    padding: 0 0.25rem 0.35rem 0.25rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .price-range-hub-title {
+    font-size: 1.12rem !important;
+    font-weight: 800 !important;
+    margin: 0.15rem 0 0 0 !important;
+  }
+
+  .price-range-hub-desc,
+  .price-range-ticker-badge,
+  .price-range-active-indicator {
+    display: none !important;
+  }
+
+  .price-range-slider-wrap {
+    margin-bottom: 0.65rem !important;
+  }
+
+  .price-slider-nav {
+    display: none !important;
+  }
+
+  /* Sleek, horizontally swipeable pill chips rail */
+  .price-range-selector-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.45rem !important;
+    padding: 0.2rem 0.1rem 0.45rem 0.1rem !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .price-range-selector-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Transforms bulky 130px cards into sleek 38px app pills */
+  .price-range-card {
+    flex: 0 0 auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+    width: auto !important;
+    min-height: auto !important;
+    height: 38px !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.45rem !important;
+    padding: 0 0.9rem !important;
+    border-radius: 9999px !important;
+    background: var(--surface) !important;
+    border: 1.5px solid var(--border) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+    cursor: pointer !important;
+    transform: none !important;
+  }
+
+  .price-range-card .price-range-top {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    width: auto !important;
+  }
+
+  .price-range-card .price-range-icon {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 0.8rem !important;
+    background: transparent !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .price-range-card .price-range-amount {
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    color: var(--text) !important;
+    line-height: 1 !important;
+  }
+
+  .price-range-card .price-range-tag,
+  .price-range-card .price-range-sub,
+  .price-range-card .price-range-action,
+  .price-range-card.active::after {
+    display: none !important;
+  }
+
+  /* Active pill state: Glowing gradient chip */
+  .price-range-card.active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45) !important;
+  }
+
+  .price-range-card.active .price-range-amount {
+    color: #ffffff !important;
+  }
+
+  .price-range-card.active .price-range-icon {
+    color: #ffffff !important;
+  }
+
+  /* Compact Results Bar on Mobile */
+  .price-range-results-bar {
+    padding: 0.4rem 0.75rem !important;
+    margin-bottom: 0.65rem !important;
+    font-size: 0.78rem !important;
+    border-radius: 8px !important;
+  }
+
+  .view-more-budget-link {
+    font-size: 0.76rem !important;
+  }
+
   /* 2-Column Responsive E-Commerce Product Grid (Amazon/Flipkart Style) */
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
