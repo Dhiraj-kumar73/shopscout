@@ -281,27 +281,26 @@ img, video, iframe {
 
   .hero-trust-strip {
     justify-content: center !important;
-    margin-top: 1.25rem !important;
+    margin-top: 1.15rem !important;
     gap: 0.65rem !important;
     font-size: 0.78rem !important;
   }
 
+  /* 3D Shopping Graphic is placed directly in the background ("esko back me bhej do") */
   .hero-graphic-wrap {
-    margin: 0.5rem auto 0 auto !important;
-    max-width: 280px !important;
-    width: 100% !important;
+    display: none !important;
   }
 
-  .hero-image-frame {
-    border-radius: 14px !important;
-    max-height: 220px !important;
-    overflow: hidden !important;
+  .hero-bg-backdrop-img {
+    opacity: 0.36 !important;
+    object-position: center 35% !important;
+    filter: saturate(1.25) blur(0.5px) !important;
+    transform: scale(1.06) !important;
   }
 
-  .hero-image-frame img {
-    height: 190px !important;
-    object-fit: cover !important;
-    width: 100% !important;
+  .hero-bg-backdrop-overlay {
+    background: radial-gradient(circle at 50% 35%, rgba(15, 23, 42, 0.4) 0%, rgba(9, 13, 22, 0.92) 80%),
+                linear-gradient(180deg, rgba(9, 13, 22, 0.7) 0%, rgba(9, 13, 22, 0.88) 70%, #090D16 100%) !important;
   }
 
   /* Quick Category Swipeable Rail on Mobile */
