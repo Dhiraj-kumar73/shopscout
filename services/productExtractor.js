@@ -83,12 +83,16 @@ function detectBrand(text = '', fallback = 'Brand') {
  */
 function cleanTitle(rawTitle) {
   if (!rawTitle) return '';
-  return rawTitle
+  const cleaned = rawTitle
     .replace(/Online at Best Price.*$/i, '')
     .replace(/:\s*Amazon\.in.*$/i, '')
     .replace(/Buy\s+/i, '')
     .replace(/\s+/g, ' ')
     .trim();
+  if (/^amazon(\.in)?$/i.test(cleaned) || /robot check/i.test(cleaned) || /page not found/i.test(cleaned)) {
+    return '';
+  }
+  return cleaned;
 }
 
 /**
@@ -157,7 +161,7 @@ async function extractProductDetails(rawUrl) {
     cleanUrl = 'https://' + cleanUrl;
   }
 
-  const urlObj = new URL(cleanUrl);
+  let urlObj = new URL(cleanUrl);
   const hostname = urlObj.hostname.toLowerCase();
   const isAmazon = hostname.includes('amazon') || hostname.includes('amzn');
   const marketplace = 'Amazon';
@@ -170,7 +174,7 @@ async function extractProductDetails(rawUrl) {
     cleanAffiliateUrl = urlObj.toString();
   }
 
-  const asin = isAmazon ? extractAmazonAsin(rawUrl) : null;
+  let asin = isAmazon ? extractAmazonAsin(rawUrl) : null;
 
   let title = '';
   let brand = '';
@@ -214,6 +218,7 @@ async function extractProductDetails(rawUrl) {
     if (response.ok) {
       if (response.url && response.url !== cleanUrl) {
         cleanUrl = response.url;
+        try { urlObj = new URL(cleanUrl); } catch(e) {}
         const newAsin = extractAmazonAsin(response.url);
         if (newAsin) asin = newAsin;
       }
