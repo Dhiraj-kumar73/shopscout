@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   if (priceTrack) {
     var isGlidingPaused = false;
     var glideTimer = null;
-    var glideSpeed = 0.65; // gentle, readable speed in px per frame
+    var glideSpeed = 1.75; // brisk, lively, and smooth gliding speed
     var isResetting = false;
 
     function glideTick() {
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         var maxScroll = priceTrack.scrollWidth - priceTrack.clientWidth;
         if (maxScroll > 15) {
           if (priceTrack.scrollLeft >= maxScroll - 2) {
-            // Reached the end: pause, then smoothly glide back to start
+            // Reached the end: quick pause, then smoothly glide back to start
             isResetting = true;
             setTimeout(function() {
               if (priceTrack) {
@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", async function() {
               }
               setTimeout(function() {
                 isResetting = false;
-              }, 1400);
-            }, 1800);
+              }, 900);
+            }, 700);
           } else {
             priceTrack.scrollLeft += glideSpeed;
           }
@@ -93,10 +93,10 @@ document.addEventListener("DOMContentLoaded", async function() {
       requestAnimationFrame(glideTick);
     }
 
-    // Start auto-gliding after slight delay
+    // Start auto-gliding quickly
     setTimeout(function() {
       requestAnimationFrame(glideTick);
-    }, 1000);
+    }, 400);
 
     function pauseGlide() {
       isGlidingPaused = true;
@@ -107,18 +107,18 @@ document.addEventListener("DOMContentLoaded", async function() {
       if (glideTimer) clearTimeout(glideTimer);
       glideTimer = setTimeout(function() {
         isGlidingPaused = false;
-      }, delay || 2200);
+      }, delay || 1200);
     }
 
     // Pause on hover or touch
     priceTrack.addEventListener("mouseenter", pauseGlide);
-    priceTrack.addEventListener("mouseleave", function() { resumeGlide(1500); });
+    priceTrack.addEventListener("mouseleave", function() { resumeGlide(800); });
     priceTrack.addEventListener("touchstart", pauseGlide, { passive: true });
-    priceTrack.addEventListener("touchend", function() { resumeGlide(3000); });
+    priceTrack.addEventListener("touchend", function() { resumeGlide(1500); });
 
     // Also pause on manual drag or scroll
     priceTrack.addEventListener("pointerdown", pauseGlide);
-    priceTrack.addEventListener("pointerup", function() { resumeGlide(2500); });
+    priceTrack.addEventListener("pointerup", function() { resumeGlide(1500); });
 
     // Slider arrows
     if (prevBtn) {
