@@ -94,6 +94,35 @@
     </div>
   </footer>
 
+  <!-- Sticky Mobile Bottom Bar -->
+  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
+    <a href="../index.html" class="bottom-bar-item">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="categories.html" class="bottom-bar-item">
+      <i class="fa-solid fa-shapes"></i>
+      <span>Categories</span>
+    </a>
+    <a href="deals.html" class="bottom-bar-item">
+      <i class="fa-solid fa-fire"></i>
+      <span>Deals</span>
+    </a>
+    <a href="wishlist.html" class="bottom-bar-item active">
+      <i class="fa-regular fa-heart"></i>
+      <span>Wishlist</span>
+      <span class="bottom-badge wishlist-badge-count" style="display: none;">0</span>
+    </a>
+    <a href="../admin/products.html" class="bottom-bar-item">
+      <i class="fa-solid fa-gear"></i>
+      <span>Admin</span>
+    </a>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
   <script src="../js/main.js"></script>
   <script src="../js/navbar.js"></script>
   <script src="../js/products.js"></script>

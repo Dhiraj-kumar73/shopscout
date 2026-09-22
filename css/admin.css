@@ -1603,3 +1603,104 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ─── MOBILE RESPONSIVE ADMIN EXPERIENCE (< 768px) ─── */
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 1rem 0.75rem calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .catalog-hero-banner {
+    padding: 1.25rem 1rem !important;
+    border-radius: 14px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .catalog-hero-title {
+    font-size: 1.35rem !important;
+  }
+
+  .catalog-hero-desc {
+    font-size: 0.82rem !important;
+  }
+
+  .catalog-hero-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.6rem !important;
+  }
+
+  .catalog-hero-actions .btn-sync-hero,
+  .catalog-hero-actions .btn-add-hero {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.65rem 0.75rem !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* Transform table into touch cards */
+  .table-pro thead {
+    display: none !important;
+  }
+
+  .table-pro,
+  .table-pro tbody,
+  .table-pro tr,
+  .table-pro td {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .table-pro tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.85rem !important;
+  }
+
+  .table-pro tbody tr {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    padding: 1rem !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .table-pro td {
+    padding: 0.35rem 0 !important;
+    border: none !important;
+  }
+
+  .table-pro td:last-child {
+    margin-top: 0.65rem;
+    padding-top: 0.65rem !important;
+    border-top: 1px solid var(--border) !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 0.65rem !important;
+  }
+
+  .btn-action-pro {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1rem !important;
+  }
+
+  /* Admin Modal on Mobile */
+  .modal-dialog {
+    margin: 0.5rem !important;
+    max-width: 100% !important;
+    border-radius: 16px !important;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1rem !important;
+  }
+
+  .modal-btn-row-2col {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+

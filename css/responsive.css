@@ -199,18 +199,33 @@ img, video, iframe {
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
   }
 
-  /* Floating WhatsApp / Telegram Deal Bubbles: Float above bottom bar */
+  /* Floating WhatsApp / Telegram Deal Bubbles: Compact Circular FAB (Doesn't block cards) */
   .floating-deals-community {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
     right: 12px !important;
     gap: 0.5rem !important;
-    z-index: 998 !important;
+    z-index: 995 !important;
+    pointer-events: none !important;
   }
 
   .floating-deal-bubble {
-    padding: 0.45rem 0.85rem !important;
-    font-size: 0.76rem !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+    pointer-events: auto !important;
+  }
+
+  .floating-deal-bubble span {
+    display: none !important;
+  }
+
+  .floating-deal-bubble i {
+    font-size: 1.25rem !important;
+    margin: 0 !important;
   }
 
   /* Hero Section on Mobile (Android & iOS) */
@@ -337,20 +352,40 @@ img, video, iframe {
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 0.65rem !important;
+    padding-bottom: 1.25rem !important;
   }
 
   .product-card {
-    border-radius: var(--radius-md);
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    background: var(--surface) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
   }
 
   .product-card-img-wrap {
-    height: 125px !important;
-    padding: 0.35rem !important;
+    height: 135px !important;
+    padding: 0.5rem !important;
+    background: #f8fafc !important;
+  }
+
+  [data-theme="dark"] .product-card-img-wrap {
+    background: #0d131f !important;
+  }
+
+  .product-card-img {
+    max-height: 120px !important;
+    object-fit: contain !important;
   }
 
   .product-card-body {
-    padding: 0.45rem 0.55rem 0.3rem !important;
-    gap: 0.15rem !important;
+    padding: 0.5rem 0.6rem 0.35rem !important;
+    gap: 0.2rem !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   .product-brand-tag {
@@ -358,16 +393,25 @@ img, video, iframe {
   }
 
   .store-pill {
-    font-size: 0.62rem !important;
+    font-size: 0.6rem !important;
     padding: 0.1rem 0.35rem !important;
   }
 
   .product-title {
-    font-size: 0.78rem !important;
-    line-height: 1.25 !important;
-    min-height: 1.95rem !important;
-    max-height: 1.95rem !important;
-    margin-bottom: 0.15rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    min-height: 2.1rem !important;
+    max-height: 2.1rem !important;
+    margin-bottom: 0.2rem !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .product-title a {
+    color: var(--text) !important;
+    text-decoration: none !important;
   }
 
   .product-rating-row {
@@ -376,7 +420,8 @@ img, video, iframe {
   }
 
   .product-current-price {
-    font-size: 1.02rem !important;
+    font-size: 1.08rem !important;
+    font-weight: 900 !important;
   }
 
   .product-original-price {
@@ -388,25 +433,34 @@ img, video, iframe {
     padding: 0.05rem 0.3rem !important;
   }
 
+  /* Full-width thumb-friendly Buy Now CTA button on mobile */
   .product-card-footer {
-    padding: 0.35rem 0.55rem 0.45rem !important;
-    gap: 0.35rem !important;
-    display: grid !important;
-    grid-template-columns: auto 1fr !important;
+    padding: 0.4rem 0.6rem 0.6rem !important;
+    display: flex !important;
+    align-items: center !important;
+    background: var(--surface) !important;
+    border-top: 1px solid var(--border) !important;
   }
 
   .btn-card-details {
-    padding: 0.35rem 0.45rem !important;
-    font-size: 0.72rem !important;
+    display: none !important;
   }
 
   .btn-card-buy {
-    padding: 0.35rem 0.45rem !important;
-    font-size: 0.74rem !important;
+    width: 100% !important;
+    padding: 0.5rem 0.65rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    background: linear-gradient(135deg, #FF9900, #E68A00) !important;
+    color: #111827 !important;
+    box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3) !important;
+    border: none !important;
   }
 
   .btn-card-compare {
-    display: none !important; /* Kept clean on small mobile, accessible from detail page */
+    display: none !important;
   }
 
   /* Product Details Page on Mobile */
