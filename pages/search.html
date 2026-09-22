@@ -17,91 +17,31 @@
 <body>
 
 
-  <!-- ==================== TOP ANNOUNCEMENT STRIP ==================== -->
-  <div class="top-announcement-bar">
-    <div class="top-bar-inner">
-      <div class="top-bar-ticker">
-        <span style="background:#FF5200; color:#fff; font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:4px; font-weight:800; flex-shrink:0;">LIVE DEALS</span>
-        <span>&#9889; Mega Electronics Sale: Up to 70% Off on Laptops, Mobiles &amp; Audio &bull; Verified Price Drops Updated 5 Mins Ago</span>
-      </div>
-      <div class="top-bar-links">
-        <a href="deals.html"><i class="fa-solid fa-fire" style="color:#FBBF24;"></i> Today's Deals</a>
-        <a href="profile.html#alerts-section"><i class="fa-solid fa-bell" style="color:#FBBF24;"></i> Price Alerts</a>
-        <a href="about.html">How It Works</a>
-      </div>
-    </div>
-  </div>
+  <!-- ==================== CLEAN BRANDED PLATFORM HEADER ==================== -->
+  <header class="site-header" id="main-header" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.85rem 0;">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+      
+      <!-- Back to Home -->
+      <a href="../index.html" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-full); padding: 0.45rem 1.1rem; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span>
+      </a>
 
-  <!-- ==================== MAIN HEADER ==================== -->
-  <header class="site-header" id="main-header">
-    <div class="header-main-row">
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <button class="mobile-menu-toggle" aria-label="Open Navigation Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <a href="../index.html" class="brand-logo">
-          <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
-          <span>ShopScout<span class="brand-tagline-dot">.</span></span>
-        </a>
-      </div>
-      <div class="mega-search-container">
-        <form class="mega-search-bar" onsubmit="event.preventDefault(); const q=this.querySelector('input').value.trim(); if(q) window.location.href='search.html?q='+encodeURIComponent(q);">
-          <select class="search-dept-select" onchange="if(this.value) window.location.href='products.html?category='+encodeURIComponent(this.value)">
-            <option value="">All Categories</option>
-            <option value="Mobiles">Mobiles</option>
-            <option value="Laptops">Laptops</option>
-            <option value="Audio">Audio</option>
-            <option value="Watches">Watches</option>
-            <option value="Gaming">Gaming</option>
-            <option value="Fashion">Fashion</option>
-          </select>
-          <input type="text" class="mega-search-input header-search-input" placeholder="Search products, brands, models..." aria-label="Search products">
-          <button type="submit" class="mega-search-btn" aria-label="Search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-        <div class="search-suggestions-dropdown" id="search-dropdown"></div>
-      </div>
-      <div class="header-actions">
-        <a href="wishlist.html" class="header-action-item" title="Wishlist">
-          <div class="header-action-icon-wrap">
-            <i class="fa-regular fa-heart"></i>
-            <span class="wishlist-badge-count action-badge-count" style="display:none;">0</span>
-          </div>
-          <span class="header-action-label">Wishlist</span>
-        </a>
-        <a href="compare.html" class="header-action-item" title="Compare">
-          <div class="header-action-icon-wrap">
-            <i class="fa-solid fa-scale-balanced"></i>
-            <span class="compare-badge-count action-badge-count" style="display:none;">0</span>
-          </div>
-          <span class="header-action-label">Compare</span>
-        </a>
-        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
+      <!-- Prominent Platform Branding (Center) -->
+      <a href="../index.html" class="brand-logo" style="font-size: 1.6rem; display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none;">
+        <span class="brand-icon-wrap" style="width: 42px; height: 42px; font-size: 1.25rem; background: var(--primary); color: #fff; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
+      </a>
+
+      <!-- Theme Toggle -->
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>
-        <a href="profile.html" class="header-action-item" title="My Account">
-          <div class="header-action-icon-wrap"><i class="fa-regular fa-user"></i></div>
-          <span class="header-action-label">Sign In</span>
-        </a>
       </div>
+
     </div>
   </header>
-
-  <!-- ==================== CATEGORY SUBNAV ==================== -->
-  <nav class="category-subnav" aria-label="Category Navigation">
-    <div class="category-subnav-list">
-      <a href="deals.html" class="category-subnav-item deal-highlight"><i class="fa-solid fa-bolt"></i> Flash Deals</a>
-      <a href="products.html?category=Mobiles" class="category-subnav-item"><i class="fa-solid fa-mobile-screen"></i> Mobiles &amp; Tablets</a>
-      <a href="products.html?category=Laptops" class="category-subnav-item"><i class="fa-solid fa-laptop"></i> Laptops &amp; PCs</a>
-      <a href="products.html?category=Audio" class="category-subnav-item"><i class="fa-solid fa-headphones"></i> Audio &amp; Soundbars</a>
-      <a href="products.html?category=Watches" class="category-subnav-item"><i class="fa-solid fa-stopwatch"></i> Smartwatches</a>
-      <a href="products.html?category=Gaming" class="category-subnav-item"><i class="fa-solid fa-gamepad"></i> Gaming Consoles</a>
-      <a href="products.html?category=Fashion" class="category-subnav-item"><i class="fa-solid fa-shirt"></i> Fashion &amp; Shoes</a>
-      <a href="compare.html" class="category-subnav-item" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-scale-balanced"></i> Price Compare</a>
-    </div>
-  </nav>
 
   <!-- ==================== MOBILE SLIDE DRAWER ==================== -->
   <div class="mobile-nav-drawer" id="mobile-drawer">
@@ -124,7 +64,6 @@
       <a href="deals.html" class="drawer-nav-link" style="color:var(--deal-orange);font-weight:700;"><i class="fa-solid fa-fire"></i> Today's Deals</a>
       <a href="compare.html" class="drawer-nav-link"><i class="fa-solid fa-scale-balanced"></i> Price Compare</a>
       <a href="wishlist.html" class="drawer-nav-link"><i class="fa-regular fa-heart"></i> My Wishlist</a>
-      <a href="profile.html" class="drawer-nav-link"><i class="fa-regular fa-user"></i> My Account</a>
     </nav>
   </div>
 
@@ -145,11 +84,12 @@
         <!-- Quick Search Pills -->
         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; font-size: 0.825rem; color: var(--muted);">
           <span>Try searching:</span>
-          <a href="search.html?q=Headphones" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Headphones</a>
-          <a href="search.html?q=Apple" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Apple</a>
+          <a href="search.html?q=Speaker" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Speaker</a>
+          <a href="search.html?q=JBL" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">JBL</a>
+          <a href="search.html?q=Audio" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Audio</a>
           <a href="search.html?q=Gaming" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Gaming</a>
-          <a href="search.html?q=Dyson" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Dyson</a>
-          <a href="search.html?q=Samsung" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Samsung</a>
+          <a href="search.html?q=Laptops" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Laptops</a>
+          <a href="search.html?q=Mouse" class="badge" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);">Mouse</a>
         </div>
       </div>
 

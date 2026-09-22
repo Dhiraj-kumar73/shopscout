@@ -66,7 +66,7 @@ const DealsController = {
           <div class="empty-state">
             <div class="empty-state-icon"><i class="fa-solid fa-tag"></i></div>
             <h3 class="empty-state-title">No deals found for this tier right now</h3>
-            <p class="empty-state-desc">Check back soon as prices from Amazon and Flipkart refresh frequently.</p>
+            <p class="empty-state-desc">Check back soon as prices and lightning deals from Amazon refresh frequently.</p>
           </div>
         </div>
       `;
@@ -80,5 +80,22 @@ const DealsController = {
 document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('deals.html')) {
     DealsController.init();
+
+    // Auto-refresh deals when returning to this tab or when new products are saved
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') {
+        ProductService._cache = null;
+        DealsController.allDeals = await ProductService.getDeals();
+        DealsController.renderDeals();
+      }
+    });
+
+    window.addEventListener('storage', async (e) => {
+      if (!e.key || e.key.includes('shopscout')) {
+        ProductService._cache = null;
+        DealsController.allDeals = await ProductService.getDeals();
+        DealsController.renderDeals();
+      }
+    });
   }
 });

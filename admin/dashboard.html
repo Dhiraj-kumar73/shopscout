@@ -28,7 +28,6 @@
       <a href="products.html" class="admin-nav-link"><i class="fa-solid fa-box-archive"></i> Products</a>
       <a href="categories.html" class="admin-nav-link"><i class="fa-solid fa-shapes"></i> Categories</a>
       <a href="deals.html" class="admin-nav-link"><i class="fa-solid fa-fire"></i> Deals</a>
-      <a href="users.html" class="admin-nav-link"><i class="fa-solid fa-users"></i> Users</a>
       <a href="analytics.html" class="admin-nav-link"><i class="fa-solid fa-chart-line"></i> Analytics</a>
     </nav>
 
@@ -53,15 +52,41 @@
 
       <div style="display: flex; align-items: center; gap: 1rem;">
         <button class="header-action-btn theme-toggle-btn" title="Toggle Theme"><i class="fa-regular fa-moon moon-icon"></i><i class="fa-solid fa-sun sun-icon"></i></button>
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700;">A</div>
-          <span style="font-size: 0.875rem; font-weight: 600;">Super Admin</span>
+        <div style="display: flex; align-items: center; gap: 0.6rem; background: var(--surface-subtle); padding: 0.35rem 0.85rem; border-radius: 9999px; border: 1px solid var(--border);">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.82rem;">DK</div>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--text);">Dhiraj Kumar <span style="font-size: 0.72rem; color: var(--primary); font-weight: 800; margin-left: 2px;">(Founder)</span></span>
         </div>
       </div>
     </header>
 
     <main class="admin-content">
       
+      <!-- Executive Welcome Banner -->
+      <div class="catalog-hero-banner" style="margin-bottom: 1.5rem;">
+        <div class="catalog-hero-text">
+          <div class="hero-top-badges">
+            <span class="hero-pill-tag"><i class="fa-solid fa-chart-line"></i> EXECUTIVE DASHBOARD</span>
+            <span class="hero-founder-pill"><i class="fa-solid fa-crown"></i> Founder: <strong>Dhiraj Kumar</strong></span>
+          </div>
+          <h1 class="catalog-hero-title">
+            Platform Analytics &amp; Control
+          </h1>
+          <p class="catalog-hero-desc">
+            Monitor real-time affiliate clicks, estimated commission earnings, and multi-store catalog performance across India.
+          </p>
+        </div>
+        <div class="catalog-hero-actions">
+          <a href="../index.html" target="_blank" class="btn-preview-hero">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span>View Live Store</span>
+          </a>
+          <a href="products.html" class="btn-add-hero" style="text-decoration: none;">
+            <i class="fa-solid fa-box-open"></i>
+            <span>Manage Catalog</span>
+          </a>
+        </div>
+      </div>
+
       <!-- KPI Metric Cards -->
       <div class="stat-cards-grid">
         
@@ -76,11 +101,11 @@
 
         <div class="stat-card">
           <div class="stat-info">
-            <span class="stat-label">Registered Users</span>
-            <span class="stat-value" id="admin-kpi-users">1,248</span>
-            <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-arrow-up"></i> +14% this month</span>
+            <span class="stat-label">Live Active Deals</span>
+            <span class="stat-value" id="admin-kpi-deals">8</span>
+            <span style="font-size: 0.75rem; color: var(--success); font-weight: 600;"><i class="fa-solid fa-bolt"></i> Discounted offers</span>
           </div>
-          <div class="stat-icon-wrap stat-icon-info"><i class="fa-solid fa-users"></i></div>
+          <div class="stat-icon-wrap stat-icon-info"><i class="fa-solid fa-fire"></i></div>
         </div>
 
         <div class="stat-card">
@@ -108,7 +133,7 @@
         <div class="admin-card-header">
           <div>
             <h2 class="admin-card-title">Recent Outbound Affiliate Clicks</h2>
-            <div style="font-size: 0.8rem; color: var(--muted);">Real-time tracking of shoppers redirected to Amazon, Flipkart, etc.</div>
+            <div style="font-size: 0.8rem; color: var(--muted);">Real-time tracking of shoppers redirected to Amazon India.</div>
           </div>
           <a href="analytics.html" class="btn btn-outline btn-sm">Full Analytics &rarr;</a>
         </div>

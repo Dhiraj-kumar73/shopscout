@@ -8,9 +8,9 @@
     "originalPrice": 35999,
     "discount": 31,
     "marketplace": "Amazon",
-    "affiliateUrl": "https://www.amazon.in/dp/B09JVCT78G?tag=dhirajkuma05e-21",
+    "affiliateUrl": "https://link.amazon/A07Okt8sI",
     "amazonPrice": 24999,
-    "amazonUrl": "https://www.amazon.in/dp/B09JVCT78G?tag=dhirajkuma05e-21",
+    "amazonUrl": "https://link.amazon/A07Okt8sI",
     "image": "https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg",
     "gallery": [
       {
@@ -70,7 +70,7 @@
         "store": "Amazon Prime",
         "price": 24999,
         "originalPrice": 35999,
-        "url": "https://www.amazon.in/dp/B09JVCT78G?tag=dhirajkuma05e-21",
+        "url": "https://link.amazon/A07Okt8sI",
         "inStock": true,
         "badge": "Best Deal"
       },
@@ -78,7 +78,7 @@
         "store": "Amazon Standard",
         "price": 24999,
         "originalPrice": 35999,
-        "url": "https://www.amazon.in/dp/B09JVCT78G?tag=dhirajkuma05e-21",
+        "url": "https://link.amazon/A07Okt8sI",
         "inStock": true,
         "badge": "Verified Seller"
       }
@@ -87,7 +87,7 @@
       {
         "name": "Amazon India",
         "price": 24999,
-        "affiliateUrl": "https://www.amazon.in/dp/B09JVCT78G?tag=dhirajkuma05e-21",
+        "affiliateUrl": "https://link.amazon/A07Okt8sI",
         "inStock": true
       }
     ],

@@ -92,32 +92,35 @@ const NavbarController = {
         debounceTimer = setTimeout(async () => {
           try {
             const products = await ProductService.getAllProducts();
-            const matched = products.filter(p => 
-              p.name.toLowerCase().includes(val) || 
-              p.brand.toLowerCase().includes(val) ||
-              p.category.toLowerCase().includes(val)
-            ).slice(0, 5);
+            const matched = ShopScout.fuzzySearch(products, val).slice(0, 5);
 
             if (matched.length > 0) {
-              dropdown.innerHTML = matched.map(item => `
+              dropdown.innerHTML = `
+                <div style="padding: 0.4rem 0.85rem; font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+                  <span><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> Smart Matches</span>
+                  <span style="font-size: 0.68rem; color: var(--deal-orange); font-weight: 800;">${matched.length} items</span>
+                </div>
+              ` + matched.map(item => `
                 <a href="${detailUrlPrefix}${item.id}" class="suggestion-item">
                   <img src="${item.image}" alt="${item.name}">
                   <div style="flex: 1; min-width: 0;">
-                    <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</div>
-                    <div style="font-size: 0.75rem; color: var(--muted);">${item.category} &bull; ${item.brand}</div>
+                    <div style="font-weight: 600; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text);">${item.name}</div>
+                    <div style="font-size: 0.72rem; color: var(--muted);"><i class="fa-solid fa-tag" style="font-size:0.65rem;"></i> ${item.brand || 'ShopScout'} &bull; ${item.category}</div>
                   </div>
-                  <span class="suggestion-price">${ShopScout.formatPrice(item.price)}</span>
+                  <span class="suggestion-price" style="font-weight: 800; font-size: 0.86rem; color: var(--primary);">${ShopScout.formatPrice(item.price)}</span>
                 </a>
               `).join('') + `
-                <a href="${searchUrl}?q=${encodeURIComponent(val)}" style="display: block; text-align: center; padding: 0.5rem; font-size: 0.8rem; font-weight: 700; color: var(--primary); border-top: 1px solid var(--border);">
+                <a href="${searchUrl}?q=${encodeURIComponent(val)}" style="display: block; text-align: center; padding: 0.55rem; font-size: 0.8rem; font-weight: 800; color: var(--primary); background: var(--surface-subtle); border-top: 1px solid var(--border); text-decoration: none;">
                   View all results for "${val}" &rarr;
                 </a>
               `;
               dropdown.classList.add('active');
             } else {
               dropdown.innerHTML = `
-                <div style="padding: 1rem; text-align: center; font-size: 0.85rem; color: var(--muted);">
-                  No quick matches found for "${val}"
+                <div style="padding: 1.25rem 1rem; text-align: center; font-size: 0.85rem; color: var(--muted);">
+                  <i class="fa-solid fa-magnifying-glass" style="font-size: 1.2rem; opacity: 0.4; margin-bottom: 0.35rem; display: block;"></i>
+                  No quick matches found for "<strong>${val}</strong>".<br>
+                  <span style="font-size: 0.76rem; opacity: 0.8;">Press Enter to search all departments</span>
                 </div>
               `;
               dropdown.classList.add('active');

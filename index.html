@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShopScout — India's Premier Product Discovery & Multi-Store Price Comparison</title>
-  <meta name="description" content="Discover products, compare real-time prices across Amazon, Flipkart, and Croma, and get verified deals before you checkout.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
-  
+  <meta name="description"
+    content="Discover products, compare real-time prices across Amazon India, and get verified deals before you checkout.">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
@@ -17,18 +20,21 @@
   <link rel="stylesheet" href="css/product-card.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
+
 <body>
 
   <!-- ==================== TOP ANNOUNCEMENT STRIP ==================== -->
   <div class="top-announcement-bar">
     <div class="container top-bar-inner">
       <div class="top-bar-ticker">
-        <span class="badge" style="background:#FF5200; color:#fff; font-size:0.65rem; padding:0.15rem 0.5rem; font-weight:800;">LIVE DEALS</span>
-        <span>⚡ Mega Electronics Sale: Up to 70% Off on Laptops, Mobiles &amp; Audio &bull; Verified Price Drops Updated 5 Mins Ago</span>
+        <span class="badge"
+          style="background:#FF5200; color:#fff; font-size:0.65rem; padding:0.15rem 0.5rem; font-weight:800;">LIVE
+          DEALS</span>
+        <span>⚡ Mega Electronics Sale: Up to 70% Off on Laptops, Mobiles &amp; Audio &bull; Verified Price Drops Updated
+          5 Mins Ago</span>
       </div>
       <div class="top-bar-links">
         <a href="pages/deals.html"><i class="fa-solid fa-fire text-warning"></i> Today's Deals</a>
-        <a href="pages/profile.html#alerts-section"><i class="fa-solid fa-bell text-warning"></i> Price Alerts</a>
         <a href="pages/about.html">How It Works</a>
         <a href="pages/affiliate-disclosure.html">Disclosure</a>
       </div>
@@ -38,7 +44,7 @@
   <!-- ==================== MAIN HEADER ==================== -->
   <header class="site-header" id="main-header">
     <div class="container header-main-row">
-      
+
       <!-- Brand Logo & Mobile Toggle -->
       <div style="display: flex; align-items: center; gap: 0.75rem;">
         <button class="mobile-menu-toggle" aria-label="Open Navigation Menu">
@@ -52,8 +58,10 @@
 
       <!-- Mega Search Bar with Category Selector -->
       <div class="mega-search-container">
-        <form class="mega-search-bar" onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(q) window.location.href='pages/search.html?q='+encodeURIComponent(q);">
-          <select class="search-dept-select" onchange="if(this.value) window.location.href='pages/products.html?category='+encodeURIComponent(this.value)">
+        <form class="mega-search-bar"
+          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(q) window.location.href='pages/search.html?q='+encodeURIComponent(q);">
+          <select class="search-dept-select"
+            onchange="if(this.value) window.location.href='pages/products.html?category='+encodeURIComponent(this.value)">
             <option value="">All Categories</option>
             <option value="Mobiles">Mobiles</option>
             <option value="Laptops">Laptops</option>
@@ -63,7 +71,8 @@
             <option value="Home & Kitchen">Home</option>
             <option value="Fashion">Fashion</option>
           </select>
-          <input type="text" class="mega-search-input header-search-input" placeholder="Search products, brands, models (e.g. Sony, iPhone, MacBook)..." aria-label="Search products">
+          <input type="text" class="mega-search-input header-search-input"
+            placeholder="Search products, brands, models (e.g. Sony, iPhone, MacBook)..." aria-label="Search products">
           <button type="submit" class="mega-search-btn" aria-label="Search">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -90,19 +99,13 @@
           <span class="header-action-label">Compare</span>
         </a>
 
+        <div class="header-actions-divider"></div>
+
         <!-- Theme Toggle -->
         <button class="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Theme toggle">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>
-
-        <!-- Account / Profile -->
-        <a href="pages/profile.html" class="header-action-item" title="My Profile & Watchlist">
-          <div class="header-action-icon-wrap">
-            <i class="fa-regular fa-user"></i>
-          </div>
-          <span class="header-action-label">Profile</span>
-        </a>
       </div>
 
     </div>
@@ -150,311 +153,325 @@
   <div class="mobile-nav-drawer" id="mobile-drawer">
     <div class="drawer-header">
       <a href="index.html" class="brand-logo" style="font-size: 1.25rem;">
-        <span class="brand-icon-wrap" style="width:32px; height:32px; font-size:1rem;"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span class="brand-icon-wrap" style="width:32px; height:32px; font-size:1rem;"><i
+            class="fa-solid fa-bag-shopping"></i></span>
         <span>ShopScout</span>
       </a>
       <button class="drawer-close-btn">&times;</button>
     </div>
     <div style="padding: 1rem 1.25rem;">
       <div class="mega-search-bar" style="border-radius: var(--radius-sm);">
-        <input type="text" class="mega-search-input header-search-input" placeholder="Search products..." onkeydown="if(event.key==='Enter') window.location.href='pages/search.html?q='+encodeURIComponent(this.value)">
+        <input type="text" class="mega-search-input header-search-input" placeholder="Search products..."
+          onkeydown="if(event.key==='Enter') window.location.href='pages/search.html?q='+encodeURIComponent(this.value)">
       </div>
     </div>
     <nav class="drawer-nav-list">
       <a href="index.html" class="drawer-nav-link active"><i class="fa-solid fa-house"></i> Home</a>
       <a href="pages/products.html" class="drawer-nav-link"><i class="fa-solid fa-layer-group"></i> All Products</a>
       <a href="pages/categories.html" class="drawer-nav-link"><i class="fa-solid fa-shapes"></i> Categories</a>
-      <a href="pages/deals.html" class="drawer-nav-link" style="color:var(--deal-orange); font-weight:700;"><i class="fa-solid fa-fire"></i> Today's Deals</a>
+      <a href="pages/deals.html" class="drawer-nav-link" style="color:var(--deal-orange); font-weight:700;"><i
+          class="fa-solid fa-fire"></i> Today's Deals</a>
       <a href="pages/compare.html" class="drawer-nav-link"><i class="fa-solid fa-scale-balanced"></i> Price Compare</a>
       <a href="pages/wishlist.html" class="drawer-nav-link"><i class="fa-regular fa-heart"></i> My Wishlist</a>
-      <a href="pages/profile.html" class="drawer-nav-link"><i class="fa-regular fa-user"></i> My Account</a>
-      <a href="admin/dashboard.html" class="drawer-nav-link" style="color: var(--primary);"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+      <a href="admin/dashboard.html" class="drawer-nav-link" style="color: var(--primary);"><i
+          class="fa-solid fa-lock"></i> Admin Portal</a>
     </nav>
     <div class="drawer-footer">
       <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem;">Transparent Price Comparison</div>
-      <a href="pages/affiliate-disclosure.html" style="font-size: 0.775rem; color: var(--primary); font-weight:700;">Affiliate Disclosure &rarr;</a>
+      <a href="pages/affiliate-disclosure.html"
+        style="font-size: 0.775rem; color: var(--primary); font-weight:700;">Affiliate Disclosure &rarr;</a>
     </div>
   </div>
 
   <main class="main-content">
 
     <!-- ==================== HERO PROMOTIONAL BANNER ==================== -->
-    <section style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #172554 100%); color: #FFFFFF; padding: 4rem 0 3.5rem; position: relative; overflow: hidden;">
-      
-      <!-- Subtle Decorative Glows -->
-      <div style="position: absolute; top: -100px; right: -50px; width: 450px; height: 450px; border-radius: 50%; background: radial-gradient(circle, rgba(37, 99, 235, 0.35) 0%, transparent 70%); pointer-events: none;"></div>
-      <div style="position: absolute; bottom: -80px; left: 10%; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 82, 0, 0.25) 0%, transparent 70%); pointer-events: none;"></div>
+    <section class="hero-promotional">
+      <!-- Decorative Elements -->
+      <div class="hero-grid-pattern"></div>
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
 
-      <div class="container" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; position: relative; z-index: 2;">
-        
+      <div class="container hero-layout">
+
+        <!-- Left Content Column -->
         <div>
-          <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 82, 0, 0.2); border: 1px solid rgba(255, 82, 0, 0.4); padding: 0.35rem 0.9rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #FFA07A; margin-bottom: 1.25rem;">
-            <i class="fa-solid fa-bolt text-warning"></i> Mega Price Drop Carnival
+          <div class="hero-live-badge">
+            <span class="hero-pulse-dot"></span>
+            <span>Real-Time Price Drops Active &bull; Updated 5m Ago</span>
           </div>
-          
-          <h1 style="font-size: 3.4rem; font-weight: 900; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1.25rem; color: #FFFFFF;">
+
+          <h1 class="hero-headline">
             Don't Overpay.<br>
-            <span style="background: linear-gradient(90deg, #60A5FA 0%, #FBBF24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Compare Real Prices</span> Before You Buy.
+            <span class="hero-gradient-text">Best Amazon Deals</span><br>
+            Direct &amp; Verified.
           </h1>
 
-          <p style="font-size: 1.15rem; color: #CBD5E1; line-height: 1.6; margin-bottom: 2.25rem; max-width: 560px;">
-            ShopScout continuously tracks and compares real-time prices across <strong>Amazon &amp; Flipkart</strong> so you always checkout at the lowest verified price.
+          <p class="hero-description">
+            ShopScout tracks daily verified price drops, lightning promotions, and Prime discounts directly on
+            <strong>Amazon India</strong> so you always checkout at the lowest authentic price.
           </p>
 
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <a href="pages/deals.html" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #FF5200, #E04800); border: none; box-shadow: 0 4px 18px rgba(255, 82, 0, 0.4);">
-              <i class="fa-solid fa-fire"></i> Explore Top Deals
+          <div class="hero-cta-group">
+            <a href="pages/deals.html" class="hero-btn-primary">
+              <i class="fa-solid fa-fire"></i> Explore Amazon Deals
             </a>
-            <a href="pages/compare.html" class="btn btn-outline btn-lg" style="border-color: rgba(255, 255, 255, 0.3); color: #FFFFFF;">
-              <i class="fa-solid fa-scale-balanced"></i> Compare Prices
+            <a href="pages/products.html" class="hero-btn-secondary">
+              <i class="fa-solid fa-bag-shopping"></i> Browse Products
             </a>
           </div>
 
           <!-- Marketplaces Supported Strip -->
-          <div style="margin-top: 2.5rem; display: flex; align-items: center; gap: 1.25rem; font-size: 0.85rem; color: #94A3B8;">
-            <span>Comparing offers from:</span>
-            <span style="background: rgba(255, 153, 0, 0.2); color: #FFB347; padding: 0.25rem 0.6rem; border-radius: 4px; font-weight: 700;">Amazon.in</span>
-            <span style="background: rgba(40, 116, 240, 0.2); color: #80B0FF; padding: 0.25rem 0.6rem; border-radius: 4px; font-weight: 700;">Flipkart</span>
+          <div class="hero-trust-strip">
+            <span style="font-weight: 600; color: #E2E8F0;">Verified Partner:</span>
+            <span class="hero-store-pill amazon">
+              <i class="fa-brands fa-amazon"></i> Amazon India Prime
+            </span>
+            <span class="hero-trust-item" style="margin-left: 0.5rem;">
+              <i class="fa-solid fa-shield-check"></i> 100% Genuine Redirection
+            </span>
           </div>
         </div>
 
-        <!-- Hero Graphic with Layered Badges -->
-        <div style="position: relative; display: flex; justify-content: center;">
-          <div style="width: 100%; max-width: 440px; aspect-ratio: 1/1; border-radius: var(--radius-xl); background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); backdrop-filter: blur(16px); overflow: hidden; position: relative;">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80" alt="Sony WH-1000XM5 Headphones" style="width: 100%; height: 100%; object-fit: cover;">
+        <!-- Hero Graphic -->
+        <div class="hero-graphic-wrap">
+          <div class="hero-image-frame">
+            <img src="assets/hero-shopping.jpg" alt="ShopScout Online Shopping Deals & Price Comparison Platform"
+              loading="eager">
           </div>
-
-          <!-- Floating Comparison Pill 1: Lowest Price -->
-          <div style="position: absolute; bottom: 8%; left: -6%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 0.75rem; color: var(--text);">
-            <div style="width: 38px; height: 38px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
-              <i class="fa-solid fa-check"></i>
-            </div>
-            <div>
-              <div style="font-size: 0.725rem; color: var(--success); font-weight: 800; text-transform: uppercase;">Lowest Price Found</div>
-              <div style="font-family: var(--font-heading); font-weight: 900; font-size: 1.25rem; color: var(--text);">₹26,990 <span style="font-size: 0.75rem; color: var(--muted); font-weight: 500;">at Amazon</span></div>
-            </div>
-          </div>
-
-          <!-- Floating Pill 2: Difference -->
-          <div style="position: absolute; top: 12%; right: -6%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.65rem 1rem; box-shadow: var(--shadow-xl); color: var(--text); text-align: right;">
-            <div style="font-size: 0.7rem; color: var(--muted); font-weight: 600;">Flipkart Price: ₹27,499</div>
-            <div style="color: #DC2626; font-weight: 800; font-size: 0.85rem;"><i class="fa-solid fa-arrow-down"></i> Save ₹8,000 (23% Off)</div>
-          </div>
-
         </div>
 
       </div>
     </section>
 
-    <!-- ==================== E-COMMERCE TRUST PILLARS ==================== -->
-    <section style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.5rem 0;">
+    <!-- ==================== QUICK SHOPPING HUBS & PROMO DEALS ==================== -->
+    <section class="subhero-shopping-hub">
       <div class="container">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
-          
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: #EFF6FF; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-              <i class="fa-solid fa-magnifying-glass-chart"></i>
-            </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: var(--text);">Live Price Tracking</div>
-              <div style="font-size: 0.8rem; color: var(--muted);">Compare Amazon &amp; Flipkart instantly</div>
-            </div>
-          </div>
 
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: #ECFDF5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-              <i class="fa-solid fa-shield-check"></i>
-            </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: var(--text);">100% Genuine Retailers</div>
-              <div style="font-size: 0.8rem; color: var(--muted);">Direct checkout on official stores</div>
-            </div>
-          </div>
+        <!-- Quick Category Circles Rail -->
+        <div class="quick-categories-wrapper">
+          <div class="quick-categories-grid">
 
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: #FFF7ED; color: var(--deal-orange); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-              <i class="fa-solid fa-bell"></i>
-            </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: var(--text);">Price Drop Alerts</div>
-              <div style="font-size: 0.8rem; color: var(--muted);">Get notified on instant price drops</div>
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: #F5F3FF; color: #7C3AED; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
-              <i class="fa-solid fa-hand-holding-dollar"></i>
-            </div>
-            <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: var(--text);">Zero Extra Markup</div>
-              <div style="font-size: 0.8rem; color: var(--muted);">100% free tool for shoppers</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== TOP BRANDS BAR ==================== -->
-    <section style="background: var(--surface-subtle); padding: 1.75rem 0; border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
-          <div style="font-size: 0.85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Featured Brands:</div>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <a href="pages/search.html?q=Apple" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-brands fa-apple"></i> Apple</a>
-            <a href="pages/search.html?q=Samsung" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">Samsung</a>
-            <a href="pages/search.html?q=Sony" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">Sony</a>
-            <a href="pages/search.html?q=boAt" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">boAt</a>
-            <a href="pages/search.html?q=Nike" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">Nike</a>
-            <a href="pages/search.html?q=Dyson" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">Dyson</a>
-            <a href="pages/search.html?q=OnePlus" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">OnePlus</a>
-            <a href="pages/search.html?q=ASUS" class="card" style="padding: 0.4rem 1rem; font-weight: 700; font-size: 0.85rem;">ASUS ROG</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== FLASH DEALS OF THE DAY (WITH TIMER) ==================== -->
-    <section class="section" style="border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <span class="section-badge" style="background:#FEE2E2; color:#DC2626;">Limited-Stock Offers</span>
-            <h2 class="section-title">🔥 Today's Best Verified Deals</h2>
-            <p class="section-subtitle">Deep discounts from Amazon &amp; Flipkart verified today by ShopScout.</p>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <div style="font-size: 0.85rem; font-weight: 800; color: #DC2626; background: #FEE2E2; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm);">
-              <i class="fa-solid fa-clock"></i> <span class="deal-timer-value">05h : 42m : 19s</span>
-            </div>
-            <a href="pages/deals.html" class="btn btn-primary btn-sm">All Deals &rarr;</a>
-          </div>
-        </div>
-
-        <div class="product-grid" id="home-deals-grid"></div>
-      </div>
-    </section>
-
-    <!-- ==================== TRENDING PRODUCTS CATALOG ==================== -->
-    <section class="section" style="background-color: var(--surface-subtle); border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <span class="section-badge">Buyer Verified</span>
-            <h2 class="section-title">Trending Across Marketplaces</h2>
-            <p class="section-subtitle">Top curated items with proven satisfaction and competitive price comparisons.</p>
-          </div>
-          <a href="pages/products.html" class="btn btn-outline btn-sm">Explore All &rarr;</a>
-        </div>
-
-        <div class="product-grid" id="trending-products-grid"></div>
-      </div>
-    </section>
-
-    <!-- ==================== BUDGET DISCOVERY HUBS ==================== -->
-    <section class="section" style="border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-wrap">
-            <span class="section-badge">Price Filters</span>
-            <h2 class="section-title">Shop by Budget</h2>
-            <p class="section-subtitle">Find high-value products within your planned spending range.</p>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
-          
-          <a href="pages/products.html" class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #16A34A;">
-            <div style="font-size: 1.85rem; font-weight: 900; color: #16A34A; font-family: var(--font-heading); margin-bottom: 0.25rem;">Under ₹999</div>
-            <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Earbuds, cables, smart accessories &amp; everyday gear.</p>
-            <span class="btn btn-outline btn-sm">Explore Store &rarr;</span>
-          </a>
-
-          <a href="pages/products.html" class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid var(--primary);">
-            <div style="font-size: 1.85rem; font-weight: 900; color: var(--primary); font-family: var(--font-heading); margin-bottom: 0.25rem;">Under ₹4,999</div>
-            <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Fitness watches, power banks, gaming mice &amp; audio.</p>
-            <span class="btn btn-outline btn-sm">Explore Store &rarr;</span>
-          </a>
-
-          <a href="pages/products.html" class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #D97706;">
-            <div style="font-size: 1.85rem; font-weight: 900; color: #D97706; font-family: var(--font-heading); margin-bottom: 0.25rem;">Under ₹19,999</div>
-            <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Mid-range 5G phones, ANC headphones &amp; espresso makers.</p>
-            <span class="btn btn-outline btn-sm">Explore Store &rarr;</span>
-          </a>
-
-          <a href="pages/products.html" class="card" style="padding: 1.75rem; text-align: center; border-top: 4px solid #7C3AED;">
-            <div style="font-size: 1.85rem; font-weight: 900; color: #7C3AED; font-family: var(--font-heading); margin-bottom: 0.25rem;">Premium Flagships</div>
-            <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Apple MacBooks, Galaxy S24 Ultra, RTX 4070 Laptops &amp; PS5.</p>
-            <span class="btn btn-outline btn-sm">Explore Store &rarr;</span>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== PRICE COMPARISON SHOWCASE ==================== -->
-    <section class="section" style="background-color: var(--surface-subtle); border-bottom: 1px solid var(--border);">
-      <div class="container">
-        <div class="card" style="padding: 2.5rem; background: linear-gradient(135deg, var(--surface) 0%, var(--surface-subtle) 100%); border-radius: var(--radius-lg);">
-          <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; align-items: center;">
-            <div>
-              <span class="badge badge-primary" style="margin-bottom: 0.75rem;">Multi-Vendor Transparency</span>
-              <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;">Spot the Lowest Marketplace Price in Seconds</h2>
-              <p style="color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.5rem;">
-                Retailers frequently change pricing during sales. ShopScout aggregates multi-vendor pricing so you can spot the lowest seller with one click and avoid paying more.
-              </p>
-              <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <a href="pages/compare.html" class="btn btn-primary">Open Compare Tool &rarr;</a>
-                <a href="pages/deals.html" class="btn btn-outline">Check Discount Drops</a>
+            <a href="pages/products.html?category=Mobiles" class="quick-cat-item">
+              <div class="quick-cat-icon cat-mobile">
+                <i class="fa-solid fa-mobile-screen-button"></i>
               </div>
+              <span class="quick-cat-name">Mobiles</span>
+              <span class="quick-cat-tag">Up to 40% Off</span>
+            </a>
+
+            <a href="pages/products.html?category=Laptops" class="quick-cat-item">
+              <div class="quick-cat-icon cat-laptop">
+                <i class="fa-solid fa-laptop"></i>
+              </div>
+              <span class="quick-cat-name">Laptops</span>
+              <span class="quick-cat-tag">From ₹24,990</span>
+            </a>
+
+            <a href="pages/products.html?category=Audio" class="quick-cat-item">
+              <div class="quick-cat-icon cat-audio">
+                <i class="fa-solid fa-headphones"></i>
+              </div>
+              <span class="quick-cat-name">Audio &amp; boAt</span>
+              <span class="quick-cat-tag">From ₹899</span>
+            </a>
+
+            <a href="pages/products.html?category=Watches" class="quick-cat-item">
+              <div class="quick-cat-icon cat-watch">
+                <i class="fa-solid fa-stopwatch"></i>
+              </div>
+              <span class="quick-cat-name">Smartwatches</span>
+              <span class="quick-cat-tag">Min 50% Off</span>
+            </a>
+
+            <a href="pages/products.html?category=Gaming" class="quick-cat-item">
+              <div class="quick-cat-icon cat-gaming">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <span class="quick-cat-name">Gaming Gear</span>
+              <span class="quick-cat-tag">Hot Deals</span>
+            </a>
+
+            <a href="pages/products.html?category=Fashion" class="quick-cat-item">
+              <div class="quick-cat-icon cat-shoes">
+                <i class="fa-solid fa-shoe-prints"></i>
+              </div>
+              <span class="quick-cat-name">Sneakers</span>
+              <span class="quick-cat-tag">Flat 60% Off</span>
+            </a>
+
+            <a href="pages/search.html?maxPrice=999" class="quick-cat-item">
+              <div class="quick-cat-icon cat-budget">
+                <i class="fa-solid fa-tags"></i>
+              </div>
+              <span class="quick-cat-name">Under ₹999</span>
+              <span class="quick-cat-tag">Budget Loot</span>
+            </a>
+
+            <a href="pages/deals.html" class="quick-cat-item">
+              <div class="quick-cat-icon cat-deals">
+                <i class="fa-solid fa-fire"></i>
+              </div>
+              <span class="quick-cat-name">Flash Deals</span>
+              <span class="quick-cat-tag">Live Today</span>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- ==================== INTERACTIVE PRICE RANGE DEALS HUB ==================== -->
+        <div class="price-range-hub-wrapper" id="budget-deals-hub">
+          <div class="price-range-hub-header">
+            <div>
+              <span class="price-range-hub-badge"><i class="fa-solid fa-bolt"></i> Instant Budget Explorer</span>
+              <h3 class="price-range-hub-title">Shop by Price Range — सिर्फ अपने बजट में डील्स चुनें</h3>
+              <p class="price-range-hub-desc">किसी भी बजट कार्ड पर क्लिक करें और तुरंत उसी कीमत के बेहतरीन प्रोडक्ट्स
+                देखें</p>
+            </div>
+            <div class="price-range-active-indicator" id="price-range-summary-pill">
+              <span class="indicator-dot"></span>
+              <span id="price-range-active-text">Selected: All Best Deals</span>
+            </div>
+          </div>
+
+          <!-- Price Range Selector Cards -->
+          <div class="price-range-selector-grid" id="price-range-buttons">
+
+            <!-- 1. All Deals (ACTIVE DEFAULT) -->
+            <button class="price-range-card active" data-range="all" data-min="0" data-max="999999"
+              data-label="All Best Deals">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-red"><i class="fa-solid fa-fire-flame-curved"></i></span>
+                <span class="price-range-tag tag-red">🔥 Top Deals</span>
+              </div>
+              <div class="price-range-amount">All Best Deals</div>
+              <div class="price-range-sub">Complete Curated Catalog</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-sparkles"></i> Top Rated Loot</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+            <!-- 2. Under 15,000 -->
+            <button class="price-range-card" data-range="under-15000" data-min="0" data-max="15000"
+              data-label="Under ₹15,000">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-amber"><i class="fa-solid fa-bolt"></i></span>
+                <span class="price-range-tag tag-amber">Budget 5G</span>
+              </div>
+              <div class="price-range-amount">Under ₹15,000</div>
+              <div class="price-range-sub">vivo T3x 5G, boAt, Nike, Fossil</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-tags"></i> Best Value Picks</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+            <!-- 3. 15,000 - 30,000 -->
+            <button class="price-range-card" data-range="15000-30000" data-min="15000" data-max="30000"
+              data-label="₹15,000 – ₹30,000">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-emerald"><i class="fa-solid fa-gem"></i></span>
+                <span class="price-range-tag tag-emerald">Mid-Range Power</span>
+              </div>
+              <div class="price-range-amount">₹15,000 – ₹30,000</div>
+              <div class="price-range-sub">realme P4, vivo T5, AirPods Pro</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-star"></i> Popular Mid-Range</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+            <!-- 4. 30,000 - 60,000 -->
+            <button class="price-range-card" data-range="30000-60000" data-min="30000" data-max="60000"
+              data-label="₹30,000 – ₹60,000">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-blue"><i class="fa-solid fa-crown"></i></span>
+                <span class="price-range-tag tag-blue">Flagships</span>
+              </div>
+              <div class="price-range-amount">₹30,000 – ₹60,000</div>
+              <div class="price-range-sub">Apple iPhone 15, PS5, Dyson V12</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-shield-halved"></i> Flagship Store</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+            <!-- 5. 60,000+ Super Flagships -->
+            <button class="price-range-card" data-range="60000-plus" data-min="60000" data-max="999999"
+              data-label="₹60,000 & Above">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-purple"><i class="fa-solid fa-rocket"></i></span>
+                <span class="price-range-tag tag-purple">Super Flagships</span>
+              </div>
+              <div class="price-range-amount">₹60,000+</div>
+              <div class="price-range-sub">MacBook Air M3, S24 Ultra, DJI</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-gem"></i> Premium Tech</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+            <!-- 6. Under 2,000 Pocket Audio -->
+            <button class="price-range-card" data-range="under-2000" data-min="0" data-max="2000"
+              data-label="Under ₹2,000">
+              <div class="price-range-top">
+                <span class="price-range-icon icon-indigo"><i class="fa-solid fa-headphones"></i></span>
+                <span class="price-range-tag tag-indigo">Pocket Audio</span>
+              </div>
+              <div class="price-range-amount">Under ₹2,000</div>
+              <div class="price-range-sub">boAt TWS Earbuds &amp; Gear</div>
+              <div class="price-range-action">
+                <span class="action-pill"><i class="fa-solid fa-percent"></i> Pocket Deals</span>
+                <span class="action-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </button>
+
+          </div>
+
+          <!-- Dynamic Products Grid Area -->
+          <div class="price-range-results-container">
+            <div class="price-range-results-bar">
+              <div class="results-badge" id="price-range-results-badge">
+                <i class="fa-solid fa-bag-shopping text-primary"></i> <span id="price-range-active-title">Verified Deals
+                  in this Collection</span>
+              </div>
+              <a href="pages/products.html" id="price-range-view-catalog-link" class="view-more-budget-link">
+                View All in Catalog <i class="fa-solid fa-arrow-right"></i>
+              </a>
             </div>
 
-            <!-- Comparison Preview Mock -->
-            <div class="card" style="padding: 1.5rem; background: var(--surface);">
-              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
-                <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&auto=format&fit=crop&q=80" alt="Apple AirPods Pro" style="width: 64px; height: 64px; object-fit: contain; border-radius: var(--radius-xs); border: 1px solid var(--border); padding: 4px;">
-                <div>
-                  <h4 style="font-size: 1.1rem; font-weight: 800;">Apple AirPods Pro (2nd Gen)</h4>
-                  <div style="font-size: 0.8rem; color: var(--muted);">USB-C &bull; Active Noise Cancellation</div>
-                </div>
-              </div>
-
-              <!-- Store Comparison Rows -->
-              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: #F0FDF4; border: 1px solid #86EFAC; border-radius: var(--radius-sm);">
-                  <div style="display: flex; align-items: center; gap: 0.6rem;">
-                    <span class="store-pill amazon"><i class="fa-solid fa-store"></i> Amazon</span>
-                    <span style="font-weight: 800; font-size: 1.05rem;">₹19,999</span>
-                  </div>
-                  <span class="badge" style="background:#16A34A; color:#fff; font-size:0.75rem; font-weight:800;">BEST AVAILABLE PRICE</span>
-                </div>
-
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-                  <div style="display: flex; align-items: center; gap: 0.6rem;">
-                    <span class="store-pill flipkart"><i class="fa-solid fa-store"></i> Flipkart</span>
-                    <span style="font-weight: 700; color: var(--muted);">₹20,999</span>
-                  </div>
-                  <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600;">+₹1,000 difference</span>
-                </div>
-              </div>
-
+            <div class="product-grid" id="price-range-products-grid">
+              <!-- Filtered products rendered dynamically by JS -->
             </div>
           </div>
         </div>
+
       </div>
     </section>
+
+
+
+
 
     <!-- ==================== NEWSLETTER CTA ==================== -->
     <section class="section" style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #F8FAFC;">
       <div class="container" style="text-align: center; max-width: 680px;">
-        <span class="badge" style="background: rgba(37, 99, 235, 0.2); color: #60A5FA; margin-bottom: 0.75rem; font-weight:800;">Deal Alerts</span>
-        <h2 style="font-size: 2.35rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.75rem;">Never Miss a Price Drop</h2>
+        <span class="badge"
+          style="background: rgba(37, 99, 235, 0.2); color: #60A5FA; margin-bottom: 0.75rem; font-weight:800;">Deal
+          Alerts</span>
+        <h2 style="font-size: 2.35rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.75rem;">Never Miss a Price
+          Drop</h2>
         <p style="color: #94A3B8; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;">
           Get verified deal alerts and product discoveries straight to your inbox. 100% spam free.
         </p>
-        <form onsubmit="event.preventDefault(); ShopScout.toast('Subscribed! You will now receive deal alerts.', 'success'); this.reset();" style="display: flex; gap: 0.5rem; max-width: 480px; margin: 0 auto;">
-          <input type="email" placeholder="Enter your email address..." required style="flex: 1; padding: 0.8rem 1.25rem; border-radius: var(--radius-sm); background: #FFFFFF; color: #0F172A; font-size: 0.95rem; border: none;">
-          <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem; font-weight: 700;">Subscribe</button>
+        <form
+          onsubmit="event.preventDefault(); ShopScout.toast('Subscribed! You will now receive deal alerts.', 'success'); this.reset();"
+          style="display: flex; gap: 0.5rem; max-width: 480px; margin: 0 auto;">
+          <input type="email" placeholder="Enter your email address..." required
+            style="flex: 1; padding: 0.8rem 1.25rem; border-radius: var(--radius-sm); background: #FFFFFF; color: #0F172A; font-size: 0.95rem; border: none;">
+          <button type="submit" class="btn btn-primary"
+            style="padding: 0.8rem 1.5rem; font-weight: 700;">Subscribe</button>
         </form>
       </div>
     </section>
@@ -462,23 +479,30 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer style="background-color: var(--surface); border-top: 1px solid var(--border); padding-top: 4rem; padding-bottom: 2rem;">
+  <footer
+    style="background-color: var(--surface); border-top: 1px solid var(--border); padding-top: 4rem; padding-bottom: 2rem;">
     <div class="container">
       <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem;">
-        
+
         <div>
           <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
             <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
             <span>ShopScout</span>
           </a>
-          <p style="color: var(--muted); font-size: 0.925rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 320px;">
-            Find Better. Buy Smarter. Discover products worth your money, compare prices, and uncover legitimate deals from trusted marketplaces.
+          <p
+            style="color: var(--muted); font-size: 0.925rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 320px;">
+            Find Better. Buy Smarter. Discover products worth your money, compare prices, and uncover legitimate deals
+            from trusted marketplaces.
           </p>
           <div style="display: flex; gap: 0.75rem;">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn" style="text-decoration:none;" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn" style="text-decoration:none;" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn" style="text-decoration:none;" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn" style="text-decoration:none;" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
+              style="text-decoration:none;" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
+              style="text-decoration:none;" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
+              style="text-decoration:none;" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="theme-toggle-btn"
+              style="text-decoration:none;" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
           </div>
         </div>
 
@@ -498,7 +522,6 @@
           <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
             <li><a href="pages/about.html">About Us</a></li>
             <li><a href="pages/contact.html">Contact Us</a></li>
-            <li><a href="pages/profile.html">My Account</a></li>
             <li><a href="pages/wishlist.html">My Wishlist</a></li>
             <li><a href="admin/dashboard.html" style="color: var(--primary); font-weight:600;">Admin Panel</a></li>
           </ul>
@@ -507,27 +530,39 @@
         <div>
           <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Legal</h4>
           <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
-            <li><a href="pages/affiliate-disclosure.html" style="font-weight: 700; color: var(--text);">Affiliate Disclosure</a></li>
+            <li><a href="pages/affiliate-disclosure.html" style="font-weight: 700; color: var(--text);">Affiliate
+                Disclosure</a></li>
             <li><a href="pages/privacy-policy.html">Privacy Policy</a></li>
             <li><a href="pages/terms.html">Terms &amp; Conditions</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Marketplaces</h4>
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 1.25rem;">Affiliate
+            Partner</h4>
           <ul style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem; color: var(--muted);">
-            <li><span class="store-pill amazon"><i class="fa-solid fa-store"></i> Amazon India</span></li>
-            <li><span class="store-pill flipkart"><i class="fa-solid fa-store"></i> Flipkart</span></li>
+            <li><span class="store-pill amazon"><i class="fa-brands fa-amazon"></i> Amazon Associates</span></li>
+            <li><span style="font-size:0.75rem; color: var(--muted);"><i class="fa-solid fa-check-circle"
+                  style="color:#10b981;"></i> 100% Genuine Partner</span></li>
           </ul>
         </div>
 
       </div>
 
-      <div style="border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--muted);">
+      <div
+        style="border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: var(--muted);">
         <p style="margin-bottom: 0.5rem;">
-          <strong>Affiliate Transparency Notice:</strong> ShopScout is a participant in affiliate marketing programs. When you click outbound marketplace links and complete qualifying purchases, we may earn an affiliate commission at zero additional cost to you.
+          <strong>Affiliate Transparency Notice:</strong> ShopScout is a participant in affiliate marketing programs.
+          When you click outbound marketplace links and complete qualifying purchases, we may earn an affiliate
+          commission at zero additional cost to you.
         </p>
-        <p>&copy; 2026 ShopScout. All rights reserved.</p>
+        <p
+          style="margin-top: 0.6rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span>&copy; 2026 ShopScout. All rights reserved.</span>
+          <span style="opacity: 0.4;">&bull;</span>
+          <span>Founded &amp; Developed with <i class="fa-solid fa-heart" style="color: #ef4444;"></i> by <strong
+              style="color: var(--text); font-weight: 700;">Dhiraj Kumar</strong></span>
+        </p>
       </div>
     </div>
   </footer>
@@ -551,31 +586,27 @@
       <span>Wishlist</span>
       <span class="bottom-badge wishlist-badge-count" style="display: none;">0</span>
     </a>
-    <a href="pages/profile.html" class="bottom-bar-item">
-      <i class="fa-regular fa-user"></i>
-      <span>Profile</span>
-    </a>
   </nav>
+
+  <!-- Floating WhatsApp & Telegram Loot Deals Bubbles -->
+  <div class="floating-deals-community">
+    <a href="https://whatsapp.com/channel/0029VaShopScoutAlerts" target="_blank" rel="noopener noreferrer"
+      class="floating-deal-bubble bubble-wa" title="Join WhatsApp Loot Channel">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>Join WhatsApp Deals</span>
+    </a>
+    <a href="https://t.me/ShopScoutDeals" target="_blank" rel="noopener noreferrer"
+      class="floating-deal-bubble bubble-tg" title="Join Telegram Loot Channel">
+      <i class="fa-brands fa-telegram"></i>
+      <span>Join Telegram Deals</span>
+    </a>
+  </div>
 
   <!-- Scripts -->
   <script src="js/main.js"></script>
   <script src="js/navbar.js"></script>
   <script src="js/products.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const trendingGrid = document.getElementById('trending-products-grid');
-      const dealsGrid = document.getElementById('home-deals-grid');
-
-      const trending = await ProductService.getTrendingProducts(8);
-      if (trendingGrid) {
-        trendingGrid.innerHTML = trending.map(p => renderProductCard(p)).join('');
-      }
-
-      const deals = await ProductService.getDeals(4);
-      if (dealsGrid) {
-        dealsGrid.innerHTML = deals.map(p => renderProductCard(p)).join('');
-      }
-    });
-  </script>
+  <script src="js/home.js"></script>
 </body>
+
 </html>

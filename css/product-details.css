@@ -32,8 +32,9 @@
 /* Detail Main Layout */
 .product-detail-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 460px 1fr;
+  gap: 2.75rem;
+  align-items: start;
   margin-bottom: 3.5rem;
 }
 
@@ -42,12 +43,16 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 460px;
 }
 
 .main-image-viewport {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: var(--surface);
+  max-width: 460px;
+  height: 420px;
+  max-height: 420px;
+  background-color: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -55,18 +60,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.main-image-viewport img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
   padding: 1.5rem;
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
-.main-image-viewport:hover img {
-  transform: scale(1.08);
+[data-theme="dark"] .main-image-viewport {
+  background-color: var(--surface);
+}
+
+.main-image-viewport img,
+#main-image-display {
+  max-width: 82% !important;
+  max-height: 82% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: auto !important;
+  transition: transform 0.25s ease !important;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
+}
+
+.main-image-viewport:hover img,
+.main-image-viewport:hover #main-image-display {
+  transform: scale(1.03) !important;
 }
 
 .gallery-thumbnails-rail {
@@ -446,7 +463,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Color & Storage Variants Selector (Matching Flipkart / Amazon UI) */
+/* Color & Storage Variants Selector (Amazon UI) */
 .product-variants-container {
   margin: 1.25rem 0;
   display: flex;
@@ -927,48 +944,218 @@
   gap: 0.5rem;
 }
 
-.customer-photos-rail {
-  display: flex;
-  gap: 0.85rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-}
-
-.customer-photo-card {
-  width: 120px;
-  height: 130px;
-  border-radius: var(--radius-md);
+/* ==================== REAL CUSTOMER REVIEWS & UNBOXING RAIL ==================== */
+.customer-reviews-section {
+  background: var(--surface);
   border: 1px solid var(--border);
-  overflow: hidden;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow-sm);
   position: relative;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
-.customer-photo-card:hover {
-  transform: translateY(-3px) scale(1.02);
+.customer-reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.reviews-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.35rem;
+}
+
+.reviews-section-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+  line-height: 1.2;
+}
+
+.reviews-section-sub {
+  font-size: 0.86rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.customer-reviews-header-meta .verified-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  color: #16A34A;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Customer Reviews Cards Rail / Grid */
+.customer-reviews-cards-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.customer-review-card {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.customer-review-card:hover {
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
   border-color: var(--primary);
 }
 
-.customer-photo-card img {
+.review-card-author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.review-card-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  background: #E2E8F0;
+}
+
+.review-card-author-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.review-card-author-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-card-verified-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: #16A34A;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.review-card-rating-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.review-card-stars {
+  display: flex;
+  gap: 2px;
+  color: #F59E0B;
+  font-size: 0.85rem;
+}
+
+.review-card-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.review-card-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+
+.review-card-text {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0 0 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Review Photo Thumbnails Row */
+.review-card-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  margin-top: auto;
+}
+
+.review-card-thumb-item {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #000;
+}
+
+.review-card-thumb-item:hover {
+  transform: scale(1.08);
+  border-color: var(--primary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.review-card-thumb-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.customer-photo-badge {
+.review-card-thumb-badge {
   position: absolute;
-  bottom: 6px;
-  left: 6px;
+  bottom: 2px;
+  right: 2px;
   background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
   color: #FFFFFF;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 1px 4px;
+  border-radius: 3px;
 }
 
 /* In The Box Strip */
@@ -996,5 +1183,651 @@
   color: var(--primary);
 }
 
+/* ==================== 2-PANEL CUSTOMER REVIEW LIGHTBOX MODAL ==================== */
+.customer-review-lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(3, 7, 18, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease;
+  padding: 1.5rem;
+}
 
+.customer-review-lightbox-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.review-lightbox-card {
+  width: 100%;
+  max-width: 1140px;
+  height: 86vh;
+  max-height: 820px;
+  min-height: 520px;
+  background: #0B1120;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(37, 99, 235, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: reviewLightboxPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes reviewLightboxPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Top Bar */
+.review-lightbox-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-lightbox-back {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #E2E8F0;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+}
+
+.btn-lightbox-back:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-lightbox-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #E2E8F0;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-lightbox-close:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #EF4444;
+  border-color: #EF4444;
+  transform: rotate(90deg);
+}
+
+/* 2-Panel Body */
+.review-lightbox-body {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100% - 60px);
+}
+
+/* Left Media Panel */
+.review-lightbox-media-panel {
+  position: relative;
+  background: #030712;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lightbox-main-img-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem;
+}
+
+#modal-large-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-arrow-btn.prev {
+  left: 1.25rem;
+}
+
+.lightbox-arrow-btn.next {
+  right: 1.25rem;
+}
+
+.lightbox-arrow-btn:hover {
+  background: var(--primary, #2563eb);
+  border-color: var(--primary, #2563eb);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+}
+
+.lightbox-floating-counter {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #E2E8F0;
+  padding: 0.35rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+/* Right Details Panel */
+.review-lightbox-details-panel {
+  background: #0F172A;
+  padding: 2rem 1.75rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  color: #F8FAFC;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.review-lightbox-details-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.review-lightbox-details-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.review-lightbox-details-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+
+.review-lightbox-details-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.review-author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.review-author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.review-author-meta strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  display: block;
+}
+
+.review-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #22C55E;
+  margin-top: 2px;
+}
+
+.review-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.review-stars-strip {
+  display: flex;
+  gap: 3px;
+  color: #F59E0B;
+  font-size: 1.15rem;
+}
+
+.review-date-badge {
+  font-size: 0.8rem;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.review-modal-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.review-modal-text {
+  font-size: 0.95rem;
+  color: #CBD5E1;
+  line-height: 1.65;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--primary, #2563eb);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Modal Thumbnails Row (Filmstrip) */
+.review-modal-thumbs-section {
+  margin-top: 0.4rem;
+}
+
+.thumbs-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #94A3B8;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.review-modal-thumbs-row {
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+}
+
+.review-modal-thumb {
+  width: 68px;
+  height: 68px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  background: #000;
+}
+
+.review-modal-thumb:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.review-modal-thumb.active {
+  border-color: #06B6D4;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.5), 0 4px 14px rgba(6, 182, 212, 0.35);
+  transform: scale(1.06);
+}
+
+.review-modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Actions Row */
+.review-modal-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-review-helpful {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #E2E8F0;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-review-helpful:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: #22C55E;
+  color: #22C55E;
+}
+
+.btn-review-helpful.liked {
+  background: #22C55E;
+  color: #FFFFFF;
+  border-color: #22C55E;
+}
+
+.review-report-text {
+  font-size: 0.78rem;
+  color: #64748B;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.review-report-text:hover {
+  color: #EF4444;
+}
+
+.review-modal-store-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #94A3B8;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: auto;
+}
+
+/* Responsive Lightbox for Tablets & Mobile */
+@media (max-width: 860px) {
+  .review-lightbox-card {
+    height: 92vh;
+    max-height: 92vh;
+  }
+
+  .review-lightbox-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+  }
+
+  .review-lightbox-media-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .review-lightbox-details-panel {
+    padding: 1.25rem;
+  }
+}
+
+
+/* ==========================================================================
+   PRICE HISTORY CARD — Chart.js Price Trend Section
+   ========================================================================== */
+
+.price-history-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.price-history-card:hover {
+  box-shadow: 0 8px 40px rgba(37,99,235,0.08);
+}
+
+/* ── Card Header ── */
+.ph-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.ph-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.ph-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(99,102,241,0.15));
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.ph-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 2px 0;
+}
+
+.ph-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── Toggle Pills ── */
+.ph-toggle-pills {
+  display: flex;
+  gap: 0.35rem;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.ph-pill {
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ph-pill:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.ph-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+}
+
+/* ── KPI Row ── */
+.ph-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ph-kpi-badge {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid transparent;
+}
+
+.ph-kpi-badge.lowest {
+  background: rgba(16,185,129,0.08);
+  border-color: rgba(16,185,129,0.2);
+}
+
+.ph-kpi-badge.avg {
+  background: rgba(37,99,235,0.07);
+  border-color: rgba(37,99,235,0.15);
+}
+
+.ph-kpi-badge.highest {
+  background: rgba(239,68,68,0.07);
+  border-color: rgba(239,68,68,0.15);
+}
+
+.ph-kpi-badge.verdict {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.2);
+}
+
+.ph-kpi-badge.verdict.buy-now {
+  background: rgba(16,185,129,0.1);
+  border-color: rgba(16,185,129,0.3);
+}
+
+.ph-kpi-badge.verdict.wait {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.2);
+}
+
+.ph-kpi-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ph-kpi-badge.lowest  .ph-kpi-label { color: #10b981; }
+.ph-kpi-badge.avg     .ph-kpi-label { color: #2563eb; }
+.ph-kpi-badge.highest .ph-kpi-label { color: #ef4444; }
+.ph-kpi-badge.verdict .ph-kpi-label { color: #f59e0b; }
+
+.ph-kpi-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* ── Chart Wrapper ── */
+.ph-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-subtle);
+  padding: 0.5rem;
+}
+
+.ph-chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Dark mode adjustments ── */
+[data-theme="dark"] .ph-icon-badge {
+  background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(99,102,241,0.25));
+}
+
+[data-theme="dark"] .ph-chart-wrap {
+  background: rgba(255,255,255,0.03);
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .ph-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ph-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ph-toggle-pills {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .ph-chart-wrap {
+    height: 180px;
+  }
+}
+
+@media (max-width: 420px) {
+  .ph-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ph-kpi-badge {
+    padding: 0.6rem 0.75rem;
+  }
+}
 

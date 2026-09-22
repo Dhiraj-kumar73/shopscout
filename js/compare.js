@@ -135,14 +135,16 @@ const CompareController = {
 
             <!-- Outbound Action Row -->
             <tr>
-              <td style="font-weight: 700;">Purchase on Marketplace</td>
-              ${comparedProducts.map(p => `
+              <td style="font-weight: 700;">Purchase on Amazon</td>
+              ${comparedProducts.map(p => {
+                const amzUrl = p.amazonUrl || (p.marketplace === 'Amazon' ? p.affiliateUrl : '');
+                return `
                 <td style="text-align: center;">
-                  <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="ShopScout.openBuyModal('${p.id}')">
-                    Buy Now <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  <button class="btn btn-primary btn-sm" style="width: 100%; background: linear-gradient(135deg, #FF9900, #E68A00); border-color: #FF9900; color: #111; font-weight: 700;" onclick="ShopScout.triggerAffiliateRedirect('${encodeURIComponent(p.name)}', 'Amazon', '${amzUrl}')">
+                    Buy on Amazon <i class="fa-brands fa-amazon"></i>
                   </button>
                 </td>
-              `).join('')}
+              `;}).join('')}
             </tr>
           </tbody>
         </table>

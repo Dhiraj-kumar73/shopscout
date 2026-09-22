@@ -7,6 +7,7 @@ const FilterController = {
   filteredProducts: [],
   activeFilters: {
     category: [],
+    priceMin: 0,
     priceMax: 200000,
     rating: 0,
     discount: 0,
@@ -18,13 +19,37 @@ const FilterController = {
     this.allProducts = [...products];
     this.filteredProducts = [...products];
 
-    // Read any URL params (e.g. ?category=Audio or ?sort=price-low)
+    // Read any URL params (e.g. ?category=Audio or ?sort=price-low or ?minPrice=100&maxPrice=199)
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('category')) {
-      this.activeFilters.category = [urlParams.get('category')];
+      const cat = urlParams.get('category');
+      this.activeFilters.category = [cat];
+      const titleEl = document.getElementById('page-catalog-title');
+      const subtitleEl = document.getElementById('page-catalog-subtitle');
+      const breadcrumbEl = document.getElementById('breadcrumb-category');
+      if (titleEl) titleEl.textContent = `${cat} Deals & Offers`;
+      if (subtitleEl) subtitleEl.textContent = `Live verified Amazon prices for top ${cat}.`;
+      if (breadcrumbEl) breadcrumbEl.textContent = cat;
     }
     if (urlParams.get('marketplace')) {
       this.activeFilters.marketplace = [urlParams.get('marketplace')];
+    }
+    if (urlParams.get('minPrice')) {
+      this.activeFilters.priceMin = Number(urlParams.get('minPrice'));
+    }
+    if (urlParams.get('maxPrice')) {
+      const maxP = Number(urlParams.get('maxPrice'));
+      this.activeFilters.priceMax = maxP;
+      const titleEl = document.getElementById('page-catalog-title');
+      const subtitleEl = document.getElementById('page-catalog-subtitle');
+      if (urlParams.get('minPrice')) {
+        const minP = Number(urlParams.get('minPrice'));
+        if (titleEl) titleEl.textContent = `₹${minP} – ₹${maxP} Budget Deals`;
+        if (subtitleEl) subtitleEl.textContent = `Showing verified products priced between ₹${minP} and ₹${maxP}.`;
+      } else {
+        if (titleEl) titleEl.textContent = `Under ₹${maxP} Budget Deals`;
+        if (subtitleEl) subtitleEl.textContent = `Showing verified products priced under ₹${maxP}.`;
+      }
     }
 
     this.bindDOMEvents();
@@ -58,6 +83,10 @@ const FilterController = {
     const priceSlider = document.getElementById('filter-price-slider');
     const priceLabel = document.getElementById('filter-price-label');
     if (priceSlider && priceLabel) {
+      if (this.activeFilters.priceMax < 200000) {
+        priceSlider.value = this.activeFilters.priceMax;
+        priceLabel.textContent = `Up to ${ShopScout.formatPrice(this.activeFilters.priceMax)}`;
+      }
       priceSlider.addEventListener('input', (e) => {
         const val = Number(e.target.value);
         this.activeFilters.priceMax = val;
@@ -65,6 +94,26 @@ const FilterController = {
         this.applyFilters();
       });
     }
+
+    // Quick Price Range Pills (if present on catalog page)
+    document.querySelectorAll('.price-pill-btn').forEach(btn => {
+      const min = Number(btn.dataset.min);
+      const max = Number(btn.dataset.max);
+      if (this.activeFilters.priceMin === min && this.activeFilters.priceMax === max) {
+        btn.classList.add('active');
+      }
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.price-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.activeFilters.priceMin = min;
+        this.activeFilters.priceMax = max;
+        if (priceSlider && priceLabel) {
+          priceSlider.value = max >= 200000 ? 200000 : max;
+          priceLabel.textContent = max >= 200000 ? 'Up to ₹2,00,000' : `Up to ${ShopScout.formatPrice(max)}`;
+        }
+        this.applyFilters();
+      });
+    });
 
     // Rating Filter Radios
     document.querySelectorAll('input[name="filter-rating"]').forEach(rb => {
@@ -103,15 +152,32 @@ const FilterController = {
 
   applyFilters() {
     this.filteredProducts = this.allProducts.filter(p => {
-      // Category filter
-      if (this.activeFilters.category.length > 0 && !this.activeFilters.category.includes(p.category)) {
-        return false;
+      // Category filter (flexible matching for Mobiles / Phones, Laptops, Audio, etc.)
+      if (this.activeFilters.category.length > 0) {
+        const matchesCategory = this.activeFilters.category.some(cat => {
+          const c = cat.toLowerCase().trim();
+          const pc = (p.category || '').toLowerCase().trim();
+          if (c === pc) return true;
+          if (c.startsWith(pc) || pc.startsWith(c)) return true;
+          if ((c.includes('mobile') || c.includes('phone')) && (pc.includes('mobile') || pc.includes('phone'))) return true;
+          if ((c.includes('laptop') || c.includes('pc')) && (pc.includes('laptop') || pc.includes('pc') || pc.includes('computer'))) return true;
+          if (c.includes('audio') && (pc.includes('audio') || pc.includes('sound') || pc.includes('ear') || pc.includes('head'))) return true;
+          if (c.includes('watch') && pc.includes('watch')) return true;
+          if (c.includes('game') && pc.includes('game')) return true;
+          if (c.includes('fashion') && pc.includes('fashion')) return true;
+          if (c.includes('home') && pc.includes('home')) return true;
+          return false;
+        });
+        if (!matchesCategory) return false;
       }
       // Marketplace filter
       if (this.activeFilters.marketplace.length > 0 && !this.activeFilters.marketplace.includes(p.marketplace)) {
         return false;
       }
-      // Price Max
+      // Price Min & Max Filter
+      if (p.price < this.activeFilters.priceMin) {
+        return false;
+      }
       if (p.price > this.activeFilters.priceMax) {
         return false;
       }
@@ -185,6 +251,7 @@ const FilterController = {
   resetFilters() {
     this.activeFilters = {
       category: [],
+      priceMin: 0,
       priceMax: 200000,
       rating: 0,
       discount: 0,
@@ -193,6 +260,9 @@ const FilterController = {
 
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
     document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
+    document.querySelectorAll('.price-pill-btn').forEach(b => b.classList.remove('active'));
+    const allPill = document.querySelector('.price-pill-btn[data-range="all"]');
+    if (allPill) allPill.classList.add('active');
 
     const priceSlider = document.getElementById('filter-price-slider');
     const priceLabel = document.getElementById('filter-price-label');

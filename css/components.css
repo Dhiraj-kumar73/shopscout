@@ -110,16 +110,6 @@
   color: #000000;
 }
 
-.btn-marketplace-flipkart {
-  background-color: #2874F0;
-  color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(40, 116, 240, 0.25);
-}
-
-.btn-marketplace-flipkart:hover {
-  background-color: #1A62DB;
-}
-
 /* Badges & Tags */
 .badge {
   display: inline-flex;
@@ -164,18 +154,6 @@
   background: #FFF7ED;
   color: #C2410C;
   border: 1px solid #FFEDD5;
-}
-
-.badge-store.flipkart {
-  background: #EFF6FF;
-  color: #1D4ED8;
-  border: 1px solid #DBEAFE;
-}
-
-.badge-store.croma {
-  background: #ECFDF5;
-  color: #047857;
-  border: 1px solid #D1FAE5;
 }
 
 /* Rating Pill */
@@ -534,120 +512,4 @@
   }
 }
 
-/* Buy Choice Marketplace Modal (Amazon vs Flipkart) */
-.buy-choice-card {
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.1rem 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  background: var(--surface-subtle);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-bottom: 0.85rem;
-  text-align: left;
-  position: relative;
-  user-select: none;
-}
-
-.buy-choice-card:hover {
-  transform: translateY(-2px);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.buy-choice-card.selected.amazon {
-  border-color: #FF9900;
-  background: rgba(255, 153, 0, 0.08);
-  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.25);
-}
-
-.buy-choice-card.selected.flipkart {
-  border-color: #2874F0;
-  background: rgba(40, 116, 240, 0.08);
-  box-shadow: 0 0 0 3px rgba(40, 116, 240, 0.25);
-}
-
-.buy-choice-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.buy-store-icon-wrap {
-  width: 46px;
-  height: 46px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
-  flex-shrink: 0;
-}
-
-.buy-store-icon-wrap.amazon {
-  background: #232F3E;
-  color: #FF9900;
-}
-
-.buy-store-icon-wrap.flipkart {
-  background: #2874F0;
-  color: #FFE11B;
-}
-
-.buy-choice-title {
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--text);
-  margin-bottom: 0.15rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.buy-choice-subtitle {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.buy-choice-right {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.2rem;
-}
-
-.buy-choice-price {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.buy-choice-radio {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.25rem;
-  transition: all 0.2s ease;
-  font-size: 0.7rem;
-  color: transparent;
-}
-
-.buy-choice-card.selected.amazon .buy-choice-radio {
-  border-color: #FF9900;
-  background: #FF9900;
-  color: #111;
-}
-
-.buy-choice-card.selected.flipkart .buy-choice-radio {
-  border-color: #2874F0;
-  background: #2874F0;
-  color: #FFF;
-}
 

@@ -1,15 +1,15 @@
 # ShopScout — Complete Production-Level Affiliate E-Commerce Platform
 
 > **"Find Better. Buy Smarter."**  
-> An independent product discovery and price comparison platform aggregating real-time offers from verified marketplaces like Amazon, Flipkart, Croma, and more.
+> An independent product discovery and deal platform aggregating real-time offers from Amazon India.
 
 ---
 
 ## 1. Project Overview
 
-ShopScout is an affiliate-driven product discovery and price comparison platform. It is **not** a traditional online merchant:
+ShopScout is an affiliate-driven product discovery platform. It is **not** a traditional online merchant:
 - **No inventory or warehousing**: Products are sourced from legitimate external vendors.
-- **No payments on-site**: Checkout, payment processing, fulfillment, and customer support are handled directly by the destination marketplace (e.g. Amazon or Flipkart).
+- **No payments on-site**: Checkout, payment processing, fulfillment, and customer support are handled directly by Amazon India.
 - **Transparent monetization**: Transparent affiliate disclosure in compliance with FTC and ASCI guidelines. Outbound affiliate redirection includes an interstitial notice confirming that ShopScout may earn a qualifying commission at zero additional cost to the shopper.
 
 ---
@@ -27,12 +27,8 @@ shopscout/
 │   ├── compare.html                     # 4-slot side-by-side spec and price comparison matrix
 │   ├── search.html                      # Real-time search with query highlight and empty states
 │   ├── wishlist.html                    # Wishlist manager with stock status & quick actions
-│   ├── profile.html                     # User dashboard with active price drop alerts & stats
 │   ├── about.html                       # Brand story, editorial independence & mission
 │   ├── contact.html                     # Feedback & partnership inquiries
-│   ├── login.html                       # Email & Google OAuth simulated login
-│   ├── register.html                    # Registration with interactive password strength meter
-│   ├── forgot-password.html             # Password recovery request flow
 │   ├── privacy-policy.html              # Privacy compliance
 │   ├── terms.html                       # Terms and conditions
 │   └── affiliate-disclosure.html        # FTC/ASCI compliant affiliate transparency statement
@@ -49,7 +45,6 @@ shopscout/
 │   ├── navbar.css                       # Sticky header, search suggestions, drawer, mobile bottom bar
 │   ├── product-card.css                 # Single reusable product card with hover animations
 │   ├── product-details.css              # Gallery, specs table, store comparison rows
-│   ├── auth.css                         # Auth cards, password meters, user profile sidebar
 │   ├── admin.css                        # Admin panel layout, stat cards, data tables
 │   └── responsive.css                   # Responsive breakpoints (desktop, tablet, mobile)
 ├── js/
@@ -62,7 +57,6 @@ shopscout/
 │   ├── compare.js                       # 4-product comparison table, best price badge, spec diffing
 │   ├── wishlist.js                      # Wishlist persistence, counter badges, clear all
 │   ├── deals.js                         # Deal countdown timer, tier switching
-│   ├── auth.js                          # Auth forms, password strength, user profile state
 │   └── admin.js                         # Admin CRUD modals, click log viewer, simulated charts
 ├── data/
 │   └── products.json                    # Authentic product dataset with multi-store prices & specs
@@ -118,9 +112,6 @@ GET    /api/products/:id           # Single product with live prices
 POST   /api/products               # Admin create product
 PUT    /api/products/:id           # Admin update product
 DELETE /api/products/:id           # Admin delete product
-
-POST   /api/auth/register          # Register user
-POST   /api/auth/login             # JWT authentication
 
 GET    /api/categories             # List categories
 GET    /api/deals                  # Active deals & promotions
