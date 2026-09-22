@@ -7,6 +7,35 @@ const NavbarController = {
     this.bindMobileDrawer();
     this.bindHeaderSearch();
     this.highlightActiveLink();
+    this.bindSecretAdminDoor();
+  },
+
+  // Secret Founder Door: Triple-tap the brand logo to access Admin Portal
+  bindSecretAdminDoor() {
+    let tapCount = 0;
+    let tapTimer = null;
+    document.querySelectorAll('.brand-logo').forEach(logo => {
+      logo.addEventListener('click', (e) => {
+        tapCount++;
+        if (tapTimer) clearTimeout(tapTimer);
+        if (tapCount >= 3) {
+          e.preventDefault();
+          tapCount = 0;
+          const isPagesSubdir = window.location.pathname.includes('/pages/');
+          const adminUrl = isPagesSubdir ? '../admin/products.html' : 'admin/products.html';
+          if (typeof ShopScout !== 'undefined' && ShopScout.toast) {
+            ShopScout.toast('👑 Founder Access: Opening Admin Portal...', 'info');
+          }
+          setTimeout(() => {
+            window.location.href = adminUrl;
+          }, 350);
+          return;
+        }
+        tapTimer = setTimeout(() => {
+          tapCount = 0;
+        }, 1200);
+      });
+    });
   },
 
   // Highlight Current Navigation Link

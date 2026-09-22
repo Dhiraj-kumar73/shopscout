@@ -1703,4 +1703,165 @@
   }
 }
 
+/* ==========================================================================
+   ADMIN MASTER SECURITY PIN GATE
+   ========================================================================== */
+.admin-security-gate {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0b0f19 80%);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 0.3s ease;
+}
+
+.security-card {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(37, 99, 235, 0.25);
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: #fff;
+}
+
+.security-shield-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(79, 70, 229, 0.2));
+  border: 1.5px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem auto;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+}
+
+.security-card h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.security-card p {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+}
+
+.pin-input-wrap {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.security-pin-input {
+  width: 100%;
+  padding: 0.9rem 3rem 0.9rem 1.25rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.8);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.security-pin-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  background: rgba(30, 41, 59, 1);
+}
+
+.pin-eye-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+}
+
+.pin-eye-toggle:hover {
+  color: #fff;
+}
+
+.security-submit-btn {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s ease;
+}
+
+.security-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 25px rgba(37, 99, 235, 0.5);
+}
+
+.security-error-msg {
+  margin-top: 0.85rem;
+  font-size: 0.82rem;
+  color: #f87171;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.pin-shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+
+.security-footer-link {
+  margin-top: 1.75rem;
+  font-size: 0.82rem;
+}
+
+.security-footer-link a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.security-footer-link a:hover {
+  color: #60a5fa;
+}
+
 
