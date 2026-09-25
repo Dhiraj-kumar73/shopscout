@@ -47,7 +47,6 @@ const ProductDetailsController = {
       try { this.renderInfoPanel(product); } catch (e) { console.warn('Info panel error:', e); }
       try { this.renderVariants(product); } catch (e) { console.warn('Variants error:', e); }
       try { this.renderPriceHistoryChart(product); } catch (e) { console.warn('Price history chart error:', e); }
-      try { this.renderFrequentlyBought(product); } catch (e) { console.warn('Frequently bought error:', e); }
       try { this.renderTabs(product); } catch (e) { console.warn('Tabs error:', e); }
       try { this.renderRelatedProducts(product); } catch (e) { console.warn('Related products error:', e); }
       try { this.bindPriceAlertModal(product); } catch (e) { console.warn('Price alert modal error:', e); }

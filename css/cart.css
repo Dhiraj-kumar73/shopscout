@@ -1402,9 +1402,53 @@
   color: var(--primary);
 }
 
+/* Frequently Bought Together Combo Inside Added Modal */
+.added-modal-combo-container {
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.added-modal-combo-container .fb-header {
+  margin-bottom: 0.85rem;
+}
+
+.added-modal-combo-container .fb-grid {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.added-modal-combo-container .fb-item-thumb {
+  width: 75px;
+  height: 75px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: #FFFFFF;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.added-modal-combo-container .fb-item-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.added-modal-combo-container .fb-check-item {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 /* Complementary Add-ons Rail Section */
 .added-modal-rec-section {
   padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px dashed var(--border);
 }
 
 .added-modal-rec-header {

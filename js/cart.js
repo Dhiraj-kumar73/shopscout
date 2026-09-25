@@ -270,6 +270,11 @@ const CartService = {
 
           </div>
 
+          <!-- Frequently Bought Together / Combo Offer Section -->
+          <div class="added-modal-combo-container" id="added-modal-combo-container" style="display:none;">
+            <!-- Injected by CartService.renderModalCombo() -->
+          </div>
+
           <!-- Bottom: Smart Complementary Products Rail -->
           <div class="added-modal-rec-section">
             <div class="added-modal-rec-header">
@@ -296,6 +301,180 @@ const CartService = {
     const el = document.createElement('div');
     el.innerHTML = modalHtml;
     document.body.appendChild(el.firstElementChild);
+  },
+
+  // Smart accessory matching: guarantees realistic pairings (no 3 random phones!)
+  getSmartAccessories(product, allProducts) {
+    if (!product || !Array.isArray(allProducts) || allProducts.length < 2) return [];
+
+    const isMobile = product.category === 'Mobiles' || /phone|5g|smartphone|galaxy|iphone|redmi|oneplus|iqoo|oppo|vivo|realme/i.test(product.name || '');
+    const isLaptop = product.category === 'Laptops' || /laptop|macbook|thinkpad|notebook/i.test(product.name || '');
+    const isAudio = product.category === 'Audio' || /headphone|earphone|airdope|buds|neckband|speaker/i.test(product.name || '');
+
+    let acc1 = null;
+    let acc2 = null;
+
+    if (isMobile) {
+      // For mobile: item 1 must be Audio (buds/earphones), item 2 must be Watch/Gadget under ₹5,000
+      acc1 = allProducts.find(p => p.id !== product.id && p.category === 'Audio' && p.price < 4000)
+          || allProducts.find(p => p.id !== product.id && p.category === 'Audio');
+      acc2 = allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && (p.category === 'Watches' || p.category === 'Gadgets') && p.price < 5000)
+          || allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.category !== 'Mobiles' && p.price < 10000)
+          || allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.price < product.price * 0.2);
+    } else if (isLaptop) {
+      acc1 = allProducts.find(p => p.id !== product.id && (p.category === 'Audio' || p.category === 'Gadgets') && p.price < 4000)
+          || allProducts.find(p => p.id !== product.id && p.category === 'Audio');
+      acc2 = allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.category === 'Watches')
+          || allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.price < 5000);
+    } else if (isAudio) {
+      acc1 = allProducts.find(p => p.id !== product.id && p.category === 'Watches' && p.price < 5000)
+          || allProducts.find(p => p.id !== product.id && p.category === 'Watches');
+      acc2 = allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.category === 'Gadgets')
+          || allProducts.find(p => p.id !== product.id && p.id !== acc1?.id && p.price < product.price);
+    } else {
+      const candidates = allProducts.filter(p => p.id !== product.id && p.price < product.price);
+      acc1 = candidates[0];
+      acc2 = candidates[1];
+    }
+
+    const fallbackPool = allProducts.filter(p => p.id !== product.id && p.id !== acc1?.id && p.id !== acc2?.id && p.category !== product.category);
+    if (!acc1 && fallbackPool.length > 0) acc1 = fallbackPool.shift();
+    if (!acc2 && fallbackPool.length > 0) acc2 = fallbackPool.shift();
+
+    return [acc1, acc2].filter(Boolean);
+  },
+
+  renderModalCombo(product, allProducts) {
+    const container = document.getElementById('added-modal-combo-container');
+    if (!container) return;
+
+    const accessories = this.getSmartAccessories(product, allProducts);
+    if (!accessories || accessories.length < 2) {
+      container.style.display = 'none';
+      return;
+    }
+
+    const comboItems = [
+      { product: product, isMain: true, checked: true },
+      { product: accessories[0], isMain: false, checked: true },
+      { product: accessories[1], isMain: false, checked: true }
+    ];
+
+    container.style.display = 'block';
+
+    const updateComboCalculations = () => {
+      const activeItems = comboItems.filter(ci => ci.checked).map(ci => ci.product);
+      const total = activeItems.reduce((sum, p) => sum + (Number(p.price) || 0), 0);
+      const totalEl = container.querySelector('#modal-combo-total-price');
+      const countEl = container.querySelector('#modal-combo-count');
+      const addBtn = container.querySelector('#modal-combo-add-btn');
+      const buyBtn = container.querySelector('#modal-combo-buy-btn');
+
+      if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+      if (countEl) countEl.textContent = `${activeItems.length} items`;
+      if (addBtn) {
+        addBtn.disabled = activeItems.length === 0;
+        addBtn.innerHTML = `<i class="fa-solid fa-cart-plus"></i> Add Selected (${activeItems.length}) to Cart`;
+      }
+      if (buyBtn) {
+        buyBtn.disabled = activeItems.length === 0;
+        buyBtn.innerHTML = `<i class="fa-brands fa-amazon"></i> Buy Combo on Amazon (${activeItems.length} Items)`;
+      }
+    };
+
+    container.innerHTML = `
+      <div class="fb-header">
+        <div class="fb-header-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <h3 class="fb-title">Frequently Bought Together <span style="font-size: 0.78rem; background: rgba(255, 153, 0, 0.15); color: #D97706; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700;">Combo Offer</span></h3>
+          <span class="fb-subtitle">Users who bought this also bundled these accessories together on Amazon</span>
+        </div>
+      </div>
+
+      <!-- Combo Visual Items Strip -->
+      <div class="fb-grid">
+        ${comboItems.map((ci, idx) => `
+          <div class="fb-item-thumb" title="${ci.product.name}">
+            <img src="${ci.product.image}" alt="${ci.product.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
+          </div>
+          ${idx < comboItems.length - 1 ? '<span class="fb-plus-sign">&plus;</span>' : ''}
+        `).join('')}
+      </div>
+
+      <!-- Checkbox Selection List -->
+      <div class="fb-checklist">
+        ${comboItems.map((ci, idx) => `
+          <label class="fb-check-item">
+            <input type="checkbox" data-idx="${idx}" ${ci.checked ? 'checked' : ''}>
+            <span>
+              <strong>${ci.isMain ? 'This item:' : ''}</strong> ${ci.product.name}
+              <span style="font-weight: 800; color: var(--text); margin-left: 6px;">₹${Number(ci.product.price).toLocaleString('en-IN')}</span>
+            </span>
+          </label>
+        `).join('')}
+      </div>
+
+      <!-- Combo Summary & Actions -->
+      <div class="fb-action-row" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--surface-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+        <div class="fb-price-box">
+          <span class="fb-price-label" style="font-size: 0.82rem; color: var(--muted); font-weight: 600;">Total Combo Price (<span id="modal-combo-count">3 items</span>):</span>
+          <div class="fb-price-total" id="modal-combo-total-price" style="font-size: 1.35rem; font-weight: 900; color: var(--text);">Calculating...</div>
+        </div>
+        <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary btn-sm" id="modal-combo-add-btn" style="font-weight: 700; padding: 0.55rem 1rem;">
+            <i class="fa-solid fa-cart-plus"></i> Add Selected to Cart
+          </button>
+          <button type="button" class="fb-btn-combo" id="modal-combo-buy-btn" style="background: linear-gradient(135deg, #FF9900, #E68A00); border: 1px solid #FF9900; color: #111; font-weight: 800; padding: 0.55rem 1rem; border-radius: var(--radius-md); cursor: pointer; font-size: 0.88rem;">
+            <i class="fa-brands fa-amazon"></i> Buy Combo on Amazon
+          </button>
+        </div>
+      </div>
+    `;
+
+    // Bind checkboxes
+    container.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+      chk.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.getAttribute('data-idx'));
+        comboItems[idx].checked = e.target.checked;
+        updateComboCalculations();
+      });
+    });
+
+    // Bind Add Selected to Cart
+    const addBtn = container.querySelector('#modal-combo-add-btn');
+    if (addBtn) {
+      addBtn.addEventListener('click', () => {
+        const activeItems = comboItems.filter(ci => ci.checked).map(ci => ci.product);
+        activeItems.forEach(p => {
+          this.addToCart(p, 1, {}, false);
+        });
+        addBtn.innerHTML = `<i class="fa-solid fa-check"></i> Added (${activeItems.length}) to Cart!`;
+        addBtn.style.background = '#10B981';
+        addBtn.style.borderColor = '#10B981';
+        
+        // Update hero subtotal
+        const totals = this.getTotals();
+        const subtotalEl = document.getElementById('added-modal-subtotal');
+        const countEl = document.getElementById('added-modal-item-count');
+        if (subtotalEl) subtotalEl.textContent = '₹' + Number(totals.total || 0).toLocaleString('en-IN');
+        if (countEl) countEl.textContent = `${totals.itemCount} ${totals.itemCount === 1 ? 'item' : 'items'}`;
+        if (typeof ShopScout !== 'undefined' && ShopScout.toast) {
+          ShopScout.toast(`Combo items added to cart!`, 'success');
+        }
+      });
+    }
+
+    // Bind Amazon Combo Buy Button
+    const buyBtn = container.querySelector('#modal-combo-buy-btn');
+    if (buyBtn) {
+      buyBtn.addEventListener('click', () => {
+        const activeItems = comboItems.filter(ci => ci.checked).map(ci => ci.product);
+        if (activeItems.length === 0) return;
+        this.buyCombo(activeItems);
+      });
+    }
+
+    updateComboCalculations();
   },
 
   async showAddedModal(product, options = {}) {
@@ -334,45 +513,52 @@ const CartService = {
     if (countEl) countEl.textContent = `${totals.itemCount} ${totals.itemCount === 1 ? 'item' : 'items'}`;
 
     if (recTitle) {
-      recTitle.textContent = `Frequently Paired with ${product.name.split(' ').slice(0, 3).join(' ')}...`;
+      recTitle.textContent = `More Accessories for ${product.name.split(' ').slice(0, 3).join(' ')}...`;
     }
 
-    // Populate Complementary Accessories / Products in Rail
-    if (railTrack && typeof ProductService !== 'undefined') {
+    // Populate Combo & Complementary Accessories
+    if (typeof ProductService !== 'undefined') {
       try {
         const all = await ProductService.getAllProducts();
-        const currentCart = this.getCart();
-        const cartIds = new Set(currentCart.map(c => c.productId));
-        cartIds.add(product.id);
+        
+        // 1. Render Frequently Bought Together Combo inside Added Modal
+        this.renderModalCombo(product, all);
 
-        let complements = all.filter(p => !cartIds.has(p.id) && p.asin);
-        if (complements.length < 5) complements = all.filter(p => !cartIds.has(p.id));
+        // 2. Populate Complementary Accessories / Products in Rail Track
+        if (railTrack) {
+          const currentCart = this.getCart();
+          const cartIds = new Set(currentCart.map(c => c.productId));
+          cartIds.add(product.id);
 
-        // Prioritize matching accessories (audio, gadgets, covers)
-        complements.sort((a, b) => {
-          const aMatch = (a.category === product.category || a.category === 'Audio' || a.category === 'Gadgets') ? -1 : 1;
-          const bMatch = (b.category === product.category || b.category === 'Audio' || b.category === 'Gadgets') ? -1 : 1;
-          return aMatch - bMatch;
-        });
+          let complements = all.filter(p => !cartIds.has(p.id) && p.category !== product.category);
+          if (complements.length < 5) complements = all.filter(p => !cartIds.has(p.id));
 
-        const items = complements.slice(0, 8);
-        railTrack.innerHTML = items.map(item => `
-          <div class="added-rec-card" id="added-rec-card-${item.id}">
-            <div class="added-rec-thumb">
-              <img src="${item.image}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
-            </div>
-            <div>
-              <h6 class="added-rec-title" title="${item.name}">${item.name}</h6>
-              <div class="added-rec-price-row">
-                <span class="added-rec-price">₹${Number(item.price).toLocaleString('en-IN')}</span>
-                ${item.originalPrice > item.price ? `<span class="added-rec-mrp">₹${Number(item.originalPrice).toLocaleString('en-IN')}</span>` : ''}
+          // Prioritize matching accessories (audio, watches, gadgets)
+          complements.sort((a, b) => {
+            const aIsAcc = (a.category === 'Audio' || a.category === 'Watches' || a.category === 'Gadgets') ? 0 : 1;
+            const bIsAcc = (b.category === 'Audio' || b.category === 'Watches' || b.category === 'Gadgets') ? 0 : 1;
+            return aIsAcc - bIsAcc;
+          });
+
+          const items = complements.slice(0, 8);
+          railTrack.innerHTML = items.map(item => `
+            <div class="added-rec-card" id="added-rec-card-${item.id}">
+              <div class="added-rec-thumb">
+                <img src="${item.image}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
               </div>
+              <div>
+                <h6 class="added-rec-title" title="${item.name}">${item.name}</h6>
+                <div class="added-rec-price-row">
+                  <span class="added-rec-price">₹${Number(item.price).toLocaleString('en-IN')}</span>
+                  ${item.originalPrice > item.price ? `<span class="added-rec-mrp">₹${Number(item.originalPrice).toLocaleString('en-IN')}</span>` : ''}
+                </div>
+              </div>
+              <button class="added-rec-btn" id="btn-add-rec-${item.id}" onclick="CartService.quickAddFromModal('${item.id}', this)">
+                <i class="fa-solid fa-plus"></i> Add
+              </button>
             </div>
-            <button class="added-rec-btn" id="btn-add-rec-${item.id}" onclick="CartService.quickAddFromModal('${item.id}', this)">
-              <i class="fa-solid fa-plus"></i> Add to Bundle
-            </button>
-          </div>
-        `).join('');
+          `).join('');
+        }
       } catch (e) {
         console.warn('Error loading complementary items for added modal:', e);
       }
