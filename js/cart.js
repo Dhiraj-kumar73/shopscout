@@ -270,6 +270,20 @@ const CartService = {
 
           </div>
 
+          <!-- Products Currently in Your Order / Cart -->
+          <div class="added-modal-order-items-box" id="added-modal-order-items-box">
+            <div class="modal-order-items-header">
+              <div class="modal-order-items-title">
+                <i class="fa-solid fa-basket-shopping text-primary"></i>
+                <span>Products in Your Cart (<span id="modal-order-items-count">0</span>):</span>
+              </div>
+              <span class="modal-order-items-hint">You can change quantity or remove items below</span>
+            </div>
+            <div class="modal-order-items-grid" id="modal-order-items-grid">
+              <!-- Dynamically populated cards for each product currently in the cart -->
+            </div>
+          </div>
+
           <!-- Interactive Accessories & Add-ons Selection (User Chooses freewill) -->
           <div class="added-modal-choose-section" id="added-modal-choose-section">
             <div class="choose-section-header">
@@ -340,7 +354,7 @@ const CartService = {
       }
     }
 
-    // Update Totals
+    // Update Totals & Render Current Items List in Modal
     this.updateModalTotals();
 
     // Populate Accessories for user to freely browse and choose
@@ -363,6 +377,67 @@ const CartService = {
     const countEl = document.getElementById('added-modal-item-count');
     if (subtotalEl) subtotalEl.textContent = '₹' + Number(totals.total || 0).toLocaleString('en-IN');
     if (countEl) countEl.textContent = `${totals.itemCount} ${totals.itemCount === 1 ? 'item' : 'items'}`;
+
+    this.renderModalCartItems();
+  },
+
+  renderModalCartItems() {
+    const container = document.getElementById('added-modal-order-items-box');
+    const countEl = document.getElementById('modal-order-items-count');
+    const gridEl = document.getElementById('modal-order-items-grid');
+    if (!container || !gridEl) return;
+
+    const cart = this.getCart();
+    const totals = this.getTotals();
+
+    if (countEl) {
+      countEl.textContent = `${totals.itemCount} ${totals.itemCount === 1 ? 'item' : 'items'}`;
+    }
+
+    if (cart.length === 0) {
+      gridEl.innerHTML = `
+        <div style="text-align: center; padding: 0.85rem; color: var(--muted); font-size: 0.82rem;">
+          Your cart is currently empty. Pick an item below to add to your order.
+        </div>
+      `;
+      return;
+    }
+
+    gridEl.innerHTML = cart.map(item => `
+      <div class="modal-cart-item-chip" id="modal-cart-chip-${item.cartItemId}">
+        <div class="modal-cart-chip-thumb">
+          <img src="${item.image}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
+        </div>
+        <div class="modal-cart-chip-body">
+          <div class="modal-cart-chip-name" title="${item.name}">${item.name}</div>
+          <div class="modal-cart-chip-meta">
+            <span class="modal-cart-chip-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+            ${item.quantity > 1 ? `<span class="modal-cart-chip-unit-price">(₹${Number(item.price).toLocaleString('en-IN')} each)</span>` : ''}
+            ${item.variant ? `<span style="color: var(--muted); font-size: 0.72rem;">• ${item.variant}</span>` : ''}
+          </div>
+        </div>
+        <div class="modal-cart-chip-stepper">
+          <button type="button" class="modal-chip-step-btn" onclick="CartService.updateQuantityFromModal('${item.cartItemId}', -1)" title="Decrease quantity">&minus;</button>
+          <span class="modal-chip-qty">${item.quantity}</span>
+          <button type="button" class="modal-chip-step-btn" onclick="CartService.updateQuantityFromModal('${item.cartItemId}', 1)" title="Increase quantity">&plus;</button>
+        </div>
+        <button type="button" class="modal-cart-chip-remove" onclick="CartService.removeItemFromModal('${item.cartItemId}')" title="Remove from order">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    `).join('');
+  },
+
+  updateQuantityFromModal(cartItemId, delta) {
+    this.updateQuantity(cartItemId, delta);
+    this.updateModalTotals();
+    this.renderFilteredChooseGrid();
+  },
+
+  removeItemFromModal(cartItemId) {
+    this.removeFromCart(cartItemId);
+    this.updateModalTotals();
+    this.renderFilteredChooseGrid();
   },
 
   renderChooseAccessories(mainProduct, allProducts) {

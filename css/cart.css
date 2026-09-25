@@ -1403,6 +1403,206 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   PRODUCTS CURRENTLY ADDED IN THE MODAL CART (ITEMS IN YOUR ORDER)
+   ══════════════════════════════════════════════════════════════════ */
+.added-modal-order-items-box {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 14px);
+  padding: 1rem 1.15rem;
+  margin-top: 1.25rem;
+}
+
+.modal-order-items-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-order-items-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.modal-order-items-hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.modal-order-items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 190px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.modal-order-items-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.modal-order-items-grid::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.modal-cart-item-chip {
+  display: grid;
+  grid-template-columns: 46px 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.modal-cart-item-chip:hover {
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.modal-cart-chip-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.modal-cart-chip-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.modal-cart-chip-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-cart-chip-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-cart-chip-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+}
+
+.modal-cart-chip-price {
+  font-weight: 800;
+  color: var(--text);
+  font-size: 0.84rem;
+}
+
+.modal-cart-chip-unit-price {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.modal-cart-chip-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
+  overflow: hidden;
+}
+
+.modal-chip-step-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.modal-chip-step-btn:hover {
+  background: var(--surface);
+  color: var(--primary);
+}
+
+.modal-chip-qty {
+  width: 22px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modal-cart-chip-remove {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.modal-cart-chip-remove:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+}
+
+@media (max-width: 580px) {
+  .modal-cart-item-chip {
+    grid-template-columns: 40px 1fr auto;
+    gap: 0.5rem;
+    padding: 0.45rem 0.6rem;
+  }
+  .modal-cart-chip-thumb {
+    width: 40px;
+    height: 40px;
+  }
+  .modal-cart-chip-remove {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .modal-cart-chip-stepper {
+    grid-column: 2 / span 2;
+    width: fit-content;
+    margin-top: 4px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    INTERACTIVE USER-CHOICE ACCESSORIES & ADD-ONS (NO FORCED BUNDLES)
    ══════════════════════════════════════════════════════════════════ */
 .added-modal-choose-section {
