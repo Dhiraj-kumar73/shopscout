@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart — ShopScout</title>
+  <meta name="description" content="View items in your cart, calculate total savings, and transfer your multi-item bundle directly to Amazon India with 1 click.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/product-card.css">
+  <link rel="stylesheet" href="../css/cart.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- ==================== CLEAN BRANDED PLATFORM HEADER ==================== -->
+  <header class="site-header" id="main-header" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.85rem 0;">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+      
+      <!-- Back to Shopping -->
+      <a href="products.html" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-full); padding: 0.45rem 1.1rem; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> <span>Continue Shopping</span>
+      </a>
+
+      <!-- Prominent Platform Branding (Center) -->
+      <a href="../index.html" class="brand-logo" style="font-size: 1.6rem; display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none;">
+        <span class="brand-icon-wrap" style="width: 42px; height: 42px; font-size: 1.25rem; background: var(--primary); color: #fff; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
+      </a>
+
+      <!-- Theme Toggle & Active Cart Indicator -->
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <button class="nav-cart-btn" onclick="CartService.goToCart()" title="Shopping Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
+          <i class="fa-regular fa-moon moon-icon"></i>
+          <i class="fa-solid fa-sun sun-icon"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CART VIEW ==================== -->
+  <main class="main-content">
+    <div class="container" style="padding-top: 1.75rem; padding-bottom: 5rem;">
+      
+      <!-- Breadcrumbs -->
+      <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem;">
+        <a href="../index.html" style="color: var(--primary); text-decoration: none; font-weight: 600;"><i class="fa-solid fa-house"></i> Home</a>
+        <span>/</span>
+        <span style="color: var(--text); font-weight: 600;">Shopping Cart</span>
+      </div>
+
+      <!-- Page Heading -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="section-badge"><i class="fa-solid fa-cart-shopping"></i> Review Your Bundle</span>
+          <h1 style="font-size: 2.15rem; font-weight: 800; margin-bottom: 0.25rem;">Shopping Cart</h1>
+          <p id="cart-page-header-subtitle" style="color: var(--muted); font-size: 0.92rem;">All items will be transferred directly to your Amazon India Cart at official prices.</p>
+        </div>
+        <button class="btn btn-outline btn-sm" id="cart-clear-all-btn" onclick="CartPageController.clearAll()" style="font-size: 0.82rem; padding: 0.4rem 0.9rem;">
+          <i class="fa-regular fa-trash-can"></i> Clear Cart
+        </button>
+      </div>
+
+      <!-- Two-Column Cart Grid -->
+      <div class="cart-page-layout">
+        
+        <!-- Left Column: Products List Container -->
+        <div class="cart-main-box">
+          
+          <!-- Delivery Guarantee Ribbon -->
+          <div class="cart-delivery-banner">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              <strong>Amazon Prime Verified Order:</strong> 
+              <span>Eligible for Free Standard Delivery &amp; 100% Genuine Seller Guarantee.</span>
+            </div>
+          </div>
+
+          <!-- Items List Injected by cart-page.js -->
+          <div id="cart-page-items-list">
+            <!-- Dynamic Content -->
+          </div>
+
+        </div>
+
+        <!-- Right Column: Sticky Order Summary Card -->
+        <div class="cart-summary-card">
+          <h3 class="cart-summary-title">Order Summary</h3>
+          
+          <div id="cart-page-summary-details">
+            <!-- Dynamic Totals Injected by cart-page.js -->
+          </div>
+
+          <button class="cart-summary-btn-amazon" id="cart-page-amazon-checkout-btn" onclick="CartService.checkoutOnAmazon()">
+            <i class="fa-brands fa-amazon" style="font-size: 1.3rem;"></i> 
+            <span>Buy All on Amazon</span> 
+            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85rem;"></i>
+          </button>
+
+          <div style="margin-top: 1rem; text-align: center; font-size: 0.76rem; color: var(--muted); line-height: 1.4;">
+            <i class="fa-solid fa-lock text-success"></i> <strong>Safe &amp; Secure Checkout:</strong> Payment, dispatch, and delivery are fulfilled by Amazon India.
+          </div>
+
+          <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.8rem; color: var(--muted);">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-shield-halved text-primary"></i> 100% Verified Amazon Sellers
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-rotate-left text-primary"></i> 7 Days Easy Replacement
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-truck-fast text-primary"></i> Fast Doorstep Dispatch
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==================== RECOMMENDATIONS SECTION (Add More Items) ==================== -->
+      <section class="cart-recommended-section">
+        <div class="cart-rec-header">
+          <h2>
+            <i class="fa-solid fa-fire text-warning"></i> 
+            <span>Customers Also Added (अक्सर पसंद आने वाले प्रोडक्ट्स)</span>
+          </h2>
+          <p>Add more items to your order and transfer everything together to Amazon in 1 click.</p>
+        </div>
+
+        <!-- Recommended Products Grid -->
+        <div class="product-grid" id="cart-recommended-grid">
+          <!-- Rendered dynamically by cart-page.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Sticky Mobile Bottom Bar -->
+  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
+    <a href="../index.html" class="bottom-bar-item">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="categories.html" class="bottom-bar-item">
+      <i class="fa-solid fa-shapes"></i>
+      <span>Categories</span>
+    </a>
+    <a href="deals.html" class="bottom-bar-item">
+      <i class="fa-solid fa-fire"></i>
+      <span>Deals</span>
+    </a>
+    <a href="cart.html" class="bottom-bar-item active" title="Cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>Cart</span>
+      <span class="bottom-badge cart-count-badge" style="display: none;">0</span>
+    </a>
+    <a href="wishlist.html" class="bottom-bar-item">
+      <i class="fa-regular fa-heart"></i>
+      <span>Wishlist</span>
+      <span class="bottom-badge wishlist-badge-count" style="display: none;">0</span>
+    </a>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/cart-page.js"></script>
+</body>
+</html>

@@ -51,7 +51,11 @@ const ShopScoutFirebase = {
     const database = this.db;
     if (!database) return null;
     try {
-      const snapshot = await database.collection('products').get();
+      const getPromise = database.collection('products').get();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Firestore timeout')), 2000)
+      );
+      const snapshot = await Promise.race([getPromise, timeoutPromise]);
       if (snapshot.empty) return [];
       const list = [];
       snapshot.forEach(doc => {

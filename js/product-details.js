@@ -6,26 +6,86 @@ const ProductDetailsController = {
   currentProduct: null,
 
   async init() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id') || 'prod-1';
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      let productId = urlParams.get('id');
 
-    const product = await ProductService.getProductById(productId);
-    if (!product) {
-      this.renderNotFound();
-      return;
+      // Fetch all products to verify catalog and provide graceful fallback
+      const allProducts = await ProductService.getAllProducts();
+
+      if (!allProducts || allProducts.length === 0) {
+        this.renderNotFound('Catalog is currently unavailable. Please check back shortly.');
+        return;
+      }
+
+      let product = null;
+      if (productId) {
+        product = ProductService.findProductInList(allProducts, productId);
+      }
+
+      // If specific product ID was not provided or not found, gracefully load the first catalog item
+      if (!product) {
+        console.warn(`[ShopScout] Product ID "${productId}" not found. Displaying primary catalog item.`);
+        product = allProducts[0];
+        if (history.replaceState && product && product.id) {
+          const newUrl = `${window.location.pathname}?id=${encodeURIComponent(product.id)}`;
+          history.replaceState({ id: product.id }, '', newUrl);
+        }
+      }
+
+      if (!product) {
+        this.renderNotFound('Product Not Found');
+        return;
+      }
+
+      this.currentProduct = product;
+      document.title = `${product.name} — ShopScout Price Comparison`;
+
+      // Safe, isolated rendering for each section so that an issue in one does not break the page
+      try { this.renderBreadcrumbs(product); } catch (e) { console.warn('Breadcrumbs error:', e); }
+      try { this.renderGallery(product); } catch (e) { console.warn('Gallery error:', e); }
+      try { this.renderInfoPanel(product); } catch (e) { console.warn('Info panel error:', e); }
+      try { this.renderVariants(product); } catch (e) { console.warn('Variants error:', e); }
+      try { this.renderPriceHistoryChart(product); } catch (e) { console.warn('Price history chart error:', e); }
+      try { this.renderFrequentlyBought(product); } catch (e) { console.warn('Frequently bought error:', e); }
+      try { this.renderTabs(product); } catch (e) { console.warn('Tabs error:', e); }
+      try { this.renderRelatedProducts(product); } catch (e) { console.warn('Related products error:', e); }
+      try { this.bindPriceAlertModal(product); } catch (e) { console.warn('Price alert modal error:', e); }
+
+      if (typeof window !== 'undefined' && !window.location.hash) {
+        window.scrollTo(0, 0);
+      }
+    } catch (criticalErr) {
+      console.error('[ShopScout] Critical error initializing product details:', criticalErr);
+      this.renderNotFound('Unable to display product details.');
     }
+  },
 
-    this.currentProduct = product;
-    document.title = `${product.name} — ShopScout Price Comparison`;
+  renderNotFound(message) {
+    const titleEl = document.getElementById('detail-title');
+    const brandEl = document.getElementById('detail-brand');
+    const currentPriceEl = document.getElementById('detail-price-current');
+    const galleryMain = document.getElementById('gallery-main');
+    const verdictEl = document.getElementById('ph-verdict');
 
-    this.renderBreadcrumbs(product);
-    this.renderGallery(product);
-    this.renderInfoPanel(product);
-    this.renderVariants(product);
-    this.renderPriceHistoryChart(product);
-    this.renderTabs(product);
-    this.renderRelatedProducts(product);
-    this.bindPriceAlertModal(product);
+    if (titleEl) titleEl.textContent = 'Product Not Found';
+    if (brandEl) brandEl.textContent = 'ShopScout Store';
+    if (currentPriceEl) currentPriceEl.textContent = '—';
+    if (verdictEl) verdictEl.textContent = 'N/A';
+
+    if (galleryMain) {
+      galleryMain.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; min-height:360px; text-align:center; padding:2rem; color:var(--muted); background:var(--surface-subtle); border-radius:var(--radius-md);">
+          <i class="fa-solid fa-box-open" style="font-size:3.5rem; color:var(--deal-orange); margin-bottom:1rem; opacity:0.85;"></i>
+          <h3 style="color:var(--text); font-weight:800; font-size:1.3rem; margin-bottom:0.5rem;">${message || 'Product Not Found'}</h3>
+          <p style="font-size:0.88rem; max-width:320px; line-height:1.5; margin-bottom:1.5rem; color:var(--muted);">The product link might be outdated or removed from our catalog.</p>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center;">
+            <a href="products.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-layer-group"></i> Browse All Products</a>
+            <a href="../index.html" class="btn btn-outline btn-sm" style="display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-house"></i> Home</a>
+          </div>
+        </div>
+      `;
+    }
   },
 
   renderBreadcrumbs(product) {
@@ -79,6 +139,15 @@ const ProductDetailsController = {
       return u && typeof u === 'string' && !u.includes('images-na.ssl-images-amazon.com') && !u.startsWith('data:');
     });
 
+    // Deduplicate images by Amazon image key or URL
+    const seenImageKeys = new Set();
+    images = images.filter(item => {
+      const key = this.getAmazonImageKey(item.url) || item.url;
+      if (!key || seenImageKeys.has(key)) return false;
+      seenImageKeys.add(key);
+      return true;
+    });
+
     if (images.length === 0) {
       const fallbackUrl = (product.image && !product.image.includes('images-na.ssl-images-amazon.com') && !product.image.startsWith('data:'))
         ? product.image
@@ -104,7 +173,7 @@ const ProductDetailsController = {
         angleChipsContainer.innerHTML = images.map((item, idx) => `
           <button type="button" class="angle-nav-chip ${idx === 0 ? 'active' : ''}" 
                   data-index="${idx}"
-                  onclick="ProductDetailsController.switchAngle(${idx}, '${item.url}', '${item.angle}', '${item.icon}')">
+                  onclick="ProductDetailsController.switchAngle(${idx}, '${item.url}', '${item.angle.replace(/'/g, "\\'")}', '${item.icon}')">
             <i class="fa-solid ${item.icon}"></i> ${item.angle}
           </button>
         `).join('');
@@ -117,11 +186,33 @@ const ProductDetailsController = {
       <div class="gallery-thumb ${idx === 0 ? 'active' : ''}" 
            data-index="${idx}"
            title="${item.angle}"
-           onclick="ProductDetailsController.switchAngle(${idx}, '${item.url}', '${item.angle}', '${item.icon}')">
+           onclick="ProductDetailsController.switchAngle(${idx}, '${item.url}', '${item.angle.replace(/'/g, "\\'")}', '${item.icon}')">
         <img src="${item.url}" alt="${item.angle}">
-        <span class="thumb-angle-tag">${item.angle.split(' ')[0]}</span>
+        <span class="thumb-angle-tag">${this.getShortAngleTag(item.angle, idx)}</span>
       </div>
     `).join('');
+  },
+
+  getAmazonImageKey(url) {
+    if (!url || typeof url !== 'string') return null;
+    const match = url.match(/\/images\/I\/([A-Za-z0-9+%-]+)\./);
+    return match ? match[1] : url;
+  },
+
+  getShortAngleTag(angle, idx) {
+    if (!angle) return `View ${idx + 1}`;
+    const lower = angle.toLowerCase();
+    if (lower.includes('front')) return 'Front';
+    if (lower.includes('back') || lower.includes('rear')) return 'Back';
+    if (lower.includes('side') || lower.includes('profile')) return 'Side';
+    if (lower.includes('texture') || lower.includes('camera') || lower.includes('detail') || lower.includes('zoom')) return 'Detail';
+    if (lower.includes('inside') || lower.includes('interior') || lower.includes('cushion') || lower.includes('lining')) return 'Inside';
+    if (lower.includes('hand') || lower.includes('lifestyle')) return 'In-Hand';
+    if (lower.includes('angle') || lower.includes('tilt')) return 'Angle';
+    if (lower.includes('box') || lower.includes('port') || lower.includes('cable') || lower.includes('accessory')) return 'Ports';
+    if (lower.includes('top') || lower.includes('control') || lower.includes('grille')) return 'Top';
+    if (lower.includes('fit') || lower.includes('pose')) return 'Fit';
+    return angle.split(' ')[0] || `View ${idx + 1}`;
   },
 
   switchAngle(index, imgSrc, angleName, iconClass) {
@@ -188,17 +279,22 @@ const ProductDetailsController = {
       discountBadgeEl.textContent = `${product.discount}% OFF`;
     }
 
-    // Primary External Buy Button (Direct to platform)
+    // ShopScout Direct "Add to Cart"
+    const addToCartBtn = document.getElementById('detail-add-to-cart');
+    if (addToCartBtn) {
+      addToCartBtn.onclick = () => {
+        if (typeof CartService !== 'undefined') {
+          CartService.addToCart(this.currentProduct || product, 1, {
+            variant: this.currentProduct?.selectedVariant || product.selectedVariant,
+            color: this.currentProduct?.selectedColor || product.selectedColor
+          });
+        }
+      };
+    }
+
+    // Primary External Buy Button (Direct to Amazon marketplace)
     if (primaryBuyBtn) {
-      // Resolve pure Amazon URL
       let targetAmzUrl = product.amazonUrl || (product.marketplace === 'Amazon' ? product.affiliateUrl : '');
-
-      primaryBuyBtn.innerHTML = `Buy on Amazon <i class="fa-brands fa-amazon" style="margin-left: 4px;"></i> <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; margin-left: 0.35rem;"></i>`;
-      primaryBuyBtn.style.background = 'linear-gradient(135deg, #FF9900, #E68A00)';
-      primaryBuyBtn.style.borderColor = '#FF9900';
-      primaryBuyBtn.style.color = '#111111';
-      primaryBuyBtn.style.fontWeight = '800';
-
       primaryBuyBtn.onclick = () => {
         ShopScout.triggerAffiliateRedirect(product.name, 'Amazon', targetAmzUrl);
       };
@@ -487,6 +583,123 @@ const ProductDetailsController = {
         if (targetPane) targetPane.classList.add('active');
       });
     });
+  },
+
+  async renderFrequentlyBought(product) {
+    const container = document.getElementById('frequently-bought-section');
+    if (!container) return;
+
+    let allProducts = [];
+    try {
+      if (typeof ProductService !== 'undefined') {
+        allProducts = await ProductService.getAllProducts();
+      }
+    } catch (e) {
+      return;
+    }
+
+    if (!Array.isArray(allProducts) || allProducts.length < 2) return;
+
+    // Pick 2 matching complementary items (different from current product)
+    let candidates = allProducts.filter(p => p.id !== product.id && p.asin);
+    if (candidates.length < 2) candidates = allProducts.filter(p => p.id !== product.id);
+    if (candidates.length < 2) return;
+
+    // Smart complementary selection:
+    // If mobile: pick case / charger / earphone
+    // Otherwise pick from related or popular items
+    let item1 = candidates.find(p => p.category === product.category && p.price < product.price) || candidates[0];
+    let item2 = candidates.find(p => p.id !== item1.id && (p.category === 'Audio' || p.category === 'Gadgets' || p.price < product.price)) || candidates[1];
+
+    const comboItems = [
+      { product: product, isMain: true, checked: true },
+      { product: item1, isMain: false, checked: true },
+      { product: item2, isMain: false, checked: true }
+    ];
+
+    container.style.display = 'block';
+
+    const updateCalculations = () => {
+      const activeItems = comboItems.filter(ci => ci.checked).map(ci => ci.product);
+      const total = activeItems.reduce((sum, p) => sum + (Number(p.price) || 0), 0);
+      const totalEl = container.querySelector('#fb-total-price');
+      const countEl = container.querySelector('#fb-checked-count');
+      const buyBtn = container.querySelector('#fb-combo-buy-btn');
+
+      if (totalEl) totalEl.textContent = ShopScout.formatPrice(total);
+      if (countEl) countEl.textContent = `${activeItems.length} items`;
+      if (buyBtn) {
+        buyBtn.disabled = activeItems.length === 0;
+        buyBtn.innerHTML = `<i class="fa-brands fa-amazon"></i> Buy Combo on Amazon (${activeItems.length} Items) <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i>`;
+      }
+    };
+
+    container.innerHTML = `
+      <div class="fb-header">
+        <div class="fb-header-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <h3 class="fb-title">Frequently Bought Together <span style="font-size: 0.78rem; background: rgba(255, 153, 0, 0.15); color: #D97706; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700;">Combo Offer</span></h3>
+          <span class="fb-subtitle">Users who bought this also bundled these items together on Amazon</span>
+        </div>
+      </div>
+
+      <!-- Combo Visual Items Strip -->
+      <div class="fb-grid">
+        ${comboItems.map((ci, idx) => `
+          <div class="fb-item-thumb" title="${ci.product.name}">
+            <img src="${ci.product.image}" alt="${ci.product.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
+          </div>
+          ${idx < comboItems.length - 1 ? '<span class="fb-plus-sign">&plus;</span>' : ''}
+        `).join('')}
+      </div>
+
+      <!-- Checkbox Selection List -->
+      <div class="fb-checklist">
+        ${comboItems.map((ci, idx) => `
+          <label class="fb-check-item">
+            <input type="checkbox" data-idx="${idx}" ${ci.checked ? 'checked' : ''}>
+            <span>
+              <strong>${ci.isMain ? 'This item:' : ''}</strong> ${ci.product.name}
+              <span style="font-weight: 800; color: var(--text); margin-left: 6px;">${ShopScout.formatPrice(ci.product.price)}</span>
+            </span>
+          </label>
+        `).join('')}
+      </div>
+
+      <!-- Combo Summary & 1-Click Amazon Checkout -->
+      <div class="fb-action-row">
+        <div class="fb-price-box">
+          <span class="fb-price-label">Total Combo Price (<span id="fb-checked-count">3 items</span>):</span>
+          <span class="fb-price-total" id="fb-total-price">Calculating...</span>
+        </div>
+        <button class="fb-btn-combo" id="fb-combo-buy-btn" title="Transfer combo products together to Amazon India Cart">
+          <i class="fa-brands fa-amazon"></i> Buy Combo on Amazon (3 Items)
+        </button>
+      </div>
+    `;
+
+    // Bind checkboxes
+    container.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+      chk.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.getAttribute('data-idx'));
+        comboItems[idx].checked = e.target.checked;
+        updateCalculations();
+      });
+    });
+
+    // Bind Amazon Combo Buy Button
+    const buyBtn = container.querySelector('#fb-combo-buy-btn');
+    if (buyBtn) {
+      buyBtn.addEventListener('click', () => {
+        const activeItems = comboItems.filter(ci => ci.checked).map(ci => ci.product);
+        if (activeItems.length === 0) return;
+        if (typeof CartService !== 'undefined' && CartService.buyCombo) {
+          CartService.buyCombo(activeItems);
+        }
+      });
+    }
+
+    updateCalculations();
   },
 
   renderRichShowcase(product) {
@@ -1053,8 +1266,14 @@ const ProductDetailsController = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.location.pathname.includes('product-details.html')) {
+function initProductDetailsPage() {
+  if (window.location.pathname.includes('product-details') || document.getElementById('detail-title')) {
     ProductDetailsController.init();
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProductDetailsPage);
+} else {
+  initProductDetailsPage();
+}

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/cart.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
@@ -74,6 +75,13 @@
             <span class="compare-badge-count action-badge-count" style="display:none;">0</span>
           </div>
           <span class="header-action-label">Compare</span>
+        </a>
+        <a href="javascript:void(0)" onclick="CartService.openDrawer()" class="header-action-item" title="Cart">
+          <div class="header-action-icon-wrap">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-count-badge action-badge-count" style="display:none;">0</span>
+          </div>
+          <span class="header-action-label">Cart</span>
         </a>
         <div class="header-actions-divider"></div>
         <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
@@ -255,9 +263,10 @@
       <i class="fa-solid fa-fire"></i>
       <span>Deals</span>
     </a>
-    <a href="search.html" class="bottom-bar-item">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <span>Search</span>
+    <a href="javascript:void(0)" onclick="CartService.openDrawer()" class="bottom-bar-item" title="Cart">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Cart</span>
+      <span class="bottom-badge cart-count-badge" style="display: none;">0</span>
     </a>
     <a href="wishlist.html" class="bottom-bar-item">
       <i class="fa-regular fa-heart"></i>
@@ -285,5 +294,6 @@
   <script src="../js/main.js"></script>
   <script src="../js/navbar.js"></script>
   <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
 </body>
 </html>

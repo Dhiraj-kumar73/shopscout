@@ -2,6 +2,25 @@
  * SHOPSCOUT — GLOBAL UTILITIES & CORE STORE
  */
 
+// Disable automatic browser scroll restoration so all pages consistently reload at the top
+if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  });
+
+  window.addEventListener('pageshow', (e) => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  });
+}
+
 const ShopScout = {
   // LocalStorage Keys
   KEYS: {
@@ -83,6 +102,27 @@ const ShopScout = {
       }
     } catch (e) {}
     return this.getAffiliateConfig();
+  },
+
+  async quickAddToCart(productId, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    try {
+      if (typeof ProductService !== 'undefined') {
+        const product = await ProductService.getProductById(productId);
+        if (product && typeof CartService !== 'undefined') {
+          CartService.addToCart(product, 1);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Error fetching product for cart:', e);
+    }
+    if (typeof CartService !== 'undefined') {
+      CartService.openDrawer();
+    }
   },
 
   // Wishlist Actions
@@ -914,6 +954,224 @@ const ShopScout = {
     this.updateBadges();
     this.renderCompareDrawer();
     this.loadServerAffiliateConfig();
+
+    // Initialize Smart Deals Community FAB (single, non-intrusive, auto-hiding on scroll)
+    try {
+      if (typeof DealsCommunityFAB !== 'undefined') {
+        DealsCommunityFAB.init();
+      }
+    } catch (e) {
+      console.warn('Community FAB init error:', e);
+    }
+
+    // Ensure page begins at the top on initial load & refreshes (unless a hash anchor is explicitly targeted)
+    if (typeof window !== 'undefined' && !window.location.hash) {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+    }
+  }
+};
+
+/**
+ * SMART COMMUNITY SPEED-DIAL FAB CONTROLLER
+ * Consolidates WhatsApp & Telegram floating buttons into a single unobtrusive FAB
+ * Features: auto-hide on scroll-down, smooth expand popover, minimize/dismiss option
+ */
+const DealsCommunityFAB = {
+  container: null,
+  wrapper: null,
+  popover: null,
+  trigger: null,
+  lastScrollY: 0,
+
+  init() {
+    this.container = document.querySelector('.floating-deals-community');
+    if (!this.container) return;
+
+    const isDismissed = sessionStorage.getItem('shopscout_community_fab_dismissed') === 'true';
+
+    this.render();
+    this.bindEvents();
+    this.initScrollBehavior();
+
+    if (isDismissed) {
+      this.minimizeToEdge();
+    }
+  },
+
+  render() {
+    this.container.innerHTML = `
+      <div class="community-fab-wrapper" id="community-fab-wrapper">
+        <!-- Expandable Popover Card -->
+        <div class="community-fab-popover" id="community-fab-popover" role="dialog" aria-hidden="true">
+          <div class="community-popover-header">
+            <div class="popover-title-row">
+              <span class="live-pulse-dot"></span>
+              <strong>VIP Deals Community</strong>
+            </div>
+            <button class="popover-close-btn" id="community-popover-close" title="Close" aria-label="Close">&times;</button>
+          </div>
+          <p class="community-popover-desc">Join 25,000+ smart shoppers for instant loot drops &amp; flash alerts:</p>
+          <div class="community-popover-channels">
+            <a href="https://whatsapp.com/channel/0029VaShopScoutAlerts" target="_blank" rel="noopener noreferrer" class="channel-card wa-card">
+              <div class="channel-badge wa"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="channel-text">
+                <span class="channel-title">WhatsApp Loot Channel</span>
+                <span class="channel-sub">⚡ Daily verified 70%+ loot deals</span>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square channel-arrow"></i>
+            </a>
+            <a href="https://t.me/ShopScoutDeals" target="_blank" rel="noopener noreferrer" class="channel-card tg-card">
+              <div class="channel-badge tg"><i class="fa-brands fa-telegram"></i></div>
+              <div class="channel-text">
+                <span class="channel-title">Telegram Loot Channel</span>
+                <span class="channel-sub">🚀 Instant price drop bot alerts</span>
+              </div>
+              <i class="fa-solid fa-arrow-up-right-from-square channel-arrow"></i>
+            </a>
+          </div>
+          <div class="community-popover-footer">
+            <button class="btn-hide-fab" id="community-hide-fab-btn" title="Hide this floating button">
+              <i class="fa-regular fa-eye-slash"></i> Don't show floating button
+            </button>
+          </div>
+        </div>
+
+        <!-- Single Smart Trigger Button -->
+        <button class="community-fab-trigger" id="community-fab-trigger" aria-label="Open Deals Community" title="Join WhatsApp & Telegram Loot Channels">
+          <span class="fab-icons">
+            <i class="fa-brands fa-whatsapp icon-wa"></i>
+            <i class="fa-brands fa-telegram icon-tg"></i>
+          </span>
+          <span class="fab-text">Deals Alerts</span>
+          <span class="fab-badge">LIVE</span>
+        </button>
+
+        <!-- Discreet Minimized Edge Tab (when dismissed) -->
+        <button class="community-edge-tab" id="community-edge-tab" title="Open Deals Alerts" style="display: none;">
+          <i class="fa-solid fa-bolt" style="font-size: 0.85rem; color: #FF9900;"></i>
+          <span class="edge-dot"></span>
+        </button>
+      </div>
+    `;
+
+    this.wrapper = document.getElementById('community-fab-wrapper');
+    this.popover = document.getElementById('community-fab-popover');
+    this.trigger = document.getElementById('community-fab-trigger');
+  },
+
+  bindEvents() {
+    if (!this.trigger || !this.popover) return;
+
+    // Toggle popover
+    this.trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.togglePopover();
+    });
+
+    // Close button
+    const closeBtn = document.getElementById('community-popover-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.closePopover();
+      });
+    }
+
+    // Hide FAB button
+    const hideBtn = document.getElementById('community-hide-fab-btn');
+    if (hideBtn) {
+      hideBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.closePopover();
+        this.minimizeToEdge();
+        sessionStorage.setItem('shopscout_community_fab_dismissed', 'true');
+        if (typeof ShopScout !== 'undefined' && ShopScout.toast) {
+          ShopScout.toast('Community button minimized to edge', 'info');
+        }
+      });
+    }
+
+    // Edge Tab restore
+    const edgeTab = document.getElementById('community-edge-tab');
+    if (edgeTab) {
+      edgeTab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.restoreFromEdge();
+        sessionStorage.removeItem('shopscout_community_fab_dismissed');
+      });
+    }
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (this.popover && this.popover.classList.contains('active')) {
+        if (!this.popover.contains(e.target) && !this.trigger.contains(e.target)) {
+          this.closePopover();
+        }
+      }
+    });
+  },
+
+  togglePopover() {
+    if (!this.popover) return;
+    const isActive = this.popover.classList.toggle('active');
+    this.popover.setAttribute('aria-hidden', !isActive);
+  },
+
+  closePopover() {
+    if (!this.popover) return;
+    this.popover.classList.remove('active');
+    this.popover.setAttribute('aria-hidden', 'true');
+  },
+
+  minimizeToEdge() {
+    if (this.trigger) this.trigger.style.display = 'none';
+    const edgeTab = document.getElementById('community-edge-tab');
+    if (edgeTab) edgeTab.style.display = 'flex';
+  },
+
+  restoreFromEdge() {
+    if (this.trigger) this.trigger.style.display = 'inline-flex';
+    const edgeTab = document.getElementById('community-edge-tab');
+    if (edgeTab) edgeTab.style.display = 'none';
+  },
+
+  initScrollBehavior() {
+    this.lastScrollY = window.scrollY || window.pageYOffset;
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY || window.pageYOffset;
+
+          // Don't auto-hide if popover is actively open
+          if (this.popover && this.popover.classList.contains('active')) {
+            this.lastScrollY = currentScrollY;
+            ticking = false;
+            return;
+          }
+
+          // If scrolling down significantly (> 25px), hide FAB so reading products is 100% clean
+          if (currentScrollY > this.lastScrollY + 25 && currentScrollY > 150) {
+            if (this.container && !this.container.classList.contains('scrolled-down')) {
+              this.container.classList.add('scrolled-down');
+            }
+          } else if (currentScrollY < this.lastScrollY - 15 || currentScrollY < 80) {
+            // Scrolling up or near top -> gently restore
+            if (this.container && this.container.classList.contains('scrolled-down')) {
+              this.container.classList.remove('scrolled-down');
+            }
+          }
+
+          this.lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
   }
 };
 

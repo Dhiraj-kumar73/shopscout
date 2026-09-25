@@ -7,77 +7,130 @@ const ProductService = {
 
   async getAllProducts() {
     const deletedIds = JSON.parse(localStorage.getItem(ShopScout?.KEYS?.DELETED_PRODUCTS || 'shopscout_deleted_products')) || [];
-
     const customKey = (typeof ShopScout !== 'undefined' && ShopScout?.KEYS?.CUSTOM_PRODUCTS) ? ShopScout.KEYS.CUSTOM_PRODUCTS : 'shopscout_custom_products';
 
-    if (this._cache) {
+    // 1. In-memory fast cache
+    if (this._cache && this._cache.length > 0) {
       const custom = JSON.parse(localStorage.getItem(customKey)) || [];
       if (custom.length > 0) {
-        const customMap = new Map(custom.map(p => [p.id, p]));
-        this._cache = this._cache.map(p => customMap.has(p.id) ? customMap.get(p.id) : p);
+        const customMap = new Map(custom.map(p => [String(p.id).trim(), p]));
+        this._cache = this._cache.map(p => customMap.has(String(p.id).trim()) ? customMap.get(String(p.id).trim()) : p);
         custom.forEach(cp => {
-          if (!this._cache.some(bp => bp.id === cp.id)) {
+          if (!this._cache.some(bp => String(bp.id).trim() === String(cp.id).trim())) {
             this._cache.unshift(cp);
           }
         });
       }
-      return this._cache.filter(p => !deletedIds.includes(p.id));
+      return this._cache.filter(p => !deletedIds.includes(String(p.id)));
     }
 
-    // 1. Try Firebase Cloud Firestore first for instant global sync
-    if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
-      try {
-        const cloudProducts = await ShopScoutFirebase.getAllProducts();
-        if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
-          const sanitized = cloudProducts.filter(p => !deletedIds.includes(p.id)).map(p => this._sanitize(p));
-          this._cache = sanitized;
-          return sanitized;
-        }
-      } catch (err) {
-        console.warn('[ProductService] Cloud Firestore read fallback:', err.message);
-      }
-    }
-
-    // Determine correct relative path to data/products.json
-    let dataUrl = '/data/products.json';
-    if (window.location.protocol === 'file:') {
-      const isPagesSubdir = window.location.pathname.includes('/pages/');
-      const isAdminSubdir = window.location.pathname.includes('/admin/');
-      dataUrl = (isPagesSubdir || isAdminSubdir) ? '../data/products.json' : 'data/products.json';
-    }
-
+    // 2. SessionStorage cache for ultra-fast (sub-millisecond) page transitions
     try {
-      const res = await fetch(`${dataUrl}?t=${Date.now()}`, { cache: 'no-cache' });
-      if (!res.ok) throw new Error('Failed to load products');
-      let baseProducts = await res.json();
-
-      // Seed Cloud Firestore with baseline products if empty
-      if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
-        ShopScoutFirebase.seedInitialProducts(baseProducts);
-      }
-
-      // Check for any admin added / updated products in localStorage
-      const customKey = (typeof ShopScout !== 'undefined' && ShopScout?.KEYS?.CUSTOM_PRODUCTS) ? ShopScout.KEYS.CUSTOM_PRODUCTS : 'shopscout_custom_products';
-      const custom = JSON.parse(localStorage.getItem(customKey)) || [];
-      if (custom.length > 0) {
-        // Merge or replace
-        const customMap = new Map(custom.map(p => [p.id, p]));
-        baseProducts = baseProducts.map(p => customMap.has(p.id) ? customMap.get(p.id) : p);
-        // Append brand new ones
-        custom.forEach(cp => {
-          if (!baseProducts.some(bp => bp.id === cp.id)) {
-            baseProducts.unshift(cp);
+      const sessionData = sessionStorage.getItem('shopscout_cached_catalog');
+      if (sessionData) {
+        const parsed = JSON.parse(sessionData);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this._cache = parsed;
+          const custom = JSON.parse(localStorage.getItem(customKey)) || [];
+          if (custom.length > 0) {
+            const customMap = new Map(custom.map(p => [String(p.id).trim(), p]));
+            this._cache = this._cache.map(p => customMap.has(String(p.id).trim()) ? customMap.get(String(p.id).trim()) : p);
+            custom.forEach(cp => {
+              if (!this._cache.some(bp => String(bp.id).trim() === String(cp.id).trim())) {
+                this._cache.unshift(cp);
+              }
+            });
           }
-        });
+          return this._cache.filter(p => !deletedIds.includes(String(p.id)));
+        }
       }
+    } catch (e) {}
 
-      baseProducts = baseProducts.filter(p => !deletedIds.includes(p.id)).map(p => this._sanitize(p));
-      this._cache = baseProducts;
-      return baseProducts;
-    } catch (e) {
-      console.error('Error fetching product data:', e);
-      return [];
+    // 3. Determine correct paths to local data/products.json with multi-level fallbacks
+    const isPagesSubdir = window.location.pathname.includes('/pages/') || window.location.pathname.includes('/pages');
+    const isAdminSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/admin');
+    const relativeDataUrl = (isPagesSubdir || isAdminSubdir) ? '../data/products.json' : 'data/products.json';
+    const absoluteDataUrl = '/data/products.json';
+
+    let baseProducts = [];
+
+    const tryFetch = async (url) => {
+      try {
+        const res = await fetch(url);
+        if (res.ok) return await res.json();
+      } catch (e) {}
+      return null;
+    };
+
+    // Try absolute path first (standard on web hosts like Vercel and localhost), then relative
+    let fileProducts = await tryFetch(absoluteDataUrl);
+    if (!Array.isArray(fileProducts) || fileProducts.length === 0) {
+      fileProducts = await tryFetch(relativeDataUrl);
     }
+    if (!Array.isArray(fileProducts) || fileProducts.length === 0) {
+      fileProducts = await tryFetch('data/products.json');
+    }
+    if (!Array.isArray(fileProducts)) fileProducts = [];
+
+    const fileMap = new Map(fileProducts.map(p => [String(p.id).trim(), p]));
+    baseProducts = fileProducts;
+
+    // Check for any admin added / updated products in localStorage & merge
+    const custom = JSON.parse(localStorage.getItem(customKey)) || [];
+    if (custom.length > 0) {
+      const customMap = new Map(custom.map(p => [String(p.id).trim(), p]));
+      baseProducts = baseProducts.map(p => {
+        const id = String(p.id).trim();
+        if (customMap.has(id)) {
+          const cp = customMap.get(id);
+          if (fileMap.has(id) && fileMap.get(id).gallery && fileMap.get(id).gallery.length > 0) {
+            return { ...cp, gallery: fileMap.get(id).gallery, image: fileMap.get(id).image || cp.image };
+          }
+          return cp;
+        }
+        return p;
+      });
+      custom.forEach(cp => {
+        if (!baseProducts.some(bp => String(bp.id).trim() === String(cp.id).trim())) {
+          baseProducts.unshift(cp);
+        }
+      });
+    }
+
+    baseProducts = baseProducts.filter(p => !deletedIds.includes(String(p.id))).map(p => this._sanitize(p));
+    this._cache = baseProducts;
+
+    // Cache to sessionStorage for subsequent page loads
+    try {
+      sessionStorage.setItem('shopscout_cached_catalog', JSON.stringify(baseProducts));
+    } catch (e) {}
+
+    // 4. Background Non-Blocking Firestore Sync (Does NOT block page rendering!)
+    if (typeof ShopScoutFirebase !== 'undefined' && ShopScoutFirebase.isReady()) {
+      setTimeout(async () => {
+        try {
+          const cloudProducts = await ShopScoutFirebase.getAllProducts();
+          if (Array.isArray(cloudProducts) && cloudProducts.length > 0) {
+            const currentIds = new Set(this._cache.map(p => String(p.id).trim()));
+            let hasNew = false;
+            cloudProducts.forEach(cp => {
+              const id = String(cp.id).trim();
+              if (!currentIds.has(id)) {
+                this._cache.unshift(this._sanitize(cp));
+                hasNew = true;
+              }
+            });
+            if (hasNew) {
+              try {
+                sessionStorage.setItem('shopscout_cached_catalog', JSON.stringify(this._cache));
+              } catch (e) {}
+            }
+          }
+        } catch (err) {}
+      }, 500);
+    }
+
+    return baseProducts;
   },
 
   _sanitize(p) {
@@ -111,10 +164,32 @@ const ProductService = {
     return p;
   },
 
+  findProductInList(products, id) {
+    if (!products || products.length === 0) return null;
+    if (!id) return this._sanitize(products[0]);
+
+    const targetId = String(id).trim().toLowerCase();
+    let prod = products.find(p => String(p.id).trim().toLowerCase() === targetId);
+
+    // Partial or fuzzy fallback match
+    if (!prod) {
+      prod = products.find(p => {
+        const pid = String(p.id).trim().toLowerCase();
+        return pid.includes(targetId) || targetId.includes(pid);
+      });
+    }
+
+    // Name slug fallback match
+    if (!prod && targetId.length > 3) {
+      prod = products.find(p => p.name && p.name.toLowerCase().includes(targetId));
+    }
+
+    return prod ? this._sanitize(prod) : null;
+  },
+
   async getProductById(id) {
     const products = await this.getAllProducts();
-    const prod = products.find(p => String(p.id) === String(id));
-    return this._sanitize(prod);
+    return this.findProductInList(products, id);
   },
 
   async getTrendingProducts(limit = 8) {
@@ -130,7 +205,7 @@ const ProductService = {
 
   async getByCategory(category) {
     const products = await this.getAllProducts();
-    return products.filter(p => p.category.toLowerCase() === category.toLowerCase());
+    return products.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
   }
 };
 
@@ -143,7 +218,13 @@ function renderProductCard(product) {
   const isInCompare = ShopScout.isInCompare(product.id);
 
   const isPagesSubdir = window.location.pathname.includes('/pages/');
-  const detailsUrl = isPagesSubdir ? `product-details.html?id=${product.id}` : `pages/product-details.html?id=${product.id}`;
+  const isAdminSubdir = window.location.pathname.includes('/admin/');
+  let detailsUrl = `pages/product-details.html?id=${encodeURIComponent(product.id)}`;
+  if (isPagesSubdir) {
+    detailsUrl = `product-details.html?id=${encodeURIComponent(product.id)}`;
+  } else if (isAdminSubdir) {
+    detailsUrl = `../pages/product-details.html?id=${encodeURIComponent(product.id)}`;
+  }
 
   const storeLower = 'amazon';
   const storeIcon = 'fa-brands fa-amazon';
@@ -188,7 +269,7 @@ function renderProductCard(product) {
       <!-- LAYER 1: Compact Visual Image & Floating Badges -->
       <div class="product-card-img-wrap">
         <a href="${detailsUrl}">
-          <img src="${cardImg}" alt="${product.name}" class="product-card-img" loading="lazy"
+          <img src="${cardImg}" alt="${product.name}" class="product-card-img" loading="lazy" decoding="async"
                onload="if(this.naturalWidth<=1){this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';}"
                onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80'">
         </a>
@@ -197,6 +278,9 @@ function renderProductCard(product) {
           ${hotBadge}
         </div>
         <div class="product-card-actions">
+          <button class="card-action-btn" onclick="ShopScout.quickAddToCart('${product.id}', event)" title="Add to Cart" aria-label="Add to Cart">
+            <i class="fa-solid fa-cart-plus"></i>
+          </button>
           <button class="card-action-btn ${isWishlisted ? 'active' : ''}" data-wishlist-id="${product.id}" onclick="ShopScout.toggleWishlist('${product.id}')" title="Save to Wishlist" aria-label="Save to Wishlist">
             <i class="${isWishlisted ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
           </button>
@@ -239,13 +323,13 @@ function renderProductCard(product) {
 
       </div>
 
-      <!-- LAYER 6: Compact High-Converting Action Footer -->
+      <!-- LAYER 6: Dual Action Footer (Cart + Amazon Buy) -->
       <div class="product-card-footer">
-        <a href="${detailsUrl}" class="btn-card-details" title="View details">
-          <i class="fa-solid fa-eye"></i> Details
-        </a>
-        <button class="btn-card-buy ${storeLower}" data-affiliate-url="${product.affiliateUrl || ''}" onclick="ShopScout.openBuyModal('${product.id}')">
-          <i class="${storeIcon}"></i> Buy on ${product.marketplace || 'Amazon'} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.65rem;"></i>
+        <button class="btn-card-details btn-card-cart" title="Add to Cart" onclick="ShopScout.quickAddToCart('${product.id}', event)" aria-label="Add to Cart">
+          <i class="fa-solid fa-cart-plus"></i> <span class="btn-cart-text">Cart</span>
+        </button>
+        <button class="btn-card-buy ${storeLower}" data-affiliate-url="${product.affiliateUrl || ''}" onclick="ShopScout.openBuyModal('${product.id}')" title="Buy on ${product.marketplace || 'Amazon'}">
+          <i class="${storeIcon}"></i> <span class="buy-btn-full">Buy on ${product.marketplace || 'Amazon'}</span><span class="buy-btn-short">Amazon</span> <i class="fa-solid fa-arrow-up-right-from-square buy-icon-ext"></i>
         </button>
       </div>
 

@@ -81,9 +81,11 @@
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
 }
 
-.main-image-viewport:hover img,
-.main-image-viewport:hover #main-image-display {
-  transform: scale(1.03) !important;
+@media (hover: hover) and (pointer: fine) {
+  .main-image-viewport:hover img,
+  .main-image-viewport:hover #main-image-display {
+    transform: scale(1.03) !important;
+  }
 }
 
 .gallery-thumbnails-rail {
@@ -1788,11 +1790,13 @@
   overflow: hidden;
   background: var(--surface-subtle);
   padding: 0.5rem;
+  touch-action: pan-y;
 }
 
 .ph-chart-wrap canvas {
   width: 100% !important;
   height: 100% !important;
+  touch-action: pan-y;
 }
 
 /* ── Dark mode adjustments ── */

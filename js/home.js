@@ -6,11 +6,11 @@
 document.addEventListener("DOMContentLoaded", async function() {
   var allProducts = await ProductService.getAllProducts();
 
-  // 1. Render Today Best Deals Grid
+  // 1. Render Today Best Deals Grid (Top 10 curated deals)
   var dealsGrid = document.getElementById("home-deals-grid");
   if (dealsGrid) {
     var deals = allProducts.filter(function(p) { return p.isDeal || (p.discount && p.discount >= 15); });
-    var toRender = deals.length > 0 ? deals : allProducts;
+    var toRender = (deals.length > 0 ? deals : allProducts).slice(0, 10);
     if (toRender.length > 0) {
       dealsGrid.innerHTML = toRender.map(function(p) { return renderProductCard(p); }).join("");
     } else {
@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
   }
 
-  // 2. Render Trending Products Grid
+  // 2. Render Trending Products Grid (Top 8 trending)
   var trendingGrid = document.getElementById("trending-products-grid");
   if (trendingGrid) {
     var trending = allProducts.filter(function(p) { return p.isTrending; });
-    var toShow = trending.length > 0 ? trending : allProducts;
+    var toShow = (trending.length > 0 ? trending : allProducts).slice(0, 8);
     if (toShow.length > 0) {
       trendingGrid.innerHTML = toShow.map(function(p) { return renderProductCard(p); }).join("");
     } else {
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
   }
 
-  // 3. Price Range Filter
+  // 3. Price Range Filter (Top 10 in selected range)
   var priceRangeGrid = document.getElementById("price-range-products-grid");
   var priceActiveTitle = document.getElementById("price-range-active-title");
   var priceActiveText = document.getElementById("price-range-active-text");
@@ -47,7 +47,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     if (filtered.length === 0) {
       priceRangeGrid.innerHTML = "<div style=\"grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)\"><p>No products in this range. <a href=\"pages/products.html\" style=\"color:var(--primary);font-weight:700;\">View All</a></p></div>";
     } else {
-      priceRangeGrid.innerHTML = filtered.map(function(p) { return renderProductCard(p); }).join("");
+      var topFiltered = filtered.slice(0, 10);
+      priceRangeGrid.innerHTML = topFiltered.map(function(p) { return renderProductCard(p); }).join("");
     }
   }
 

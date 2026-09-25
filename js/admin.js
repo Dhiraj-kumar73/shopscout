@@ -302,6 +302,9 @@ const AdminController = {
     const closeModal = () => {
       if (modal) {
         modal.classList.remove('active');
+        const modalCard = modal.querySelector('.modal-card');
+        if (modalCard) modalCard.scrollTop = 0;
+        modal.scrollTop = 0;
         const previewCard = document.getElementById('modal-autodetect-preview');
         if (previewCard) previewCard.classList.remove('active');
         const speedTag = document.getElementById('autodetect-speed-tag');
@@ -333,7 +336,23 @@ const AdminController = {
         if (speedTag) speedTag.style.display = 'none';
         const imgPreview = document.getElementById('modal-img-preview');
         if (imgPreview) imgPreview.src = 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=120';
+        
+        // Reset scroll position immediately
+        const modalCard = modal.querySelector('.modal-card');
+        if (modalCard) modalCard.scrollTop = 0;
+        modal.scrollTop = 0;
+
         modal.classList.add('active');
+
+        // Ensure modal card is strictly at the top and focus the 1-Click Amazon Detect input
+        requestAnimationFrame(() => {
+          if (modalCard) modalCard.scrollTop = 0;
+          modal.scrollTop = 0;
+          const quickUrlInput = document.getElementById('modal-quick-url');
+          if (quickUrlInput) {
+            quickUrlInput.focus({ preventScroll: true });
+          }
+        });
       };
     }
 
@@ -567,15 +586,23 @@ const AdminController = {
             let dealPrice = Number(detected.price) || 0;
             let mrp = Number(detected.originalPrice) || 0;
 
-            if (dealPrice <= 0) {
-              const fallbackPricing = AdminController.resolveMarketPrice(detected.title || '', detected.category || 'Mobiles', detected.brand || '');
-              dealPrice = fallbackPricing.price;
-              mrp = fallbackPricing.originalPrice;
+            // If dealPrice is 0 or an erroneous low-ball default for high-end items (like PartyBox/Laptop/Pro phones), correct it with accurate market pricing
+            const isAccessory = /sleeve|case|cover|bag|backpack|pouch|stand|holder|strap|screen guard|tempered glass|skin|mousepad|mouse pad|cable|charger|adapter/i.test(detected.title || '');
+            const isPremiumAudioOrTech = !isAccessory && /partybox|soundbar|wh-1000|iphone|s24|ps5|(?:gaming\s+laptop)|macbook|thinkpad/i.test(detected.title || '');
+            if (dealPrice <= 0 || (dealPrice <= 3499 && isPremiumAudioOrTech)) {
+              const fallbackPricing = AdminController.resolveMarketPrice(detected.title || '', detected.category || (isAccessory ? 'Gadgets' : 'Audio'), detected.brand || '');
+              if (fallbackPricing && (dealPrice <= 0 || fallbackPricing.price > dealPrice)) {
+                dealPrice = fallbackPricing.price;
+                mrp = fallbackPricing.originalPrice;
+              }
             }
 
             if (mrp <= dealPrice) {
               mrp = Math.round(dealPrice * 1.25);
             }
+
+            detected.price = dealPrice;
+            detected.originalPrice = mrp;
 
             document.getElementById('modal-prod-price').value = dealPrice;
             document.getElementById('modal-prod-original-price').value = mrp;
@@ -962,12 +989,17 @@ const AdminController = {
           <td style="max-width: 340px;">
             <div class="cell-product-wrap">
               <div class="product-thumb-box">
-                <img src="${safeImage}" alt="${safeName}" loading="lazy"
-                     onload="if(this.naturalWidth<=1){this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=60';}"
-                     onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=60'">
+                <a href="../pages/product-details.html?id=${encodeURIComponent(safeId)}" target="_blank" title="View ${safeName} on Store">
+                  <img src="${safeImage}" alt="${safeName}" loading="lazy"
+                       onload="if(this.naturalWidth<=1){this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=60';}"
+                       onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=60'">
+                </a>
               </div>
               <div class="product-info-text">
-                <div class="product-name-link" title="${safeName}">${safeName.length > 55 ? safeName.slice(0, 55) + '...' : safeName}</div>
+                <a href="../pages/product-details.html?id=${encodeURIComponent(safeId)}" target="_blank" class="product-name-link" title="View ${safeName} on Store" style="display:inline-block; text-decoration:none; color:inherit;">
+                  ${safeName.length > 55 ? safeName.slice(0, 55) + '...' : safeName}
+                  <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.65rem; opacity: 0.6; margin-left: 3px;"></i>
+                </a>
                 <div class="product-meta-tags">
                   <span class="tag-brand-pro">${safeBrand}</span>
                   <span class="tag-cat-pro">${safeCategory}</span>
@@ -996,6 +1028,9 @@ const AdminController = {
           </td>
           <td style="text-align: right;">
             <div class="table-actions" style="justify-content: flex-end;">
+              <a href="../pages/product-details.html?id=${encodeURIComponent(safeId)}" target="_blank" class="btn-action-pro" title="View Live on Store" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
               <button class="btn-action-pro" onclick="AdminController.editProduct('${safeId}')" title="Edit Product">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
@@ -1059,7 +1094,19 @@ const AdminController = {
       if (featEl) featEl.value = Array.isArray(product.features) ? product.features.join('\n') : String(product.features);
     }
 
+    // Reset scroll position immediately
+    const modalCard = modal.querySelector('.modal-card');
+    if (modalCard) modalCard.scrollTop = 0;
+    modal.scrollTop = 0;
+
     modal.classList.add('active');
+
+    requestAnimationFrame(() => {
+      if (modalCard) modalCard.scrollTop = 0;
+      modal.scrollTop = 0;
+      const nameInput = document.getElementById('modal-prod-name');
+      if (nameInput) nameInput.focus({ preventScroll: true });
+    });
   },
 
   async deleteProduct(id, btnElement) {
@@ -1247,7 +1294,17 @@ const AdminController = {
     'B0D7NZM3S1': { title: 'Apple iPhone 16 (128 GB) - Ultramarine', brand: 'Apple', category: 'Mobiles', price: 79900, originalPrice: 79900, image: 'https://m.media-amazon.com/images/I/71657TiFeHL._SL1500_.jpg' },
     'B0D7NDQCS3': { title: 'Apple iPhone 16 Pro (128 GB) - Desert Titanium', brand: 'Apple', category: 'Mobiles', price: 119900, originalPrice: 119900, image: 'https://m.media-amazon.com/images/I/81+GIkwqLIL._SL1500_.jpg' },
     'B0F7RB8NNL': { title: 'Nothing Phone (3), Black (16GB, 512 GB)', brand: 'Nothing', category: 'Mobiles', price: 51999, originalPrice: 59999, image: 'https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg' },
-    'B0i7BwPtu': { title: 'Nothing Phone (3), Black (16GB, 512 GB)', brand: 'Nothing', category: 'Mobiles', price: 51999, originalPrice: 59999, image: 'https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg' }
+    'B0i7BwPtu': { title: 'Nothing Phone (3), Black (16GB, 512 GB)', brand: 'Nothing', category: 'Mobiles', price: 51999, originalPrice: 59999, image: 'https://m.media-amazon.com/images/I/71XYJL6myIL._SL1500_.jpg' },
+    'B09JVCT78G': { title: 'JBL Partybox 110 Wireless Bluetooth 160W Party Speaker with Dynamic Light Show', brand: 'JBL', category: 'Audio', price: 24999, originalPrice: 35999, image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg' },
+    'B0H4R8BT2R': { title: 'JBL PartyBox Encore 2 Plus with Wireless Mic, Bluetooth Karaoke Speaker', brand: 'JBL', category: 'Audio', price: 31999, originalPrice: 39999, image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg' },
+    'B0B18ZYFR2': { title: 'JBL PartyBox Encore 2 Plus with Wireless Mic, Bluetooth Karaoke Speaker', brand: 'JBL', category: 'Audio', price: 31999, originalPrice: 39999, image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg' },
+    'B07ptqlJ': { title: 'JBL PartyBox Encore 2 Plus with Wireless Mic, Bluetooth Karaoke Speaker', brand: 'JBL', category: 'Audio', price: 31999, originalPrice: 39999, image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg' },
+    'B0FJ1G71B7': { title: 'JBL Partybox Encore 2 with Mic, Wireless Bluetooth Party Speaker', brand: 'JBL', category: 'Audio', price: 25999, originalPrice: 34999, image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg' },
+    'B0HDJL4LSV': { title: "Men's Denim Shirt, Long Sleeve Button Down Casual Shirt with Chest Pocket", brand: 'Generic', category: 'Fashion', price: 599, originalPrice: 1299, image: 'https://m.media-amazon.com/images/I/71n0LmTvfNL._SL1500_.jpg' },
+    'B0aD43Y3H': { title: "Men's Denim Shirt, Long Sleeve Button Down Casual Shirt with Chest Pocket", brand: 'Generic', category: 'Fashion', price: 599, originalPrice: 1299, image: 'https://m.media-amazon.com/images/I/71n0LmTvfNL._SL1500_.jpg' },
+    'B09BFW41H4': { title: 'Dyazo Water Resistant Laptop Sleeve/Laptop case/laptop cover with Handle Compatible for 15 Inch to 15.6" Inches laptop', brand: 'Dyazo', category: 'Gadgets', price: 299, originalPrice: 999, image: 'https://m.media-amazon.com/images/I/819-2gnxg3L._SL1500_.jpg' },
+    'B0dCuF2BB': { title: 'Dyazo Water Resistant Laptop Sleeve/Laptop case/laptop cover with Handle Compatible for 15 Inch to 15.6" Inches laptop', brand: 'Dyazo', category: 'Gadgets', price: 299, originalPrice: 999, image: 'https://m.media-amazon.com/images/I/819-2gnxg3L._SL1500_.jpg' },
+    'B0DCUF2BB': { title: 'Dyazo Water Resistant Laptop Sleeve/Laptop case/laptop cover with Handle Compatible for 15 Inch to 15.6" Inches laptop', brand: 'Dyazo', category: 'Gadgets', price: 299, originalPrice: 999, image: 'https://m.media-amazon.com/images/I/819-2gnxg3L._SL1500_.jpg' }
   },
 
   // Intelligent Client-Side Link & Query Extractor (Instant 0ms, 100% Amazon Exclusive)
@@ -1326,8 +1383,19 @@ const AdminController = {
       const amazonAsin = asinMatch ? asinMatch[1].toUpperCase() : (shortCodeMatch ? shortCodeMatch[1] : null);
 
       // ── STEP 0: Check ASIN Knowledge Base for Instant 0ms Match ──
-      if (amazonAsin && this.asinKnowledgeBase && this.asinKnowledgeBase[amazonAsin]) {
-        const kb = this.asinKnowledgeBase[amazonAsin];
+      let kb = null;
+      if (amazonAsin && this.asinKnowledgeBase) {
+        kb = this.asinKnowledgeBase[amazonAsin] || this.asinKnowledgeBase[amazonAsin.toUpperCase()];
+        if (!kb) {
+          for (const [k, v] of Object.entries(this.asinKnowledgeBase)) {
+            if (k.toLowerCase() === amazonAsin.toLowerCase()) {
+              kb = v;
+              break;
+            }
+          }
+        }
+      }
+      if (kb) {
         const amzUrl = `https://www.amazon.in/dp/${amazonAsin}?tag=shopscout-21`;
         const asset = this.resolveProductImageAsset(kb.title, kb.category, kb.brand);
         const gallery = asset.gallery && asset.gallery.length > 0 ? asset.gallery : [kb.image];
@@ -1464,6 +1532,10 @@ const AdminController = {
 
   detectCategoryClient(text = '') {
     const lower = (text || '').toLowerCase();
+    // Prioritize accessories first so 'laptop sleeve' or 'phone cover' are never miscategorized as Laptops or Mobiles
+    if (/sleeve|case|cover|bag|backpack|pouch|stand|holder|strap|skin|screen guard|tempered glass|protector|cable|charger|adapter|mouse pad|mousepad/i.test(lower)) {
+      return 'Gadgets';
+    }
     if (/headphone|earbud|earphone|audio|anc|tws|soundbar|speaker|airdopes|rockerz|airpod|buds|neckband|headset|1000xm|wh-\w+|wf-\w+|bullets/i.test(lower)) {
       return 'Audio';
     }
@@ -1627,7 +1699,35 @@ const AdminController = {
     }
 
     // 5. Audio
-    if (category === 'Audio' || /headphone|earphone|earbud|airpod|airdopes|rockerz|speaker|soundbar|tws|neckband/i.test(t)) {
+    if (category === 'Audio' || /headphone|earphone|earbud|airpod|airdopes|rockerz|speaker|soundbar|partybox|encore|tws|neckband/i.test(t)) {
+      if (/partybox|encore/i.test(t)) {
+        return {
+          image: 'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg',
+          gallery: [
+            'https://m.media-amazon.com/images/I/71h2c+bB-fL._SL1500_.jpg',
+            'https://m.media-amazon.com/images/I/71pr77gMM3L._SL1500_.jpg',
+            'https://m.media-amazon.com/images/I/81Emg2mz6hL._SL1500_.jpg',
+            'https://m.media-amazon.com/images/I/71y60Yd0Z9L._SL1500_.jpg'
+          ]
+        };
+      }
+      if (/marshall/i.test(t)) {
+        return {
+          image: 'https://m.media-amazon.com/images/I/7161U-x35hL._SL1500_.jpg',
+          gallery: [
+            'https://m.media-amazon.com/images/I/7161U-x35hL._SL1500_.jpg',
+            'https://m.media-amazon.com/images/I/81Y7y3y0eDL._SL1500_.jpg'
+          ]
+        };
+      }
+      if (/soundbar/i.test(t)) {
+        return {
+          image: 'https://m.media-amazon.com/images/I/61y8x7d6a4L._SL1500_.jpg',
+          gallery: [
+            'https://m.media-amazon.com/images/I/61y8x7d6a4L._SL1500_.jpg'
+          ]
+        };
+      }
       if (/wh-1000|sony/i.test(t)) {
         return {
           image: 'https://m.media-amazon.com/images/I/61ULAZmt9NL._SL1500_.jpg',
@@ -1709,7 +1809,16 @@ const AdminController = {
       };
     }
 
-    // 10. Gadgets & Accessories (Logitech mouse, keyboards)
+    // 10. Gadgets & Accessories (Laptop Sleeves, Bags, Logitech mouse, keyboards)
+    if (/dyazo|sleeve|laptop cover|laptop case|laptop bag/i.test(t)) {
+      return {
+        image: 'https://m.media-amazon.com/images/I/819-2gnxg3L._SL1500_.jpg',
+        gallery: [
+          'https://m.media-amazon.com/images/I/819-2gnxg3L._SL1500_.jpg',
+          'https://m.media-amazon.com/images/I/81q2X9R2bKL._SL1500_.jpg'
+        ]
+      };
+    }
     if (/logitech|mouse|keyboard|b170|pad|usb|adapter/i.test(t)) {
       return {
         image: 'https://m.media-amazon.com/images/I/31N2n4tGvGL._SL1500_.jpg',
@@ -1731,6 +1840,11 @@ const AdminController = {
   // Real-Time Current Market Price Dictionary
   resolveMarketPrice(title = '', category = 'Mobiles', brand = '') {
     const t = title.toLowerCase();
+
+    // Gadgets & Tech Accessories (Sleeves, Covers, Bags, Mousepads) - MUST be first to prevent "laptop sleeve" matching laptop
+    if (/sleeve|laptop cover|laptop case|laptop bag|bag|backpack|pouch|stand|holder|strap|mouse pad|mousepad/i.test(t)) {
+      return { price: 299, originalPrice: 999 };
+    }
 
     // iPhones
     if (/iphone 16 pro max/i.test(t)) return { price: 144900, originalPrice: 144900 };
@@ -1813,7 +1927,26 @@ const AdminController = {
     if (/phone \(2\)/i.test(t) || /phone 2/i.test(t)) return { price: 36999, originalPrice: 49999 };
     if (/cmf phone 1/i.test(t)) return { price: 14999, originalPrice: 19999 };
 
-    // Audio Products
+    // Audio Products & Premium Speakers
+    if (/partybox 1000/i.test(t)) return { price: 84999, originalPrice: 99999 };
+    if (/partybox 710/i.test(t)) return { price: 64999, originalPrice: 79999 };
+    if (/encore 2 plus|encore 2 \+/i.test(t)) return { price: 31999, originalPrice: 39999 };
+    if (/encore 2/i.test(t)) return { price: 25999, originalPrice: 34999 };
+    if (/partybox.*(encore|110|120|stage|club)|partybox/i.test(t)) return { price: 24999, originalPrice: 35999 };
+    if (/jbl boombox/i.test(t)) return { price: 32999, originalPrice: 42999 };
+    if (/jbl xtreme/i.test(t)) return { price: 19999, originalPrice: 26999 };
+    if (/jbl charge/i.test(t)) return { price: 13999, originalPrice: 18999 };
+    if (/jbl flip/i.test(t)) return { price: 8999, originalPrice: 13999 };
+    if (/jbl go/i.test(t)) return { price: 2999, originalPrice: 3999 };
+    if (/jbl clip/i.test(t)) return { price: 3999, originalPrice: 4999 };
+    if (/marshall woburn/i.test(t)) return { price: 49999, originalPrice: 59999 };
+    if (/marshall stanmore/i.test(t)) return { price: 31999, originalPrice: 39999 };
+    if (/marshall acton/i.test(t)) return { price: 24999, originalPrice: 31999 };
+    if (/marshall emberton/i.test(t)) return { price: 13999, originalPrice: 17999 };
+    if (/bose quietcomfort ultra/i.test(t)) return { price: 35900, originalPrice: 39900 };
+    if (/sony ht-s20r|soundbar.*(subwoofer|dolby)/i.test(t)) return { price: 15990, originalPrice: 23990 };
+    if (/soundbar/i.test(t)) return { price: 8999, originalPrice: 14999 };
+    if (/party speaker|karaoke speaker|trolley speaker/i.test(t)) return { price: 18999, originalPrice: 27999 };
     if (/wh[- ]*1000xm5|1000xm5/i.test(t)) return { price: 26990, originalPrice: 34990 };
     if (/wh[- ]*1000xm4|1000xm4/i.test(t)) return { price: 19990, originalPrice: 29990 };
     if (/wf[- ]*1000xm5/i.test(t)) return { price: 19990, originalPrice: 24990 };

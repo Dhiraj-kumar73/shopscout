@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/product-card.css">
+  <link rel="stylesheet" href="../css/cart.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
@@ -31,8 +32,12 @@
         <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
       </a>
 
-      <!-- Theme Toggle -->
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <!-- Theme Toggle & Cart -->
+      <div style="display: flex; align-items: center; gap: 0.65rem;">
+        <button class="nav-cart-btn" onclick="CartService.openDrawer()" title="View Shopping Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
         <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
@@ -124,9 +129,10 @@
       <i class="fa-solid fa-fire"></i>
       <span>Deals</span>
     </a>
-    <a href="search.html" class="bottom-bar-item">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <span>Search</span>
+    <a href="javascript:void(0)" onclick="CartService.openDrawer()" class="bottom-bar-item" title="Cart">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Cart</span>
+      <span class="bottom-badge cart-count-badge" style="display: none;">0</span>
     </a>
     <a href="wishlist.html" class="bottom-bar-item">
       <i class="fa-regular fa-heart"></i>
@@ -154,6 +160,7 @@
   <script src="../js/main.js"></script>
   <script src="../js/navbar.js"></script>
   <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
   <script src="../js/deals.js"></script>
 </body>
 </html>
