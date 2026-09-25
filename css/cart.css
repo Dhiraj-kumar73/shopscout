@@ -1604,22 +1604,52 @@
   overflow: hidden;
 }
 
-.choose-pricing {
+.choose-pricing,
+.choose-price-row {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 6px;
+  margin-top: 4px;
 }
 
-.choose-cur-price {
-  font-size: 0.95rem;
+.choose-cur-price,
+.choose-price-current {
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--text);
+  letter-spacing: -0.01em;
 }
 
-.choose-mrp {
-  font-size: 0.72rem;
-  color: var(--muted);
+.choose-mrp-wrapper {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.choose-mrp-label {
+  font-size: 0.68rem;
+  color: var(--muted, #94A3B8);
+  font-weight: 600;
+}
+
+.choose-mrp,
+.choose-price-mrp {
+  font-size: 0.76rem;
+  color: var(--muted, #94A3B8);
   text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: #EF4444;
+  font-weight: 500;
+}
+
+.choose-discount-pill {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
 }
 
 .btn-choose-add {

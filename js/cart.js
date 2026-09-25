@@ -460,17 +460,29 @@ const CartService = {
 
     gridEl.innerHTML = filtered.map(item => {
       const isInCart = cartProductIds.has(item.id);
+      const hasDiscount = item.originalPrice && Number(item.originalPrice) > Number(item.price);
+      const discountPct = hasDiscount 
+        ? Math.round(((Number(item.originalPrice) - Number(item.price)) / Number(item.originalPrice)) * 100) 
+        : 0;
+
       return `
         <div class="choose-item-card ${isInCart ? 'in-cart' : ''}" id="choose-card-${item.id}">
           <div class="choose-thumb-wrap">
             <img src="${item.image}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200'">
+            ${discountPct > 0 ? `<span class="choose-discount-tag">-${discountPct}%</span>` : ''}
           </div>
           <div class="choose-item-info">
-            <span class="choose-item-badge">${item.category || 'Accessory'}</span>
-            <h6 class="choose-item-name" title="${item.name}">${item.name}</h6>
-            <div class="choose-price-row">
-              <span class="choose-price-current">₹${Number(item.price).toLocaleString('en-IN')}</span>
-              ${item.originalPrice > item.price ? `<span class="choose-price-mrp">₹${Number(item.originalPrice).toLocaleString('en-IN')}</span>` : ''}
+            <span class="choose-cat-badge">${item.category || 'Accessory'}</span>
+            <h6 class="choose-prod-name" title="${item.name}">${item.name}</h6>
+            <div class="choose-pricing">
+              <span class="choose-cur-price">₹${Number(item.price).toLocaleString('en-IN')}</span>
+              ${hasDiscount ? `
+                <span class="choose-mrp-wrapper">
+                  <span class="choose-mrp-label">M.R.P.:</span>
+                  <span class="choose-mrp">₹${Number(item.originalPrice).toLocaleString('en-IN')}</span>
+                </span>
+                ${discountPct > 0 ? `<span class="choose-discount-pill">${discountPct}% off</span>` : ''}
+              ` : ''}
             </div>
           </div>
           <button type="button" class="btn-choose-add ${isInCart ? 'added' : ''}" 
