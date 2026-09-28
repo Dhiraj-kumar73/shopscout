@@ -59,6 +59,39 @@ const SearchPageController = {
 
     resultsGrid.innerHTML = matches.map(p => renderProductCard(p)).join('');
 
+    // Real-time live filtering as user types
+    let typeTimer;
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        clearTimeout(typeTimer);
+        typeTimer = setTimeout(() => {
+          const val = searchInput.value.trim();
+          const newMatches = val ? ShopScout.fuzzySearch(allProducts, val) : allProducts;
+          if (queryDisplay) queryDisplay.textContent = val ? `"${val}"` : 'All Products';
+          if (resultsCount) {
+            resultsCount.innerHTML = val 
+              ? `<span><strong>${newMatches.length}</strong> products found for "<em>${val}</em>"</span> <span class="badge" style="background: rgba(37,99,235,0.1); color: var(--primary); font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: var(--radius-full); margin-left: 0.5rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> Live Search</span>`
+              : `<span><strong>${newMatches.length}</strong> products in catalog</span>`;
+          }
+          if (newMatches.length === 0) {
+            resultsGrid.innerHTML = `
+              <div style="grid-column: 1 / -1;">
+                <div class="empty-state" style="padding: 2.5rem 1rem;">
+                  <div class="empty-state-icon" style="color: var(--deal-orange);">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <h3 class="empty-state-title">No products found for "${val}"</h3>
+                  <p class="empty-state-desc">Try searching for <strong>Mobile, Samsung, iPhone, Speaker, or Laptops</strong>.</p>
+                </div>
+              </div>
+            `;
+          } else {
+            resultsGrid.innerHTML = newMatches.map(p => renderProductCard(p)).join('');
+          }
+        }, 180);
+      });
+    }
+
     // Re-bind form submission on search page input
     const form = document.getElementById('search-page-form');
     if (form && searchInput) {

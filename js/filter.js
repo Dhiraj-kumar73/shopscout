@@ -17,6 +17,7 @@ const FilterController = {
     { name: 'Fashion', icon: 'fa-solid fa-shirt', aliases: ['fashion', 'shoe', 'shirt', 'pant'] }
   ],
   activeFilters: {
+    query: '',
     category: [],
     brand: null,
     priceMin: 0,
@@ -32,8 +33,16 @@ const FilterController = {
     this.allProducts = [...products];
     this.filteredProducts = [...products];
 
-    // Read URL params (e.g. ?category=Mobiles or ?minPrice=100&maxPrice=199 or ?sort=price-low or ?brand=Apple)
+    // Read URL params (e.g. ?category=Mobiles or ?q=phone or ?brand=Apple)
     const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('q')) {
+      this.activeFilters.query = urlParams.get('q').trim();
+      const sidebarSearch = document.getElementById('sidebar-search-input');
+      const clearBtn = document.getElementById('sidebar-search-clear');
+      if (sidebarSearch) sidebarSearch.value = this.activeFilters.query;
+      if (clearBtn) clearBtn.style.display = this.activeFilters.query ? 'block' : 'none';
+    }
     
     if (urlParams.get('category')) {
       const rawCat = urlParams.get('category').trim();
@@ -76,6 +85,22 @@ const FilterController = {
     this.updateHeaderAndUrl();
     this.renderCategoryFilter();
     this.renderBrandFilter();
+    this.applyFilters();
+  },
+
+  onSearchInput(val) {
+    this.activeFilters.query = (val || '').trim();
+    const clearBtn = document.getElementById('sidebar-search-clear');
+    if (clearBtn) clearBtn.style.display = this.activeFilters.query ? 'block' : 'none';
+    this.applyFilters();
+  },
+
+  clearSearch() {
+    this.activeFilters.query = '';
+    const sidebarSearch = document.getElementById('sidebar-search-input');
+    const clearBtn = document.getElementById('sidebar-search-clear');
+    if (sidebarSearch) sidebarSearch.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
     this.applyFilters();
   },
 
@@ -471,6 +496,11 @@ const FilterController = {
       return true;
     });
 
+    // Query text search filter
+    if (this.activeFilters.query) {
+      this.filteredProducts = ShopScout.fuzzySearch(this.filteredProducts, this.activeFilters.query);
+    }
+
     this.applySort();
     this.renderResults();
     this.renderActiveChips();
@@ -669,6 +699,7 @@ const FilterController = {
 
   resetFilters() {
     this.activeFilters = {
+      query: '',
       category: [],
       brand: null,
       priceMin: 0,
@@ -677,6 +708,11 @@ const FilterController = {
       discount: 0,
       marketplace: ['Amazon']
     };
+
+    const sidebarSearch = document.getElementById('sidebar-search-input');
+    const clearBtn = document.getElementById('sidebar-search-clear');
+    if (sidebarSearch) sidebarSearch.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
 
     document.querySelectorAll('input[name="filter-rating"]').forEach(rb => {
       rb.checked = rb.value === '0';

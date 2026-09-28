@@ -139,6 +139,18 @@
           </div>
 
           <div class="filter-sidebar-scroll-body" style="padding: 1.25rem;">
+            <!-- Keyword Search Box -->
+            <div style="margin-bottom: 1.5rem;">
+              <div class="form-label" style="display: flex; align-items: center; gap: 0.45rem;">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i> Search Products
+              </div>
+              <div class="category-select-box" style="position: relative;">
+                <i class="cat-select-icon fa-solid fa-magnifying-glass" style="font-size: 0.85rem;"></i>
+                <input type="text" id="sidebar-search-input" class="catalog-category-select" placeholder="Search phone, mobile, brand..." style="padding-left: 2.4rem; padding-right: 2rem;" oninput="FilterController.onSearchInput(this.value)">
+                <button type="button" id="sidebar-search-clear" onclick="FilterController.clearSearch()" style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--muted); cursor: pointer; display: none; font-size: 0.9rem;" aria-label="Clear search">&times;</button>
+              </div>
+            </div>
+
             <!-- Category Filter Section (Dropdown) -->
             <div style="margin-bottom: 1.5rem;">
               <div class="form-label" style="display: flex; align-items: center; gap: 0.45rem;">

@@ -722,24 +722,31 @@ const ShopScout = {
     'powrbank': 'powerbank', 'powerbanck': 'powerbank', 'powrbnk': 'powerbank',
 
     // Wearables, Mobile & General
-    'fon': 'phone', 'fone': 'phone', 'moble': 'mobile', 'mobil': 'mobile', 'smartfone': 'smartphone',
+    'phone': 'mobile', 'phones': 'mobile', 'mobile': 'mobile', 'mobiles': 'mobile',
+    'fon': 'mobile', 'fone': 'mobile', 'fones': 'mobile', 'phn': 'mobile',
+    'moble': 'mobile', 'mobil': 'mobile', 'cellphone': 'mobile', 'cell': 'mobile',
+    'smartfone': 'mobile', 'smartphone': 'mobile', 'smartphones': 'mobile',
+    'handset': 'mobile',
     'wach': 'watch', 'wtch': 'watch', 'smartwach': 'smartwatch', 'wacth': 'watch',
     'spashproof': 'splashproof', 'waterprof': 'waterproof', 'watrproof': 'waterproof',
     'camra': 'camera', 'cam': 'camera',
 
-    // Popular Brands
+    // Popular Brands & Mobile ecosystem
     'lenvo': 'lenovo', 'lenov': 'lenovo', 'linovo': 'lenovo',
     'frontch': 'frontech', 'frontec': 'frontech', 'frontek': 'frontech',
     'sounc': 'sounce', 'sounse': 'sounce', 'sounze': 'sounce', 'souncee': 'sounce',
     'snoy': 'sony', 'soni': 'sony',
     'aple': 'apple', 'appl': 'apple', 'aplle': 'apple',
     'samsng': 'samsung', 'samung': 'samsung', 'samsumg': 'samsung', 'smasung': 'samsung',
+    'galaxy': 'samsung',
     'logitek': 'logitech', 'logitec': 'logitech', 'logi': 'logitech',
     'bot': 'boat', 'boatt': 'boat',
     'zebro': 'zebronics', 'zebronik': 'zebronics', 'zebronic': 'zebronics',
-    'oneplus': 'oneplus', '1plus': 'oneplus',
+    'oneplus': 'oneplus', '1plus': 'oneplus', 'nord': 'oneplus',
     'relme': 'realme', 'relami': 'realme',
     'redmi': 'xiaomi', 'mi': 'xiaomi',
+    'iqo': 'iqoo', 'iqoo': 'iqoo',
+    'opo': 'oppo', 'oppo': 'oppo',
     'jbll': 'jbl', 'jb': 'jbl'
   },
 
@@ -855,7 +862,16 @@ const ShopScout = {
     if (cleanRaw.length >= 3) {
       if (name.includes(cleanRaw)) totalScore += 180;
       else if (brand.includes(cleanRaw)) totalScore += 150;
-      else if (category.includes(cleanRaw)) totalScore += 120;
+      else if (category.includes(cleanRaw)) totalScore += 140;
+    }
+
+    // Direct phone/mobile query intent boost for smartphones
+    const isMobileQuery = queryTokens.some(t => ['phone', 'phones', 'mobile', 'mobiles', 'smartphone', 'smartphones'].includes(t));
+    if (isMobileQuery && category === 'mobiles') {
+      totalScore += 80;
+      // Extra boost if product is an actual smartphone vs an accessory
+      const isHandset = ['samsung galaxy', 'iphone', 'oppo', 'redmi', 'oneplus', 'iqoo', 'nothing phone'].some(b => name.includes(b));
+      if (isHandset) totalScore += 120;
     }
 
     // Match each token
@@ -868,15 +884,15 @@ const ShopScout = {
         if (s > bestTokenScore) bestTokenScore = s;
       }
 
-      // Check Name / Title (Weight 2.0)
+      // Check Name / Title (Weight 2.2)
       for (const nw of nameWords) {
-        const s = this.matchTokenAgainstWord(token, nw) * 2.0;
+        const s = this.matchTokenAgainstWord(token, nw) * 2.2;
         if (s > bestTokenScore) bestTokenScore = s;
       }
 
-      // Check Category (Weight 1.8)
+      // Check Category (Weight 2.0)
       for (const cw of catWords) {
-        const s = this.matchTokenAgainstWord(token, cw) * 1.8;
+        const s = this.matchTokenAgainstWord(token, cw) * 2.0;
         if (s > bestTokenScore) bestTokenScore = s;
       }
 
