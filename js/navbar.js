@@ -85,7 +85,7 @@ const NavbarController = {
     const detailUrlPrefix = isPagesSubdir ? 'product-details.html?id=' : 'pages/product-details.html?id=';
 
     searchInputs.forEach(input => {
-      const wrapper = input.closest('.header-search-wrap');
+      const wrapper = input.closest('.mega-search-container') || input.closest('.mega-search-bar') || input.closest('.header-search-wrap') || input.parentElement;
       if (!wrapper) return;
 
       let dropdown = wrapper.querySelector('.search-suggestions-dropdown');
