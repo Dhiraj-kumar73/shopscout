@@ -553,24 +553,29 @@
         "icon": "fa-mobile-screen"
       },
       {
-        "url": "https://m.media-amazon.com/images/I/61T7lsx8dLL._SL1500_.jpg",
+        "url": "../assets/iqoo15-back.jpg",
         "angle": "Back 3D Finish",
         "icon": "fa-rotate"
       },
       {
         "url": "https://m.media-amazon.com/images/I/61dPjaNUHQL._SL1500_.jpg",
-        "angle": "Side Profile",
-        "icon": "fa-arrows-left-right"
-      },
-      {
-        "url": "https://m.media-amazon.com/images/I/61s3XAayv+L._SL1500_.jpg",
-        "angle": "Display View",
+        "angle": "2K OLED Display",
         "icon": "fa-sun"
       },
       {
+        "url": "https://m.media-amazon.com/images/I/61T7lsx8dLL._SL1500_.jpg",
+        "angle": "Snapdragon 8 Elite",
+        "icon": "fa-bolt"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/61s3XAayv+L._SL1500_.jpg",
+        "angle": "OriginOS 6 Features",
+        "icon": "fa-microchip"
+      },
+      {
         "url": "https://m.media-amazon.com/images/I/712N-ERwawL._SL1500_.jpg",
-        "angle": "In-Hand Lifestyle",
-        "icon": "fa-hand"
+        "angle": "Q3 Gaming Chip",
+        "icon": "fa-gamepad"
       }
     ],
     "rating": 4.6,

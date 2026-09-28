@@ -131,13 +131,13 @@ const ProductDetailsController = {
     let images = rawImages.map((img, idx) => {
       if (typeof img === 'object' && img !== null) {
         return {
-          url: img.url || img.image || img.img,
+          url: this.resolveAssetUrl(img.url || img.image || img.img),
           angle: img.angle || img.label || defaultAngles[idx]?.angle || `Angle ${idx + 1}`,
           icon: img.icon || defaultAngles[idx]?.icon || 'fa-camera'
         };
       }
       return {
-        url: img,
+        url: this.resolveAssetUrl(img),
         angle: defaultAngles[idx]?.angle || `Angle ${idx + 1}`,
         icon: defaultAngles[idx]?.icon || 'fa-camera'
       };
@@ -157,7 +157,7 @@ const ProductDetailsController = {
 
     if (images.length === 0) {
       const fallbackUrl = (product.image && !product.image.includes('images-na.ssl-images-amazon.com') && !product.image.startsWith('data:'))
-        ? product.image
+        ? this.resolveAssetUrl(product.image)
         : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
       images = [{ url: fallbackUrl, angle: 'Front View', icon: 'fa-mobile-screen' }];
     }
@@ -200,6 +200,17 @@ const ProductDetailsController = {
     `).join('');
   },
 
+  resolveAssetUrl(url) {
+    if (!url || typeof url !== 'string') return url;
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) return url;
+    const isPagesDir = window.location.pathname.toLowerCase().includes('/pages/') || window.location.pathname.toLowerCase().includes('\\pages\\');
+    let cleanPath = url.replace(/^(\.\.\/|\.\/|\/)/, '');
+    if (cleanPath.startsWith('assets/')) {
+      return isPagesDir ? '../' + cleanPath : cleanPath;
+    }
+    return url;
+  },
+
   getAmazonImageKey(url) {
     if (!url || typeof url !== 'string') return null;
     const match = url.match(/\/images\/I\/([A-Za-z0-9+%-]+)\./);
@@ -240,15 +251,32 @@ const ProductDetailsController = {
       if (iconEl) iconEl.className = `fa-solid ${iconClass}`;
     }
 
-    // Sync angle chips
+    // Sync angle chips & scroll into view smoothly inside container
     document.querySelectorAll('.angle-nav-chip').forEach((chip, i) => {
       chip.classList.toggle('active', i === index);
+      if (i === index) {
+        chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     });
 
-    // Sync thumbs
+    // Sync thumbs & scroll into view smoothly
     document.querySelectorAll('.gallery-thumb').forEach((thumb, i) => {
       thumb.classList.toggle('active', i === index);
+      if (i === index) {
+        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     });
+
+    // If on mobile and gallery is partially scrolled out of view, bring into view
+    if (window.innerWidth <= 768) {
+      const gallery = document.getElementById('gallery-main');
+      if (gallery) {
+        const rect = gallery.getBoundingClientRect();
+        if (rect.top < 40 || rect.bottom < 150) {
+          gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
   },
 
   switchImage(imgSrc, thumbEl) {
