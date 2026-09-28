@@ -141,4 +141,90 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   // Initial render
   renderPriceRange(0, 999999, "All Best Deals");
+
+  // 5. In-Page Amazon-Style Instant Search
+  var searchSection = document.getElementById("home-search-results-section");
+  var searchGrid = document.getElementById("home-search-results-grid");
+  var queryLabel = document.getElementById("home-search-query-label");
+  var countText = document.getElementById("home-search-count-text");
+  var clearBtn = document.getElementById("home-search-clear-btn");
+  var headerInputs = document.querySelectorAll(".header-search-input");
+
+  window.executeHomeSearch = function(query) {
+    if (!searchSection || !searchGrid) return;
+    query = (query || "").trim();
+
+    if (!query) {
+      window.clearHomeSearch();
+      return;
+    }
+
+    // Sync all search inputs on page
+    headerInputs.forEach(function(inp) { inp.value = query; });
+
+    var matches = ShopScout.fuzzySearch(allProducts, query);
+    if (queryLabel) queryLabel.textContent = query;
+    if (countText) countText.textContent = matches.length + " matching " + (matches.length === 1 ? "product" : "products") + " found";
+
+    if (matches.length > 0) {
+      searchGrid.innerHTML = matches.map(function(p) { return renderProductCard(p); }).join("");
+    } else {
+      searchGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;">
+          <div style="font-size: 2.2rem; color: var(--deal-orange); margin-bottom: 0.5rem;"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <h3 style="font-weight: 800; color: var(--text); margin-bottom: 0.5rem;">No exact products found for "${query}"</h3>
+          <p style="color: var(--muted); font-size: 0.88rem; max-width: 500px; margin: 0 auto 1.5rem;">Try searching for popular terms like <strong>Mobile, Samsung, iPhone, Laptops, Audio, or boAt</strong>.</p>
+          <a href="pages/products.html" class="btn btn-primary btn-sm">Browse Full Catalog</a>
+        </div>
+      `;
+    }
+
+    searchSection.style.display = "block";
+
+    // Smooth scroll down to results section so user immediately sees their products
+    setTimeout(function() {
+      var headerOffset = 110;
+      var elementPosition = searchSection.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }, 60);
+
+    // Update browser URL cleanly without reload
+    try {
+      var newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("q", query);
+      window.history.pushState({}, "", newUrl.toString());
+    } catch(e) {}
+  };
+
+  window.clearHomeSearch = function() {
+    if (!searchSection) return;
+    searchSection.style.display = "none";
+    headerInputs.forEach(function(inp) { inp.value = ""; });
+    var deptSelect = document.getElementById("header-dept-select");
+    if (deptSelect) deptSelect.value = "";
+    try {
+      var newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete("q");
+      window.history.pushState({}, "", newUrl.toString());
+    } catch(e) {}
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", window.clearHomeSearch);
+  }
+
+  // Check if URL has ?q= on initial page load
+  try {
+    var initialParams = new URLSearchParams(window.location.search);
+    var initialQ = initialParams.get("q");
+    if (initialQ) {
+      window.executeHomeSearch(initialQ);
+    }
+  } catch(e) {}
 });
+

@@ -110,10 +110,10 @@
 
       <!-- Mega Search Bar with Category Selector -->
       <div class="mega-search-container">
-        <form class="mega-search-bar"
-          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(q) window.location.href='pages/search.html?q='+encodeURIComponent(q);">
-          <select class="search-dept-select"
-            onchange="if(this.value) window.location.href='pages/products.html?category='+encodeURIComponent(this.value)">
+        <form class="mega-search-bar" id="header-search-form"
+          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(typeof window.executeHomeSearch === 'function'){ window.executeHomeSearch(q); } else if(q){ window.location.href='pages/search.html?q='+encodeURIComponent(q); }">
+          <select class="search-dept-select" id="header-dept-select"
+            onchange="if(typeof window.executeHomeSearch === 'function'){ window.executeHomeSearch(this.value); } else if(this.value){ window.location.href='pages/products.html?category='+encodeURIComponent(this.value); }">
             <option value="">All Categories</option>
             <option value="Mobiles">Mobiles</option>
             <option value="Laptops">Laptops</option>
@@ -124,7 +124,7 @@
             <option value="Fashion">Fashion</option>
           </select>
           <input type="text" class="mega-search-input header-search-input"
-            placeholder="Search products, brands, models (e.g. Sony, iPhone, MacBook)..." aria-label="Search products">
+            placeholder="Search products, brands, models (e.g. Sony, iPhone, MacBook)..." aria-label="Search products" autocomplete="off">
           <button type="submit" class="mega-search-btn" aria-label="Search">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -223,7 +223,7 @@
     <div style="padding: 1rem 1.25rem;">
       <div class="mega-search-bar" style="border-radius: var(--radius-sm);">
         <input type="text" class="mega-search-input header-search-input" placeholder="Search products..."
-          onkeydown="if(event.key==='Enter') window.location.href='pages/search.html?q='+encodeURIComponent(this.value)">
+          onkeydown="if(event.key==='Enter') { const q = this.value.trim(); if(typeof window.executeHomeSearch === 'function') { document.querySelector('.mobile-nav-drawer')?.classList.remove('active'); window.executeHomeSearch(q); } else if(q) { window.location.href='pages/search.html?q='+encodeURIComponent(q); } }">
       </div>
     </div>
     <nav class="drawer-nav-list">
@@ -306,6 +306,29 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ==================== HOMEPAGE IN-PAGE LIVE SEARCH RESULTS (AMAZON STYLE) ==================== -->
+    <section id="home-search-results-section" style="display:none; padding: 2.5rem 0 3.5rem; background: var(--surface-subtle); border-bottom: 2px solid var(--border);">
+      <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem; padding-bottom:0.85rem; border-bottom:1px solid var(--border);">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <span class="badge" style="background: rgba(37,99,235,0.12); color: var(--primary); font-size:0.75rem; font-weight:800; padding:0.2rem 0.65rem; border-radius: var(--radius-full);">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Live Search Results
+              </span>
+              <span id="home-search-count-text" style="font-size:0.85rem; font-weight:700; color:var(--muted);"></span>
+            </div>
+            <h2 style="font-size: 1.65rem; font-weight: 800; color: var(--text); margin:0;" id="home-search-heading">
+              Results for "<span id="home-search-query-label" style="color:var(--primary);">phone</span>"
+            </h2>
+          </div>
+          <button type="button" id="home-search-clear-btn" class="btn btn-outline btn-sm" style="display:inline-flex; align-items:center; gap:0.4rem; font-weight:700;">
+            <i class="fa-solid fa-xmark"></i> Clear &amp; Show All
+          </button>
+        </div>
+        <div class="product-grid" id="home-search-results-grid"></div>
       </div>
     </section>
 

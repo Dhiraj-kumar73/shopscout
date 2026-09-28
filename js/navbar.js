@@ -95,12 +95,17 @@ const NavbarController = {
         wrapper.appendChild(dropdown);
       }
 
-      // Enter key submits to search.html?q=...
+      // Enter key submits to in-page engine or search.html
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
           const query = input.value.trim();
-          if (query) {
+          dropdown.classList.remove('active');
+          if (typeof window.executeHomeSearch === 'function') {
+            window.executeHomeSearch(query);
+          } else if (typeof window.executeSearchPageSearch === 'function') {
+            window.executeSearchPageSearch(query);
+          } else if (query) {
             window.location.href = `${searchUrl}?q=${encodeURIComponent(query)}`;
           }
         }
@@ -110,7 +115,7 @@ const NavbarController = {
       let debounceTimer;
       input.addEventListener('input', () => {
         clearTimeout(debounceTimer);
-        const val = input.value.trim().toLowerCase();
+        const val = input.value.trim();
 
         if (val.length < 2) {
           dropdown.classList.remove('active');
@@ -121,12 +126,12 @@ const NavbarController = {
         debounceTimer = setTimeout(async () => {
           try {
             const products = await ProductService.getAllProducts();
-            const matched = ShopScout.fuzzySearch(products, val).slice(0, 5);
+            const matched = ShopScout.fuzzySearch(products, val).slice(0, 6);
 
             if (matched.length > 0) {
               dropdown.innerHTML = `
                 <div style="padding: 0.4rem 0.85rem; font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
-                  <span><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> Smart Matches</span>
+                  <span><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> Instant Matches</span>
                   <span style="font-size: 0.68rem; color: var(--deal-orange); font-weight: 800;">${matched.length} items</span>
                 </div>
               ` + matched.map(item => `
@@ -134,15 +139,34 @@ const NavbarController = {
                   <img src="${item.image}" alt="${item.name}">
                   <div style="flex: 1; min-width: 0;">
                     <div style="font-weight: 600; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text);">${item.name}</div>
-                    <div style="font-size: 0.72rem; color: var(--muted);"><i class="fa-solid fa-tag" style="font-size:0.65rem;"></i> ${item.brand || 'ShopScout'} &bull; ${item.category}</div>
+                    <div style="font-size: 0.72rem; color: var(--muted); display:flex; align-items:center; gap:0.4rem;">
+                      <span><i class="fa-solid fa-tag" style="font-size:0.65rem;"></i> ${item.brand || 'ShopScout'} &bull; ${item.category}</span>
+                      ${item.discount ? `<span style="color:var(--deal-orange); font-weight:700; font-size:0.7rem;">${item.discount}% OFF</span>` : ''}
+                    </div>
                   </div>
                   <span class="suggestion-price" style="font-weight: 800; font-size: 0.86rem; color: var(--primary);">${ShopScout.formatPrice(item.price)}</span>
                 </a>
               `).join('') + `
-                <a href="${searchUrl}?q=${encodeURIComponent(val)}" style="display: block; text-align: center; padding: 0.55rem; font-size: 0.8rem; font-weight: 800; color: var(--primary); background: var(--surface-subtle); border-top: 1px solid var(--border); text-decoration: none;">
+                <a href="${searchUrl}?q=${encodeURIComponent(val)}" class="suggestion-view-all-link" style="display: block; text-align: center; padding: 0.55rem; font-size: 0.8rem; font-weight: 800; color: var(--primary); background: var(--surface-subtle); border-top: 1px solid var(--border); text-decoration: none;">
                   View all results for "${val}" &rarr;
                 </a>
               `;
+              
+              var viewAllBtn = dropdown.querySelector('.suggestion-view-all-link');
+              if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', (ev) => {
+                  if (typeof window.executeHomeSearch === 'function') {
+                    ev.preventDefault();
+                    dropdown.classList.remove('active');
+                    window.executeHomeSearch(val);
+                  } else if (typeof window.executeSearchPageSearch === 'function') {
+                    ev.preventDefault();
+                    dropdown.classList.remove('active');
+                    window.executeSearchPageSearch(val);
+                  }
+                });
+              }
+
               dropdown.classList.add('active');
             } else {
               dropdown.innerHTML = `
@@ -157,7 +181,7 @@ const NavbarController = {
           } catch (err) {
             console.error(err);
           }
-        }, 200);
+        }, 180);
       });
 
       // Close dropdown when clicking outside
