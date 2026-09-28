@@ -597,8 +597,9 @@ const AdminController = {
               }
             }
 
+            // Only set MRP if we actually got it from Amazon (> dealPrice)
             if (mrp <= dealPrice) {
-              mrp = Math.round(dealPrice * 1.25);
+              mrp = 0;  // Unknown — do NOT fabricate. Admin can manually enter if needed.
             }
 
             detected.price = dealPrice;
@@ -682,6 +683,18 @@ const AdminController = {
               previewThumb.style.display = 'block';
               previewTitle.textContent = detected.title || 'Product Auto-Detected';
               previewPrice.textContent = detected.price ? `₹${Number(detected.price).toLocaleString('en-IN')}` : 'Captured';
+
+              // Show MRP / original price with strikethrough
+              const previewMrp = document.getElementById('preview-mini-mrp');
+              if (previewMrp) {
+                if (detected.originalPrice && detected.originalPrice > detected.price) {
+                  previewMrp.textContent = `₹${Number(detected.originalPrice).toLocaleString('en-IN')}`;
+                  previewMrp.style.display = 'inline';
+                } else {
+                  previewMrp.style.display = 'none';
+                }
+              }
+
               if (previewStore) {
                 previewStore.textContent = 'Amazon India';
                 previewStore.className = 'pill-amz';
@@ -690,7 +703,22 @@ const AdminController = {
             }
             if (speedTag) speedTag.style.display = 'inline-flex';
 
-            ShopScout.toast(`✨ Auto-detected: "${cleanTitle.slice(0, 35)}..." with verified Amazon deal price & photos!`, 'success');
+            ShopScout.toast(`✨ Auto-detected: "${cleanTitle.slice(0, 35)}..." — title & photos fetched!`, 'success');
+
+            // If price could NOT be scraped, softly hint admin via placeholder (no scary popup)
+            if (detected.priceEstimated) {
+              const priceField = document.getElementById('modal-prod-price');
+              const mrpField = document.getElementById('modal-prod-original-price');
+              if (priceField) {
+                priceField.placeholder = 'Enter price from Amazon page';
+                priceField.style.borderColor = '#f59e0b';
+                priceField.focus();
+              }
+              if (mrpField) {
+                mrpField.placeholder = 'Enter MRP from Amazon page (optional)';
+                mrpField.style.borderColor = '#f59e0b';
+              }
+            }
           }
         } catch (err) {
           console.error('Auto-detect error:', err);
@@ -763,8 +791,8 @@ const AdminController = {
         const bestMarketplace = 'Amazon';
         const bestAffiliateUrl = amazonUrl;
 
-        if (originalPrice <= bestPrice) {
-          originalPrice = Math.round(bestPrice * 1.25);
+        if (originalPrice > 0 && originalPrice <= bestPrice) {
+          originalPrice = 0;  // Unknown MRP — don't fabricate
         }
 
         const image = document.getElementById('modal-prod-image').value.trim() || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
@@ -1329,7 +1357,8 @@ const AdminController = {
         const marketPricing = this.resolveMarketPrice(queryTitle, category, brand);
         const asset = this.resolveProductImageAsset(queryTitle, category, brand);
         const encodedTitle = encodeURIComponent(queryTitle);
-        const amzPrice = marketPricing.price;
+        const amzPrice = marketPricing.price; // Always auto-fill price
+        const amzOriginalPrice = marketPricing.originalPrice > marketPricing.price ? marketPricing.originalPrice : 0; // MRP only if real
         const amzUrl = `https://www.amazon.in/s?k=${encodedTitle}&tag=shopscout-21`;
 
         return {
@@ -1338,15 +1367,16 @@ const AdminController = {
           category,
           marketplace: 'Amazon',
           price: amzPrice,
-          originalPrice: marketPricing.originalPrice,
+          originalPrice: amzOriginalPrice,
+          priceEstimated: false,
           image: asset.image,
           gallery: asset.gallery,
           affiliateUrl: amzUrl,
           amazonPrice: amzPrice,
           amazonUrl: amzUrl,
           marketplacePrices: [
-            { store: 'Amazon Prime', price: amzPrice, originalPrice: marketPricing.originalPrice, url: amzUrl, inStock: true, badge: 'Best Deal' },
-            { store: 'Amazon Standard', price: amzPrice, originalPrice: marketPricing.originalPrice, url: amzUrl, inStock: true, badge: 'Verified' }
+            { store: 'Amazon Prime', price: amzPrice, originalPrice: amzOriginalPrice, url: amzUrl, inStock: true, badge: 'Best Deal' },
+            { store: 'Amazon Standard', price: amzPrice, originalPrice: amzOriginalPrice, url: amzUrl, inStock: true, badge: 'Verified' }
           ],
           stores: [
             { name: 'Amazon India', price: amzPrice, affiliateUrl: amzUrl, inStock: true }
@@ -1469,9 +1499,10 @@ const AdminController = {
       const mainImage = asset.image;
       const gallery = asset.gallery && asset.gallery.length > 0 ? asset.gallery : [mainImage];
 
-      // Real Live Market Pricing
+      // Always auto-fill price. MRP only if real (greater than deal price).
       const marketPricing = this.resolveMarketPrice(title, category, brand);
-      const amzPrice = marketPricing.price;
+      const amzPrice = marketPricing.price; // Always fill
+      const amzOriginalPrice = marketPricing.originalPrice > marketPricing.price ? marketPricing.originalPrice : 0;
 
       // Tracking URL
       let amzUrl = amazonAsin ? `https://www.amazon.in/dp/${amazonAsin}?tag=shopscout-21` : clean;
@@ -1485,15 +1516,16 @@ const AdminController = {
         category,
         marketplace: 'Amazon',
         price: amzPrice,
-        originalPrice: marketPricing.originalPrice,
+        originalPrice: amzOriginalPrice,
+        priceEstimated: false,
         image: mainImage,
         gallery,
         affiliateUrl: amzUrl,
         amazonPrice: amzPrice,
         amazonUrl: amzUrl,
         marketplacePrices: [
-          { store: 'Amazon Prime', price: amzPrice, originalPrice: marketPricing.originalPrice, url: amzUrl, inStock: true, badge: 'Best Deal' },
-          { store: 'Amazon Standard', price: amzPrice, originalPrice: marketPricing.originalPrice, url: amzUrl, inStock: true, badge: 'Verified' }
+          { store: 'Amazon Prime', price: amzPrice, originalPrice: amzOriginalPrice, url: amzUrl, inStock: true, badge: 'Best Deal' },
+          { store: 'Amazon Standard', price: amzPrice, originalPrice: amzOriginalPrice, url: amzUrl, inStock: true, badge: 'Verified' }
         ],
         stores: [
           { name: 'Amazon India', price: amzPrice, affiliateUrl: amzUrl, inStock: true }

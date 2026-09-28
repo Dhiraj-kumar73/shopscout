@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>ShopScout — India's Premier Product Discovery & Multi-Store Price Comparison</title>
   <meta name="description"
     content="Discover products, compare real-time prices across Amazon India, and get verified deals before you checkout.">
@@ -19,10 +19,61 @@
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/product-card.css">
   <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/engagement.css">
   <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- FOUC Fix: Hide body until CSS loads -->
+  <style>
+    body { opacity: 0; transition: opacity 0.3s ease; }
+    #page-loader {
+      position: fixed; inset: 0; z-index: 99999;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      transition: opacity 0.4s ease;
+    }
+    #page-loader .loader-logo {
+      font-size: 2rem; font-weight: 800;
+      color: #2563EB; letter-spacing: -1px;
+    }
+    #page-loader .loader-logo span { color: #FF5200; }
+    #page-loader .loader-bar {
+      width: 160px; height: 3px;
+      background: #E2E8F0; border-radius: 99px; overflow: hidden;
+    }
+    #page-loader .loader-bar-fill {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, #2563EB, #FF5200);
+      border-radius: 99px;
+      animation: loaderFill 0.6s ease forwards;
+    }
+    @keyframes loaderFill {
+      to { width: 100%; }
+    }
+  </style>
 </head>
 
 <body>
+
+  <!-- Page Loader (FOUC Fix) -->
+  <div id="page-loader">
+    <div class="loader-logo">Shop<span>Scout.</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <script>
+    // Remove loader and show body once page is ready
+    window.addEventListener('DOMContentLoaded', function() {
+      document.body.style.opacity = '1';
+      setTimeout(function() {
+        var loader = document.getElementById('page-loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(function() { loader.remove(); }, 400);
+        }
+      }, 300);
+    });
+  </script>
 
   <!-- ==================== TOP ANNOUNCEMENT STRIP ==================== -->
   <div class="top-announcement-bar">
@@ -279,7 +330,7 @@
                 <i class="fa-solid fa-laptop"></i>
               </div>
               <span class="quick-cat-name">Laptops</span>
-              <span class="quick-cat-tag">From ₹24,990</span>
+              <span class="quick-cat-tag">Up to 45% Off</span>
             </a>
 
             <a href="pages/products.html?category=Audio" class="quick-cat-item">
@@ -287,7 +338,7 @@
                 <i class="fa-solid fa-headphones"></i>
               </div>
               <span class="quick-cat-name">Audio &amp; boAt</span>
-              <span class="quick-cat-tag">From ₹899</span>
+              <span class="quick-cat-tag">Up to 70% Off</span>
             </a>
 
             <a href="pages/products.html?category=Watches" class="quick-cat-item">
@@ -479,25 +530,151 @@
 
 
 
-    <!-- ==================== NEWSLETTER CTA ==================== -->
-    <section class="section" style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #F8FAFC;">
-      <div class="container" style="text-align: center; max-width: 680px;">
-        <span class="badge"
-          style="background: rgba(37, 99, 235, 0.2); color: #60A5FA; margin-bottom: 0.75rem; font-weight:800;">Deal
-          Alerts</span>
-        <h2 style="font-size: 2.35rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.75rem;">Never Miss a Price
-          Drop</h2>
-        <p style="color: #94A3B8; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;">
-          Get verified deal alerts and product discoveries straight to your inbox. 100% spam free.
-        </p>
-        <form
-          onsubmit="event.preventDefault(); ShopScout.toast('Subscribed! You will now receive deal alerts.', 'success'); this.reset();"
-          style="display: flex; gap: 0.5rem; max-width: 480px; margin: 0 auto;">
-          <input type="email" placeholder="Enter your email address..." required
-            style="flex: 1; padding: 0.8rem 1.25rem; border-radius: var(--radius-sm); background: #FFFFFF; color: #0F172A; font-size: 0.95rem; border: none;">
-          <button type="submit" class="btn btn-primary"
-            style="padding: 0.8rem 1.5rem; font-weight: 700;">Subscribe</button>
-        </form>
+    <!-- ==================== TODAY'S BEST DEALS ==================== -->
+    <section class="home-deals-section" style="padding: 3rem 0; background: var(--surface);">
+      <div class="container">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; color:#FF5200; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.35rem;">
+              <span style="width:8px;height:8px;border-radius:50%;background:#FF5200;animation:pulse 1.5s ease infinite;display:inline-block;"></span>
+              Live Deals
+            </span>
+            <h2 style="font-size:1.6rem; font-weight:800; color:var(--text); margin:0; line-height:1.2;">Today's Best Deals</h2>
+            <p style="color:var(--muted); font-size:0.875rem; margin:0.25rem 0 0;">Verified Amazon India price drops — updated today</p>
+          </div>
+          <a href="pages/deals.html" style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem; font-weight:700; color:var(--primary); text-decoration:none; padding:0.5rem 1rem; border:2px solid var(--primary); border-radius:var(--radius-sm); transition:all 0.2s ease;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff';" onmouseout="this.style.background='transparent';this.style.color='var(--primary)';">
+            View All Deals <i class="fa-solid fa-arrow-right" style="font-size:0.8rem;"></i>
+          </a>
+        </div>
+        <div class="product-grid" id="home-deals-grid">
+          <!-- Dynamically rendered by home.js -->
+          <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:1rem; display:block; color:var(--primary);"></i>
+            Loading deals...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TRENDING PRODUCTS ==================== -->
+    <section class="home-trending-section" style="padding: 3rem 0; background: var(--bg);">
+      <div class="container">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.35rem;">
+              <i class="fa-solid fa-chart-line" style="font-size:0.7rem;"></i> Trending Now
+            </span>
+            <h2 style="font-size:1.6rem; font-weight:800; color:var(--text); margin:0; line-height:1.2;">🔥 Trending Products</h2>
+            <p style="color:var(--muted); font-size:0.875rem; margin:0.25rem 0 0;">Most searched & wishlisted products right now</p>
+          </div>
+          <a href="pages/products.html" style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem; font-weight:700; color:var(--primary); text-decoration:none; padding:0.5rem 1rem; border:2px solid var(--primary); border-radius:var(--radius-sm); transition:all 0.2s ease;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff';" onmouseout="this.style.background='transparent';this.style.color='var(--primary)';">
+            Browse All <i class="fa-solid fa-arrow-right" style="font-size:0.8rem;"></i>
+          </a>
+        </div>
+        <div class="product-grid" id="trending-products-grid">
+          <!-- Dynamically rendered by home.js -->
+          <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--muted);">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; margin-bottom:1rem; display:block; color:var(--primary);"></i>
+            Loading trending products...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TRUST PILLARS ==================== -->
+    <section class="ss-trust-section">
+      <div class="container">
+        <div class="ss-trust-header">
+          <span class="ss-trust-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why ShopScout?</span>
+          <h2 class="ss-trust-title">India's Most Trusted Deal Discovery Platform</h2>
+          <p class="ss-trust-sub">Every deal, every click — 100% verified and safe.</p>
+        </div>
+        <div class="ss-trust-grid">
+          <div class="ss-trust-card">
+            <div class="ss-trust-icon-wrap ss-icon-blue">
+              <i class="fa-solid fa-badge-check"></i>
+            </div>
+            <h3>100% Verified Deals</h3>
+            <p>Every product and discount is manually verified. No expired links, no fake prices — only genuine Amazon India discounts.</p>
+          </div>
+          <div class="ss-trust-card">
+            <div class="ss-trust-icon-wrap ss-icon-green">
+              <i class="fa-solid fa-chart-line-down"></i>
+            </div>
+            <h3>Lowest Price Tracking</h3>
+            <p>We track 30-day price history so you always know if it's a real deal or a fake discount before you buy.</p>
+          </div>
+          <div class="ss-trust-card">
+            <div class="ss-trust-icon-wrap ss-icon-orange">
+              <i class="fa-brands fa-amazon"></i>
+            </div>
+            <h3>Direct Amazon Checkout</h3>
+            <p>Pay directly on Amazon with full Prime benefits, buyer protection, easy returns — zero middlemen, zero risk.</p>
+          </div>
+          <div class="ss-trust-card">
+            <div class="ss-trust-icon-wrap ss-icon-purple">
+              <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+            <h3>Zero Cost, Always Free</h3>
+            <p>ShopScout is 100% free forever. No signup required, no subscriptions — just savings, every single day.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIP COMMUNITY CTA ==================== -->
+    <section class="ss-community-cta">
+      <div class="container">
+        <div class="ss-community-inner">
+          <div class="ss-community-left">
+            <div class="ss-community-live-pill">
+              <span class="ss-comm-pulse"></span>
+              <span>Live Deal Alerts Active</span>
+            </div>
+            <h2 class="ss-community-title">⚡ Flash Deals &amp; Price Drops<br><span>सबसे पहले पाएं — बिल्कुल Free</span></h2>
+            <p class="ss-community-desc">Amazon की बिजली जैसी डील्स और 70% तक के प्राइस ड्रॉप्स सीधे अपने WhatsApp और Telegram पर पाएं — बाकी सबसे पहले, हमेशा के लिए Free.</p>
+            <div class="ss-community-btns">
+              <a href="https://whatsapp.com/channel/shopscout" target="_blank" rel="noopener" class="ss-btn-wa">
+                <i class="fa-brands fa-whatsapp"></i>
+                Join WhatsApp Channel
+              </a>
+              <a href="https://t.me/shopscout" target="_blank" rel="noopener" class="ss-btn-tg">
+                <i class="fa-brands fa-telegram"></i>
+                Join Telegram Channel
+              </a>
+            </div>
+            <div class="ss-community-trust-strip">
+              <span><i class="fa-solid fa-users"></i> 15,000+ Smart Shoppers</span>
+              <span><i class="fa-solid fa-infinity"></i> 100% Free Forever</span>
+              <span><i class="fa-solid fa-ban"></i> Zero Spam</span>
+            </div>
+          </div>
+          <div class="ss-community-right" aria-hidden="true">
+            <div class="ss-comm-mockup">
+              <div class="ss-comm-mockup-header">
+                <span class="ss-comm-dot red"></span><span class="ss-comm-dot yellow"></span><span class="ss-comm-dot green"></span>
+                <span class="ss-comm-app-name"><i class="fa-brands fa-whatsapp"></i> ShopScout Deals</span>
+              </div>
+              <div class="ss-comm-messages">
+                <div class="ss-comm-msg ss-msg-new">
+                  <span class="ss-msg-badge">🔥 LOOT</span>
+                  <span>Samsung Galaxy S25+ — <strong>₹66,499</strong> <del>₹1,09,999</del></span>
+                  <span class="ss-msg-time">Just Now</span>
+                </div>
+                <div class="ss-comm-msg">
+                  <span class="ss-msg-badge">⚡ PRIME</span>
+                  <span>boAt Airdopes 800 — <strong>₹1,299</strong> <del>₹3,999</del></span>
+                  <span class="ss-msg-time">2m ago</span>
+                </div>
+                <div class="ss-comm-msg">
+                  <span class="ss-msg-badge">📉 LOW</span>
+                  <span>Redmi Note 14 5G — <strong>₹12,499</strong> <del>₹17,999</del></span>
+                  <span class="ss-msg-time">8m ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -625,6 +802,7 @@
   <script src="js/navbar.js"></script>
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/engagement.js"></script>
   <script src="js/home.js"></script>
 
   <!-- Cloud Sync Scripts (Non-blocking) -->

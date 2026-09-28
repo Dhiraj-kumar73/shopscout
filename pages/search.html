@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Search Products & Deals — ShopScout</title>
   <meta name="description" content="Search products, brands, models, and deals across leading verified online marketplaces.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
@@ -19,27 +19,27 @@
 
 
   <!-- ==================== CLEAN BRANDED PLATFORM HEADER ==================== -->
-  <header class="site-header" id="main-header" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.85rem 0;">
-    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+  <header class="site-header inner-page-header" id="main-header">
+    <div class="inner-header-container">
       
       <!-- Back to Home -->
-      <a href="../index.html" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-full); padding: 0.45rem 1.1rem; text-decoration: none;">
-        <i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span>
+      <a href="../index.html" class="inner-header-back-btn" title="Back to Home" aria-label="Back to Home">
+        <i class="fa-solid fa-arrow-left"></i> <span class="back-btn-text">Back to Home</span>
       </a>
 
       <!-- Prominent Platform Branding (Center) -->
-      <a href="../index.html" class="brand-logo" style="font-size: 1.6rem; display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none;">
-        <span class="brand-icon-wrap" style="width: 42px; height: 42px; font-size: 1.25rem; background: var(--primary); color: #fff; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"><i class="fa-solid fa-bag-shopping"></i></span>
-        <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
+      <a href="../index.html" class="inner-header-logo">
+        <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span class="brand-title">ShopScout<span class="brand-dot">.</span></span>
       </a>
 
       <!-- Theme Toggle & Cart -->
-      <div style="display: flex; align-items: center; gap: 0.65rem;">
+      <div class="inner-header-actions">
         <button class="nav-cart-btn" onclick="CartService.openDrawer()" title="View Shopping Cart">
           <i class="fa-solid fa-bag-shopping"></i>
           <span class="cart-count-badge" style="display: none;">0</span>
         </button>
-        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>

@@ -504,14 +504,27 @@ async function fetchLiveAmazonPriceAndMrp(query = '', brand = '') {
       }
 
       const whole = $(el).find('.a-price-whole').first().text().replace(/[^\d]/g, '');
-      const basis = $(el).find('.a-price.a-text-price .a-offscreen, .basisPrice .a-offscreen').first().text().replace(/[^\d]/g, '');
+      // Try multiple MRP selectors used by Amazon India
+      const mrpSelectors = [
+        '.a-price.a-text-price .a-offscreen',
+        '.basisPrice .a-offscreen',
+        '.a-price[data-a-strike="true"] .a-offscreen',
+        'span[data-a-strike="true"] .a-offscreen',
+        '.a-text-strike',
+        '.a-price.a-text-price span.a-offscreen'
+      ];
+      let basis = '';
+      for (const sel of mrpSelectors) {
+        const val = $(el).find(sel).first().text().replace(/[^\d]/g, '');
+        if (val && parseInt(val, 10) > 0) { basis = val; break; }
+      }
       const p = parseInt(whole, 10);
       const mrp = parseInt(basis, 10);
 
       if (p > 0) {
         bestMatch = {
           price: p,
-          originalPrice: mrp > p ? mrp : Math.round(p * 1.25),
+          originalPrice: mrp > p ? mrp : 0,  // 0 = unknown, do NOT fabricate
           asin: $(el).attr('data-asin'),
           title: resTitle
         };
@@ -557,7 +570,20 @@ async function fetchByAsinDirect(asin) {
     if (exactItem && exactItem.length > 0) {
       const title = exactItem.find('h2 span').first().text().trim();
       const whole = exactItem.find('.a-price-whole').first().text().replace(/[^\d]/g, '');
-      const basis = exactItem.find('.a-price.a-text-price .a-offscreen, .basisPrice .a-offscreen').first().text().replace(/[^\d]/g, '');
+      // Try multiple MRP selectors used by Amazon India
+      const mrpSelectors = [
+        '.a-price.a-text-price .a-offscreen',
+        '.basisPrice .a-offscreen',
+        '.a-price[data-a-strike="true"] .a-offscreen',
+        'span[data-a-strike="true"] .a-offscreen',
+        '.a-text-strike',
+        '.a-price.a-text-price span.a-offscreen'
+      ];
+      let basis = '';
+      for (const sel of mrpSelectors) {
+        const val = exactItem.find(sel).first().text().replace(/[^\d]/g, '');
+        if (val && parseInt(val, 10) > 0) { basis = val; break; }
+      }
       const rawImg = exactItem.find('img.s-image').attr('src');
       let hdImg = rawImg;
       if (hdImg && hdImg.includes('media-amazon.com/images/I/')) {
@@ -570,7 +596,7 @@ async function fetchByAsinDirect(asin) {
         return {
           title,
           price: p,
-          originalPrice: mrp > p ? mrp : Math.round(p * 1.3),
+          originalPrice: mrp > p ? mrp : 0,  // 0 = unknown, do NOT fabricate
           image: hdImg,
           asin
         };
@@ -961,11 +987,23 @@ async function extractProductDetails(rawUrl) {
           if (parsed > 0) price = parsed;
         }
 
-        // MRP from the same buybox container
+        // MRP from the same buybox container — try all known Amazon India MRP selectors
         if (!originalPrice) {
-          const mrpText = container.find('.basisPrice .a-offscreen, .a-price.a-text-price .a-offscreen, .a-text-strike').first().text();
-          const parsed = parsePrice(mrpText);
-          if (parsed > 0) originalPrice = parsed;
+          const mrpSelectors = [
+            '.basisPrice .a-offscreen',
+            '.a-price.a-text-price .a-offscreen',
+            '.a-price[data-a-strike="true"] .a-offscreen',
+            'span[data-a-strike="true"] .a-offscreen',
+            '.a-text-strike',
+            '#listPrice .a-offscreen',
+            '.a-price.a-text-price span.a-offscreen',
+            '[data-a-strike="true"] .a-offscreen'
+          ];
+          for (const sel of mrpSelectors) {
+            const mrpText = container.find(sel).first().text();
+            const parsed = parsePrice(mrpText);
+            if (parsed > price) { originalPrice = parsed; break; }
+          }
         }
       }
     }
@@ -1181,17 +1219,23 @@ async function extractProductDetails(rawUrl) {
     }
   }
 
-  // Price & MRP Safeguards (High-Accuracy Model Resolver)
-  if (!price || price <= 0 || (price === 3499 && /partybox|soundbar|speaker|headphone|laptop/i.test(title))) {
+  // Price Safeguard — always fill price so admin form is never empty
+  // Use model pricing as smart estimate if scraping failed
+  let priceEstimated = false;
+  if (!price || price <= 0) {
     const modelPricing = resolveAccurateModelPrice(title, category, brand);
     price = modelPricing.price;
-    if (!originalPrice || originalPrice <= price) {
+    priceEstimated = true; // Mark as estimated, not real scraped
+    // Only use model originalPrice for well-known products
+    const knownProduct = /iphone|ipad|galaxy|oneplus|redmi|poco|realme|macbook|airpods|partybox|wh-1000|ps5|xbox|pixel|iqoo|nord|nothing phone/i.test(title);
+    if (knownProduct && (!originalPrice || originalPrice <= price)) {
       originalPrice = modelPricing.originalPrice;
     }
   }
 
-  if (!originalPrice || originalPrice <= price) {
-    originalPrice = Math.round(price * 1.28); // Standard 22% deal discount
+  // Never show fake strikethrough MRP — only real scraped values
+  if (originalPrice > 0 && originalPrice <= price) {
+    originalPrice = 0;
   }
 
   // Primary image & Multi-angle Gallery Guarantee
@@ -1283,6 +1327,7 @@ async function extractProductDetails(rawUrl) {
     category,
     price,
     originalPrice,
+    priceEstimated,   // true = price could NOT be scraped, admin must enter manually
     marketplace,
     affiliateUrl: cleanAffiliateUrl,
     image: mainImage,

@@ -4,8 +4,12 @@
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.15rem;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: stretch;
 }
 
 .product-card {
@@ -353,6 +357,22 @@
 [data-theme="dark"] .prime-mini-badge {
   color: #38BDF8;
   background: rgba(56, 189, 248, 0.12);
+}
+
+.product-card-delivery-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.15rem;
+}
+
+.product-card-delivery-text i {
+  color: var(--primary);
+  font-size: 0.75rem;
 }
 
 /* --------------------------------------------------------------------------

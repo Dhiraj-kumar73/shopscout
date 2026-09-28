@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Browse Products — ShopScout</title>
   <meta name="description" content="Browse and filter the latest products with verified prices and deals across Amazon India.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
@@ -13,32 +13,33 @@
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/product-card.css">
   <link rel="stylesheet" href="../css/cart.css">
+  <link rel="stylesheet" href="../css/engagement.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
 
   <!-- ==================== CLEAN BRANDED PLATFORM HEADER ==================== -->
-  <header class="site-header" id="main-header" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.85rem 0;">
-    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+  <header class="site-header inner-page-header" id="main-header">
+    <div class="inner-header-container">
       
       <!-- Back to Home -->
-      <a href="../index.html" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-full); padding: 0.45rem 1.1rem; text-decoration: none;">
-        <i class="fa-solid fa-arrow-left"></i> <span>Back to Home</span>
+      <a href="../index.html" class="inner-header-back-btn" title="Back to Home" aria-label="Back to Home">
+        <i class="fa-solid fa-arrow-left"></i> <span class="back-btn-text">Back to Home</span>
       </a>
 
       <!-- Prominent Platform Branding (Center) -->
-      <a href="../index.html" class="brand-logo" style="font-size: 1.6rem; display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none;">
-        <span class="brand-icon-wrap" style="width: 42px; height: 42px; font-size: 1.25rem; background: var(--primary); color: #fff; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"><i class="fa-solid fa-bag-shopping"></i></span>
-        <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
+      <a href="../index.html" class="inner-header-logo">
+        <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span class="brand-title">ShopScout<span class="brand-dot">.</span></span>
       </a>
 
       <!-- Theme Toggle & Cart -->
-      <div style="display: flex; align-items: center; gap: 0.65rem;">
+      <div class="inner-header-actions">
         <button class="nav-cart-btn" onclick="CartService.openDrawer()" title="View Shopping Cart">
           <i class="fa-solid fa-bag-shopping"></i>
           <span class="cart-count-badge" style="display: none;">0</span>
         </button>
-        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>
@@ -76,120 +77,178 @@
     <div class="container" style="padding-top: 1.5rem; padding-bottom: 4rem;">
       
       <!-- Page Breadcrumbs & Header with Platform Branding -->
-      <div class="page-header-banner" style="margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);">
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.4rem;">
-              <a href="../index.html" style="color: var(--primary); text-decoration: none; font-weight: 600;"><i class="fa-solid fa-house"></i> Home</a>
+      <div class="page-header-banner catalog-hero-banner">
+        <div class="catalog-hero-inner">
+          <div class="catalog-hero-text">
+            <div class="catalog-hero-breadcrumb">
+              <a href="../index.html"><i class="fa-solid fa-house"></i> Home</a>
               <span>/</span>
-              <span style="color: var(--text); font-weight: 600;" id="breadcrumb-category">Products</span>
+              <span id="breadcrumb-category">Products</span>
             </div>
-            <h1 id="page-catalog-title" style="font-size: 2.1rem; font-weight: 800; margin-bottom: 0.35rem; color: var(--text);">Explore All Products</h1>
-            <p id="page-catalog-subtitle" style="color: var(--muted); font-size: 0.95rem;">Live verified deals &amp; authentic pricing on Amazon India.</p>
+            <div class="catalog-deal-tag-pill">
+              <i class="fa-solid fa-bolt"></i>
+              <span id="catalog-live-tag">Live Verified Amazon India Deals</span>
+            </div>
+            <h1 id="page-catalog-title">Explore All Products</h1>
+            <p id="page-catalog-subtitle">Live verified deals &amp; authentic pricing on Amazon India.</p>
+            
+            <!-- Quick Feature Highlight Badges -->
+            <div class="catalog-feature-pills" id="catalog-feature-pills">
+              <span class="feat-pill"><i class="fa-solid fa-truck-fast"></i> Free Prime Delivery</span>
+              <span class="feat-pill"><i class="fa-solid fa-shield-check"></i> 100% Authentic Sellers</span>
+              <span class="feat-pill"><i class="fa-solid fa-arrow-trend-down"></i> Lowest Price Tracking</span>
+              <span class="feat-pill"><i class="fa-solid fa-star"></i> Top Customer Rated</span>
+            </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 0.65rem; background: var(--surface-subtle); padding: 0.55rem 1.15rem; border-radius: var(--radius-full); border: 1px solid var(--border);">
-            <span class="brand-icon-wrap" style="width: 28px; height: 28px; font-size: 0.85rem; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-bag-shopping"></i></span>
-            <span style="font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--text);">ShopScout<span style="color: var(--deal-orange);">.</span></span>
-            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600; border-left: 1px solid var(--border); padding-left: 0.5rem;">Shopping Platform</span>
+          
+          <div class="catalog-hero-badge-card">
+            <div class="hero-badge-top">
+              <span class="brand-icon-wrap" style="width: 32px; height: 32px; font-size: 0.95rem; background: var(--primary); color: #fff; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;"><i class="fa-solid fa-bag-shopping"></i></span>
+              <span class="hero-badge-brand">ShopScout<span class="brand-dot" style="color: var(--deal-orange);">.</span></span>
+            </div>
+            <div class="hero-badge-sub"><i class="fa-solid fa-circle-check"></i> Smart Price Comparison</div>
+            <div class="hero-badge-stat">Up to <strong>60% OFF</strong> Verified Deals</div>
           </div>
         </div>
       </div>
 
+      <!-- Mobile Filter Drawer Backdrop Overlay -->
+      <div class="filter-drawer-backdrop" id="filter-drawer-backdrop" onclick="FilterController.closeDrawer()"></div>
+
       <!-- Catalog Two-Column Layout -->
       <div class="catalog-main-layout" style="display: grid; grid-template-columns: 260px 1fr; gap: 2rem; align-items: start;">
         
-        <!-- Filter Sidebar -->
-        <aside class="card" style="padding: 1.5rem; position: sticky; top: calc(var(--header-height) + 20px);">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
-            <h3 style="font-size: 1.05rem; font-weight: 700;"><i class="fa-solid fa-sliders"></i> Filters</h3>
-            <button id="clear-filters-btn" style="font-size: 0.775rem; font-weight: 600; color: var(--primary); cursor: pointer;">Clear All</button>
+        <!-- Filter Sidebar / Off-Canvas Drawer on Mobile -->
+        <aside id="catalog-filter-sidebar" class="catalog-filter-sidebar card" style="position: sticky; top: calc(var(--header-height) + 20px);">
+          
+          <!-- Mobile Drawer Header -->
+          <div class="filter-drawer-header">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="color: var(--primary); font-size: 1.15rem;"><i class="fa-solid fa-sliders"></i></span>
+              <h3 style="font-size: 1.1rem; font-weight: 800; margin: 0; color: var(--text);">Filters & Refinements</h3>
+            </div>
+            <button type="button" class="filter-drawer-close-btn" onclick="FilterController.closeDrawer()" aria-label="Close filters">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
 
-          <!-- Category Filter -->
-          <div style="margin-bottom: 1.5rem;">
-            <div class="form-label">Category</div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.875rem;">
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Audio"> Audio
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Laptops"> Laptops
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Mobiles"> Mobiles
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Watches"> Watches
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Gaming"> Gaming
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Home & Kitchen"> Home & Kitchen
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Gadgets"> Gadgets
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-category" value="Fashion"> Fashion
-              </label>
+          <!-- Desktop Header -->
+          <div class="filter-desktop-header">
+            <h3><i class="fa-solid fa-sliders"></i> Filters</h3>
+            <button id="clear-filters-btn" type="button" class="btn-clear-filters">Clear All</button>
+          </div>
+
+          <div class="filter-sidebar-scroll-body" style="padding: 1.25rem;">
+            <!-- Category Filter Section (Dropdown) -->
+            <div style="margin-bottom: 1.5rem;">
+              <div class="form-label" style="display: flex; align-items: center; gap: 0.45rem;">
+                <i class="fa-solid fa-layer-group" style="color: var(--primary);"></i> Category
+              </div>
+              <div id="category-filter-container">
+                <!-- Dynamically rendered clean dropdown -->
+              </div>
+            </div>
+
+            <!-- Top Brands Quick Filter -->
+            <div class="sidebar-brand-filter-section" id="sidebar-brand-section" style="margin-bottom: 1.5rem;">
+              <div class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="display: flex; align-items: center; gap: 0.45rem;">
+                  <i class="fa-solid fa-certificate" style="color: var(--primary);"></i> Popular Brands
+                </span>
+                <button type="button" class="btn-clear-brand-link" id="btn-clear-brand" onclick="FilterController.clearBrand()" style="display: none;">Clear</button>
+              </div>
+              <div class="sidebar-brands-grid" id="sidebar-brands-list">
+                <!-- Dynamically rendered brand chips -->
+              </div>
+            </div>
+
+            <!-- Quick Budget Range Filter -->
+            <div style="margin-bottom: 1.5rem;">
+              <div class="form-label" style="display: flex; align-items: center; gap: 0.45rem;">
+                <i class="fa-solid fa-tags" style="color: var(--primary);"></i> Budget Range
+              </div>
+              <div class="sidebar-budget-grid">
+                <button type="button" class="price-pill-btn active" data-range="all" data-min="0" data-max="200000">All Prices</button>
+                <button type="button" class="price-pill-btn" data-range="under-15000" data-min="0" data-max="15000">Under ₹15K</button>
+                <button type="button" class="price-pill-btn" data-range="15000-30000" data-min="15000" data-max="30000">₹15K – ₹30K</button>
+                <button type="button" class="price-pill-btn" data-range="30000-60000" data-min="30000" data-max="60000">₹30K – ₹60K</button>
+                <button type="button" class="price-pill-btn" data-range="60000-plus" data-min="60000" data-max="200000">₹60,000+</button>
+                <button type="button" class="price-pill-btn" data-range="under-2000" data-min="0" data-max="2000">Under ₹2K</button>
+              </div>
+            </div>
+
+            <!-- Sort By Section -->
+            <div style="margin-bottom: 1.5rem;">
+              <div class="form-label" style="display: flex; align-items: center; gap: 0.45rem;">
+                <i class="fa-solid fa-arrow-down-short-wide" style="color: var(--primary);"></i> Sort By
+              </div>
+              <div class="category-select-box">
+                <i class="cat-select-icon fa-solid fa-arrow-down-short-wide"></i>
+                <select id="sidebar-sort-select" class="catalog-category-select" onchange="FilterController.onSortChange(this.value)" aria-label="Sort products">
+                  <option value="relevance">Featured &amp; Best Deals</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Top Customer Rated</option>
+                  <option value="discount">Biggest Discount</option>
+                  <option value="popular">Most Popular</option>
+                </select>
+                <i class="cat-select-arrow fa-solid fa-chevron-down"></i>
+              </div>
+            </div>
+
+            <!-- Verified Deal Assurance Card -->
+            <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;">
+              <div style="font-weight: 700; font-size: 0.825rem; color: var(--text); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                <i class="fa-solid fa-shield-check" style="color: #10B981;"></i> 100% Verified Deals
+              </div>
+              <ul style="font-size: 0.75rem; color: var(--muted); line-height: 1.6; padding-left: 1.1rem; margin: 0;">
+                <li>Official Amazon Live Prices</li>
+                <li>Authentic Deals &amp; Top Ratings</li>
+                <li>Direct Safe Amazon Checkout</li>
+              </ul>
             </div>
           </div>
 
-          <!-- Price Max Slider -->
-          <div style="margin-bottom: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
-              <span class="form-label" style="margin-bottom: 0;">Max Price</span>
-              <span id="filter-price-label" style="font-size: 0.8rem; font-weight: 700; color: var(--primary);">Up to ₹2,00,000</span>
-            </div>
-            <input type="range" id="filter-price-slider" min="50" max="200000" step="50" value="200000" style="width: 100%; cursor: pointer;">
+          <!-- Mobile Drawer Footer -->
+          <div class="filter-drawer-footer">
+            <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.resetFilters()" style="flex: 1;">Reset All</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="FilterController.closeDrawer()" style="flex: 2;">
+              Apply Filters
+            </button>
           </div>
 
-          <!-- Marketplace Filter -->
-          <div style="margin-bottom: 1.5rem;">
-            <div class="form-label">Amazon Offer Type</div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.875rem;">
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" name="filter-marketplace" value="Amazon" checked> <i class="fa-brands fa-amazon" style="color: #FF9900;"></i> Amazon Prime
-              </label>
-            </div>
-          </div>
-
-          <!-- Rating Filter -->
-          <div style="margin-bottom: 1.5rem;">
-            <div class="form-label">Customer Rating</div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.875rem;">
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-rating" value="4.5"> 4.5★ &amp; above
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-rating" value="4.0"> 4.0★ &amp; above
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-rating" value="0"> All Ratings
-              </label>
-            </div>
-          </div>
-
-          <!-- Discount Filter -->
-          <div>
-            <div class="form-label">Discount Tier</div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.875rem;">
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-discount" value="30"> 30% or more
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-discount" value="20"> 20% or more
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="radio" name="filter-discount" value="10"> 10% or more
-              </label>
-            </div>
-          </div>
         </aside>
 
         <!-- Right Product Grid Section -->
         <div>
+          <!-- Mobile Action Toolbar (Filters Drawer Button + Sort Dropdown) -->
+          <div class="mobile-catalog-toolbar">
+            <button type="button" class="mobile-filter-open-btn" onclick="FilterController.openDrawer()" aria-label="Open Filters">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Filters</span>
+              <span class="active-filter-badge" id="mobile-filter-badge" style="display: none;">0</span>
+            </button>
+            <div class="mobile-sort-select-wrap">
+              <i class="fa-solid fa-arrow-down-short-wide"></i>
+              <select id="mobile-sort-select" onchange="FilterController.onSortChange(this.value)" aria-label="Sort products">
+                <option value="relevance">Sort: Featured</option>
+                <option value="price-low">Price: Low → High</option>
+                <option value="price-high">Price: High → Low</option>
+                <option value="rating">Top Rated</option>
+                <option value="discount">Biggest Discount</option>
+                <option value="popular">Most Popular</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Filter Chips Bar (Shown when any filter/category is active) -->
+          <div class="active-filter-chips-bar" id="active-filter-chips-bar" style="display: none;">
+            <div class="active-chips-scroll" id="active-chips-list">
+              <!-- Rendered dynamically -->
+            </div>
+            <button type="button" class="btn-clear-all-chips" onclick="FilterController.resetFilters()">Clear All</button>
+          </div>
+
           <!-- Quick Budget Filter Pills -->
           <div class="catalog-price-pills-wrap">
             <span style="font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-right: 0.25rem;"><i class="fa-solid fa-tags"></i> Quick Budget:</span>
@@ -201,13 +260,13 @@
             <button class="price-pill-btn" data-range="under-2000" data-min="0" data-max="2000">Under ₹2,000</button>
           </div>
 
-          <!-- Top Sort & Count Bar -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem 1.25rem;">
+          <!-- Top Desktop Sort & Count Bar -->
+          <div class="catalog-desktop-sort-bar" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem 1.25rem;">
             <div id="results-count" style="font-size: 0.875rem; font-weight: 600; color: var(--muted);">Loading products...</div>
             
             <div style="display: flex; align-items: center; gap: 0.75rem;">
               <label for="sort-select" style="font-size: 0.85rem; font-weight: 600; color: var(--muted);">Sort By:</label>
-              <select id="sort-select" class="form-control form-select" style="width: auto; padding-top: 0.4rem; padding-bottom: 0.4rem; font-size: 0.85rem;">
+              <select id="sort-select" class="form-control form-select" onchange="FilterController.onSortChange(this.value)" style="width: auto; padding-top: 0.4rem; padding-bottom: 0.4rem; font-size: 0.85rem;">
                 <option value="relevance">Relevance / Featured</option>
                 <option value="price-low">Price: Low &rarr; High</option>
                 <option value="price-high">Price: High &rarr; Low</option>
@@ -280,6 +339,7 @@
   <script src="../js/navbar.js"></script>
   <script src="../js/products.js"></script>
   <script src="../js/cart.js"></script>
+  <script src="../js/engagement.js"></script>
   <script src="../js/filter.js"></script>
 
   <!-- Cloud Sync Scripts (Non-blocking) -->

@@ -318,7 +318,11 @@ function renderProductCard(product) {
           <span class="product-current-price">${ShopScout.formatPrice(product.price)}</span>
           ${product.originalPrice ? `<span class="product-original-price">${ShopScout.formatPrice(product.originalPrice)}</span>` : ''}
           ${savingsBadge}
-          <span class="prime-mini-badge" title="Amazon Prime Delivery"><i class="fa-solid fa-bolt"></i> Prime</span>
+          <span class="prime-mini-badge" title="Amazon Prime Delivery"><i class="fa-brands fa-amazon"></i> Prime</span>
+        </div>
+
+        <div class="product-card-delivery-text">
+          <i class="fa-solid fa-truck-fast"></i> <span>FREE Delivery by Tomorrow</span>
         </div>
 
       </div>

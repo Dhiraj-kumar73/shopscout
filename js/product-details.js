@@ -54,6 +54,14 @@ const ProductDetailsController = {
       if (typeof window !== 'undefined' && !window.location.hash) {
         window.scrollTo(0, 0);
       }
+
+      // Engagement Engine — inject all 4 conversion features
+      try {
+        if (typeof ShopScoutEngagement !== 'undefined') {
+          ShopScoutEngagement.init(product);
+        }
+      } catch (e) { console.warn('Engagement engine error:', e); }
+
     } catch (criticalErr) {
       console.error('[ShopScout] Critical error initializing product details:', criticalErr);
       this.renderNotFound('Unable to display product details.');
