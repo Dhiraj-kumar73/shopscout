@@ -111,9 +111,9 @@
       <!-- Mega Search Bar with Category Selector -->
       <div class="mega-search-container">
         <form class="mega-search-bar" id="header-search-form"
-          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(typeof window.executeHomeSearch === 'function'){ window.executeHomeSearch(q); } else if(q){ window.location.href='pages/search.html?q='+encodeURIComponent(q); }">
+          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(q) window.location.href='pages/products.html?q='+encodeURIComponent(q);">
           <select class="search-dept-select" id="header-dept-select"
-            onchange="if(typeof window.executeHomeSearch === 'function'){ window.executeHomeSearch(this.value); } else if(this.value){ window.location.href='pages/products.html?category='+encodeURIComponent(this.value); }">
+            onchange="if(this.value) window.location.href='pages/products.html?category='+encodeURIComponent(this.value)">
             <option value="">All Categories</option>
             <option value="Mobiles">Mobiles</option>
             <option value="Laptops">Laptops</option>
@@ -223,7 +223,7 @@
     <div style="padding: 1rem 1.25rem;">
       <div class="mega-search-bar" style="border-radius: var(--radius-sm);">
         <input type="text" class="mega-search-input header-search-input" placeholder="Search products..."
-          onkeydown="if(event.key==='Enter') { const q = this.value.trim(); if(typeof window.executeHomeSearch === 'function') { document.querySelector('.mobile-nav-drawer')?.classList.remove('active'); window.executeHomeSearch(q); } else if(q) { window.location.href='pages/search.html?q='+encodeURIComponent(q); } }">
+          onkeydown="if(event.key==='Enter') { const q = this.value.trim(); if(q) window.location.href='pages/products.html?q='+encodeURIComponent(q); }">
       </div>
     </div>
     <nav class="drawer-nav-list">

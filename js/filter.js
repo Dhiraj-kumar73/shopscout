@@ -37,11 +37,28 @@ const FilterController = {
     const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.get('q')) {
-      this.activeFilters.query = urlParams.get('q').trim();
+      const q = urlParams.get('q').trim();
+      this.activeFilters.query = q;
       const sidebarSearch = document.getElementById('sidebar-search-input');
       const clearBtn = document.getElementById('sidebar-search-clear');
-      if (sidebarSearch) sidebarSearch.value = this.activeFilters.query;
-      if (clearBtn) clearBtn.style.display = this.activeFilters.query ? 'block' : 'none';
+      if (sidebarSearch) sidebarSearch.value = q;
+      if (clearBtn) clearBtn.style.display = 'block';
+
+      // Pre-fill header search inputs
+      const headerInputs = document.querySelectorAll('.header-search-input');
+      headerInputs.forEach(i => { i.value = q; });
+
+      // If no category was explicitly passed in URL, check if q matches a known category
+      if (!urlParams.get('category')) {
+        const qLower = q.toLowerCase();
+        const matchedCat = this.categories.find(c => 
+          c.name.toLowerCase() === qLower ||
+          c.aliases.some(a => qLower === a || qLower.startsWith(a))
+        );
+        if (matchedCat) {
+          this.activeFilters.category = [matchedCat.name];
+        }
+      }
     }
     
     if (urlParams.get('category')) {
@@ -88,6 +105,39 @@ const FilterController = {
     this.applyFilters();
   },
 
+  setQuery(query) {
+    this.activeFilters.query = (query || '').trim();
+    const qLower = this.activeFilters.query.toLowerCase();
+    
+    // Auto-detect category from query if matches
+    if (qLower) {
+      const matchedCat = this.categories.find(c => 
+        c.name.toLowerCase() === qLower ||
+        c.aliases.some(a => qLower === a || qLower.startsWith(a))
+      );
+      if (matchedCat) {
+        this.activeFilters.category = [matchedCat.name];
+      }
+    }
+
+    const sidebarSearch = document.getElementById('sidebar-search-input');
+    const clearBtn = document.getElementById('sidebar-search-clear');
+    if (sidebarSearch) sidebarSearch.value = this.activeFilters.query;
+    if (clearBtn) clearBtn.style.display = this.activeFilters.query ? 'block' : 'none';
+
+    const headerInputs = document.querySelectorAll('.header-search-input');
+    headerInputs.forEach(i => { i.value = this.activeFilters.query; });
+
+    this.updateHeaderAndUrl();
+    this.renderCategoryFilter();
+    this.renderBrandFilter();
+    this.applyFilters();
+  },
+
+  clearQuery() {
+    this.setQuery('');
+  },
+
   onSearchInput(val) {
     this.activeFilters.query = (val || '').trim();
     const clearBtn = document.getElementById('sidebar-search-clear');
@@ -96,12 +146,7 @@ const FilterController = {
   },
 
   clearSearch() {
-    this.activeFilters.query = '';
-    const sidebarSearch = document.getElementById('sidebar-search-input');
-    const clearBtn = document.getElementById('sidebar-search-clear');
-    if (sidebarSearch) sidebarSearch.value = '';
-    if (clearBtn) clearBtn.style.display = 'none';
-    this.applyFilters();
+    this.clearQuery();
   },
 
   matchesCategory(p, catName) {
@@ -348,8 +393,23 @@ const FilterController = {
 
     const isCategorySelected = this.activeFilters.category.length > 0;
     const cat = isCategorySelected ? this.activeFilters.category[0] : null;
+    const q = this.activeFilters.query;
 
-    if (isCategorySelected) {
+    if (q) {
+      const qLower = q.toLowerCase();
+      const isPureCat = ['mobile', 'mobiles', 'phone', 'phones', 'laptop', 'laptops', 'audio', 'watch', 'watches'].includes(qLower);
+      if (titleEl) titleEl.textContent = isCategorySelected && isPureCat ? `${cat} Deals & Offers` : `Results for "${q}"`;
+      if (subtitleEl) subtitleEl.textContent = `Showing verified products matching "${q}" with live price tracking.`;
+      if (breadcrumbEl) breadcrumbEl.textContent = `"${q}"`;
+      if (liveTagEl) liveTagEl.textContent = `Verified Matches for "${q}" • Amazon Live Sync`;
+      if (featurePillsEl) {
+        featurePillsEl.innerHTML = `
+          <span class="feat-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> Filtered by "${q}"</span>
+          <span class="feat-pill"><i class="fa-solid fa-shield-check"></i> 100% Authentic Sellers</span>
+          <span class="feat-pill"><i class="fa-solid fa-arrow-trend-down"></i> Lowest Price Tracking</span>
+        `;
+      }
+    } else if (isCategorySelected) {
       if (titleEl) titleEl.textContent = `${cat} Deals & Offers`;
       if (subtitleEl) subtitleEl.textContent = `Live verified Amazon prices and authentic deals for top ${cat}.`;
       if (breadcrumbEl) breadcrumbEl.textContent = cat;
@@ -415,6 +475,11 @@ const FilterController = {
       currentUrl.searchParams.set('category', cat);
     } else {
       currentUrl.searchParams.delete('category');
+    }
+    if (this.activeFilters.query) {
+      currentUrl.searchParams.set('q', this.activeFilters.query);
+    } else {
+      currentUrl.searchParams.delete('q');
     }
     if (this.activeFilters.brand) {
       currentUrl.searchParams.set('brand', this.activeFilters.brand);
@@ -498,7 +563,11 @@ const FilterController = {
 
     // Query text search filter
     if (this.activeFilters.query) {
-      this.filteredProducts = ShopScout.fuzzySearch(this.filteredProducts, this.activeFilters.query);
+      const qLower = this.activeFilters.query.toLowerCase().trim();
+      const isPureCatTerm = ['mobile', 'mobiles', 'phone', 'phones', 'smartphone', 'smartphones', 'laptop', 'laptops', 'computer', 'audio', 'sound', 'watch', 'watches', 'gaming', 'fashion'].includes(qLower);
+      if (!isPureCatTerm || this.activeFilters.category.length === 0) {
+        this.filteredProducts = ShopScout.fuzzySearch(this.filteredProducts, this.activeFilters.query);
+      }
     }
 
     this.applySort();
@@ -535,6 +604,18 @@ const FilterController = {
 
     let activeCount = 0;
     const chipsHtml = [];
+
+    // Search Query Chip
+    if (this.activeFilters.query) {
+      activeCount++;
+      chipsHtml.push(`
+        <span class="active-filter-chip">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+          <span>"${this.activeFilters.query}"</span>
+          <button type="button" class="chip-remove-btn" onclick="FilterController.clearQuery()" aria-label="Remove search filter">&times;</button>
+        </span>
+      `);
+    }
 
     // Category Chip
     if (this.activeFilters.category.length > 0) {

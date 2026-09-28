@@ -81,7 +81,7 @@ const NavbarController = {
   bindHeaderSearch() {
     const searchInputs = document.querySelectorAll('.header-search-input');
     const isPagesSubdir = window.location.pathname.includes('/pages/');
-    const searchUrl = isPagesSubdir ? 'search.html' : 'pages/search.html';
+    const searchUrl = isPagesSubdir ? 'products.html' : 'pages/products.html';
     const detailUrlPrefix = isPagesSubdir ? 'product-details.html?id=' : 'pages/product-details.html?id=';
 
     searchInputs.forEach(input => {
@@ -95,16 +95,14 @@ const NavbarController = {
         wrapper.appendChild(dropdown);
       }
 
-      // Enter key submits to in-page engine or search.html
+      // Enter key submits to products page
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
           const query = input.value.trim();
           dropdown.classList.remove('active');
-          if (typeof window.executeHomeSearch === 'function') {
-            window.executeHomeSearch(query);
-          } else if (typeof window.executeSearchPageSearch === 'function') {
-            window.executeSearchPageSearch(query);
+          if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
+            FilterController.setQuery(query);
           } else if (query) {
             window.location.href = `${searchUrl}?q=${encodeURIComponent(query)}`;
           }
@@ -155,14 +153,10 @@ const NavbarController = {
               var viewAllBtn = dropdown.querySelector('.suggestion-view-all-link');
               if (viewAllBtn) {
                 viewAllBtn.addEventListener('click', (ev) => {
-                  if (typeof window.executeHomeSearch === 'function') {
+                  if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
                     ev.preventDefault();
                     dropdown.classList.remove('active');
-                    window.executeHomeSearch(val);
-                  } else if (typeof window.executeSearchPageSearch === 'function') {
-                    ev.preventDefault();
-                    dropdown.classList.remove('active');
-                    window.executeSearchPageSearch(val);
+                    FilterController.setQuery(val);
                   }
                 });
               }
