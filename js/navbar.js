@@ -169,13 +169,39 @@ const NavbarController = {
 
               dropdown.classList.add('active');
             } else {
+              var safeVal = val.replace(/[<>&"]/g, s => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[s]));
               dropdown.innerHTML = `
                 <div style="padding: 1.25rem 1rem; text-align: center; font-size: 0.85rem; color: var(--muted);">
-                  <i class="fa-solid fa-magnifying-glass" style="font-size: 1.2rem; opacity: 0.4; margin-bottom: 0.35rem; display: block;"></i>
-                  No quick matches found for "<strong>${val}</strong>".<br>
-                  <span style="font-size: 0.76rem; opacity: 0.8;">Press Enter to search all departments</span>
+                  <div style="width: 38px; height: 38px; margin: 0 auto 0.4rem; border-radius: 50%; background: rgba(234, 88, 12, 0.12); color: var(--deal-orange); display: flex; align-items: center; justify-content: center; font-size: 1.05rem;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <div style="font-weight: 700; color: var(--text); margin-bottom: 0.25rem;">"${safeVal}" nahi mila</div>
+                  <p style="font-size: 0.76rem; color: var(--muted); margin-bottom: 0.65rem;">Spelling check karein ya inme se chuney:</p>
+                  <div style="display: flex; gap: 0.35rem; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-outline btn-xs nav-notfound-chip" data-query="Mobile" style="border-radius: var(--radius-full); font-size: 0.72rem; padding: 0.2rem 0.55rem;">📱 Mobile</button>
+                    <button type="button" class="btn btn-outline btn-xs nav-notfound-chip" data-query="Laptop" style="border-radius: var(--radius-full); font-size: 0.72rem; padding: 0.2rem 0.55rem;">💻 Laptop</button>
+                    <button type="button" class="btn btn-outline btn-xs nav-notfound-chip" data-query="Audio" style="border-radius: var(--radius-full); font-size: 0.72rem; padding: 0.2rem 0.55rem;">🎧 Audio</button>
+                    <button type="button" class="btn btn-outline btn-xs nav-notfound-chip" data-query="boAt" style="border-radius: var(--radius-full); font-size: 0.72rem; padding: 0.2rem 0.55rem;">⚡ boAt</button>
+                  </div>
                 </div>
               `;
+
+              dropdown.querySelectorAll('.nav-notfound-chip').forEach(b => {
+                b.addEventListener('click', (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  dropdown.classList.remove('active');
+                  const targetQ = b.getAttribute('data-query');
+                  if (typeof window.executeHomeSearch === 'function') {
+                    window.executeHomeSearch(targetQ);
+                  } else if (typeof window.executeSearchPageSearch === 'function') {
+                    window.executeSearchPageSearch(targetQ);
+                  } else {
+                    window.location.href = `${searchUrl}?q=${encodeURIComponent(targetQ)}`;
+                  }
+                });
+              });
+
               dropdown.classList.add('active');
             }
           } catch (err) {

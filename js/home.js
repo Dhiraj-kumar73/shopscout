@@ -169,14 +169,66 @@ document.addEventListener("DOMContentLoaded", async function() {
     if (matches.length > 0) {
       searchGrid.innerHTML = matches.map(function(p) { return renderProductCard(p); }).join("");
     } else {
+      var safeQuery = (query || "").replace(/[<>&"]/g, function(s) {
+        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[s];
+      });
+      var trending = allProducts.slice(0, 8);
       searchGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;">
-          <div style="font-size: 2.2rem; color: var(--deal-orange); margin-bottom: 0.5rem;"><i class="fa-solid fa-magnifying-glass"></i></div>
-          <h3 style="font-weight: 800; color: var(--text); margin-bottom: 0.5rem;">No exact products found for "${query}"</h3>
-          <p style="color: var(--muted); font-size: 0.88rem; max-width: 500px; margin: 0 auto 1.5rem;">Try searching for popular terms like <strong>Mobile, Samsung, iPhone, Laptops, Audio, or boAt</strong>.</p>
-          <a href="pages/products.html" class="btn btn-primary btn-sm">Browse Full Catalog</a>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2.75rem 1.25rem 2rem; background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--radius-lg); margin-bottom: 2.5rem; box-shadow: var(--shadow-sm);">
+          <div style="width: 64px; height: 64px; margin: 0 auto 1.25rem; border-radius: 50%; background: rgba(234, 88, 12, 0.12); color: var(--deal-orange); display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+            <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+          </div>
+          <h3 style="font-weight: 800; font-size: 1.35rem; color: var(--text); margin-bottom: 0.6rem;">
+            "${safeQuery}" ke liye koi product nahi mila
+          </h3>
+          <p style="color: var(--muted); font-size: 0.92rem; max-width: 540px; margin: 0 auto 1.5rem; line-height: 1.6;">
+            Aapka search kiya gaya item catalog me uplabdh nahi hai. Kripya spelling check karein ya neeche diye gaye popular categories me se chuney:
+          </p>
+          
+          <!-- Quick Clickable Category Suggestions -->
+          <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <button type="button" class="btn btn-outline btn-sm home-notfound-chip" data-query="Mobile" style="border-radius: var(--radius-full); font-weight: 600; padding: 0.4rem 0.9rem;">
+              📱 Mobiles
+            </button>
+            <button type="button" class="btn btn-outline btn-sm home-notfound-chip" data-query="Laptop" style="border-radius: var(--radius-full); font-weight: 600; padding: 0.4rem 0.9rem;">
+              💻 Laptops
+            </button>
+            <button type="button" class="btn btn-outline btn-sm home-notfound-chip" data-query="Audio" style="border-radius: var(--radius-full); font-weight: 600; padding: 0.4rem 0.9rem;">
+              🎧 Audio &amp; boAt
+            </button>
+            <button type="button" class="btn btn-outline btn-sm home-notfound-chip" data-query="Watch" style="border-radius: var(--radius-full); font-weight: 600; padding: 0.4rem 0.9rem;">
+              ⌚ Smartwatches
+            </button>
+            <a href="pages/deals.html" class="btn btn-outline btn-sm" style="border-radius: var(--radius-full); font-weight: 700; color: var(--deal-orange); border-color: rgba(234,88,12,0.4); padding: 0.4rem 0.9rem;">
+              <i class="fa-solid fa-fire"></i> Today's Deals
+            </a>
+            <a href="pages/products.html" class="btn btn-primary btn-sm" style="border-radius: var(--radius-full); font-weight: 700; padding: 0.4rem 1rem;">
+              Browse Full Catalog &rarr;
+            </a>
+          </div>
         </div>
+
+        ${trending.length > 0 ? `
+          <div style="grid-column: 1 / -1; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h4 style="font-weight: 800; font-size: 1.2rem; color: var(--text); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-fire" style="color: var(--deal-orange);"></i> Popular Products You Might Like:
+              </h4>
+              <p style="font-size: 0.8rem; color: var(--muted); margin: 0.2rem 0 0;">Top verified trending products available right now</p>
+            </div>
+            <a href="pages/products.html" class="btn btn-outline btn-xs" style="font-weight: 700;">View All &rarr;</a>
+          </div>
+          ${trending.map(function(p) { return renderProductCard(p); }).join('')}
+        ` : ''}
       `;
+
+      // Attach instant click listeners to suggestion chips
+      searchGrid.querySelectorAll('.home-notfound-chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          var targetQ = chip.getAttribute('data-query');
+          window.executeHomeSearch(targetQ);
+        });
+      });
     }
 
     searchSection.style.display = "block";
