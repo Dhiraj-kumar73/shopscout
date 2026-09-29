@@ -22,7 +22,9 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
+# Local Deployments & Scratch
 .vercel
+scratch/
 
 # Python & Databases
 __pycache__/

@@ -19,6 +19,12 @@ ShopScout is an affiliate-driven product discovery platform. It is **not** a tra
 ```
 shopscout/
 ├── index.html                           # Landing page with hero, categories, trending & deals
+├── server.js                            # Express backend, mock APIs & live price sync scheduler
+├── amazon_tracker.py                    # Real-time Amazon price tracker (Python, BeautifulSoup & SQLite)
+├── robots.txt                           # Search engine crawling rules & admin privacy
+├── sitemap.xml                          # XML Sitemap for Google Search Console
+├── manifest.json                        # Progressive Web App (PWA) mobile installation manifest
+├── vercel.json                          # Vercel Serverless deployment configuration
 ├── pages/
 │   ├── products.html                    # Filterable catalog (category, price slider, rating, marketplace)
 │   ├── product-details.html             # Multi-angle gallery, multi-store comparison, specs, price alerts
@@ -27,6 +33,7 @@ shopscout/
 │   ├── compare.html                     # 4-slot side-by-side spec and price comparison matrix
 │   ├── search.html                      # Real-time search with query highlight and empty states
 │   ├── wishlist.html                    # Wishlist manager with stock status & quick actions
+│   ├── cart.html                        # Multi-item Amazon affiliate checkout cart
 │   ├── about.html                       # Brand story, editorial independence & mission
 │   ├── contact.html                     # Feedback & partnership inquiries
 │   ├── privacy-policy.html              # Privacy compliance
@@ -36,22 +43,29 @@ shopscout/
 │   ├── dashboard.html                   # High-level KPIs, recent outbound clicks, quick links
 │   ├── products.html                    # Product CRUD table with add/edit modal & status toggles
 │   ├── categories.html                  # Category manager with product counts
-│   ├── users.html                       # Registered user monitoring
 │   ├── deals.html                       # Deal scheduler and discount manager
 │   └── analytics.html                   # Clicks by marketplace, CTR, and top categories
+├── services/
+│   ├── productExtractor.js              # Cheerio-based Amazon product auto-detector
+│   └── priceSyncService.js              # Background automated price sync engine
+├── api/
+│   └── index.js                         # Vercel serverless proxy endpoint
 ├── css/
 │   ├── style.css                        # CSS variables, typography, reset & dark mode tokens
 │   ├── components.css                   # Reusable buttons, badges, modals, toasts, compare drawer
 │   ├── navbar.css                       # Sticky header, search suggestions, drawer, mobile bottom bar
 │   ├── product-card.css                 # Single reusable product card with hover animations
 │   ├── product-details.css              # Gallery, specs table, store comparison rows
+│   ├── cart.css                         # Slide-over cart drawer & multi-item checkout styles
 │   ├── admin.css                        # Admin panel layout, stat cards, data tables
 │   └── responsive.css                   # Responsive breakpoints (desktop, tablet, mobile)
 ├── js/
-│   ├── main.js                          # Storage manager, dark mode, toasts, affiliate redirect modal
+│   ├── main.js                          # Storage manager, dark mode, dynamic counters & toast system
 │   ├── navbar.js                        # Header search autocomplete, mobile drawer
-│   ├── products.js                      # ProductService data fetcher, unified card renderer
+│   ├── products.js                      # ProductService data fetcher with FakeStore fallback
 │   ├── product-details.js               # Gallery switcher, multi-store price table, tabs
+│   ├── cart.js                          # Amazon multi-item cart service with badge auto-sync
+│   ├── home.js                          # Homepage deals & trending render engine
 │   ├── search.js                        # Query parser, quick search pills, empty state
 │   ├── filter.js                        # Range slider, checkbox filters, multi-sort
 │   ├── compare.js                       # 4-product comparison table, best price badge, spec diffing
@@ -59,7 +73,9 @@ shopscout/
 │   ├── deals.js                         # Deal countdown timer, tier switching
 │   └── admin.js                         # Admin CRUD modals, click log viewer, simulated charts
 ├── data/
-│   └── products.json                    # Authentic product dataset with multi-store prices & specs
+│   ├── products.json                    # Active product catalog JSON
+│   ├── user_products_permanent.json     # Permanent admin-created products vault
+│   └── products.backup.json             # Automatic safety backup
 └── README.md
 ```
 

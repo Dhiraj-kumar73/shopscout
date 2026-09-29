@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /pages/
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Disallow private admin panel from search engines
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://shopscout.in/sitemap.xml
