@@ -261,6 +261,9 @@ function renderProductCard(product) {
   }
   if (!cardImg || cardImg.includes('images-na.ssl-images-amazon.com') || cardImg.startsWith('data:')) {
     cardImg = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
+  } else if (!cardImg.startsWith('http') && !cardImg.startsWith('data:')) {
+    const cleanImg = cardImg.replace(/^(\.\.\/|\.\/|\/)/, '');
+    cardImg = (isPagesSubdir || isAdminSubdir) ? ('../' + cleanImg) : cleanImg;
   }
 
   return `

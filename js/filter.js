@@ -28,6 +28,13 @@ const FilterController = {
   },
   currentSort: 'relevance',
   isCategoryDropdownOpen: false,
+  pageSize: 16,
+  displayedCount: 16,
+
+  loadMore() {
+    this.displayedCount += this.pageSize;
+    this.renderResults();
+  },
 
   init(products) {
     this.allProducts = [...products];
@@ -249,13 +256,19 @@ const FilterController = {
       });
     });
 
-    // Sort Selects (desktop, mobile toolbar, and sidebar/drawer)
-    const sortDesktop = document.getElementById('sort-select');
-    const sortMobile = document.getElementById('mobile-sort-select');
-    const sortSidebar = document.getElementById('sidebar-sort-select');
-    if (sortDesktop) sortDesktop.value = this.currentSort;
-    if (sortMobile) sortMobile.value = this.currentSort;
-    if (sortSidebar) sortSidebar.value = this.currentSort;
+    // Sort Selects & Custom Dropdowns Init
+    this.updateSortUI(this.currentSort);
+
+    // Close Custom Dropdowns on Outside Click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-sort-dropdown')) {
+        document.querySelectorAll('.custom-sort-dropdown.open').forEach(d => {
+          d.classList.remove('open');
+          const t = d.querySelector('.custom-sort-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
 
     // Clear All Filters Button
     const clearBtn = document.getElementById('clear-filters-btn');
@@ -265,10 +278,15 @@ const FilterController = {
       });
     }
 
-    // Escape key closes mobile filter drawer
+    // Escape key closes mobile filter drawer & open dropdowns
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.closeDrawer();
+        document.querySelectorAll('.custom-sort-dropdown.open').forEach(d => {
+          d.classList.remove('open');
+          const t = d.querySelector('.custom-sort-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
       }
     });
   },
@@ -489,12 +507,18 @@ const FilterController = {
     window.history.replaceState({}, '', currentUrl.toString());
   },
 
+  _drawerScrollY: 0,
   openDrawer() {
     const sidebar = document.getElementById('catalog-filter-sidebar');
     const backdrop = document.getElementById('filter-drawer-backdrop');
     if (sidebar) sidebar.classList.add('drawer-open');
     if (backdrop) backdrop.classList.add('drawer-open');
+    this._drawerScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    document.body.style.top = `-${this._drawerScrollY}px`;
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
   },
 
   closeDrawer() {
@@ -502,22 +526,97 @@ const FilterController = {
     const backdrop = document.getElementById('filter-drawer-backdrop');
     if (sidebar) sidebar.classList.remove('drawer-open');
     if (backdrop) backdrop.classList.remove('drawer-open');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    window.scrollTo(0, this._drawerScrollY || 0);
   },
 
-  onSortChange(val) {
-    this.currentSort = val;
+  updateSortUI(val) {
+    val = val || this.currentSort || 'relevance';
+    const sortLabels = {
+      'relevance': 'Sort: Featured',
+      'price-low': 'Price: Low → High',
+      'price-high': 'Price: High → Low',
+      'rating': 'Top Rated',
+      'discount': 'Biggest Discount',
+      'popular': 'Most Popular'
+    };
+    const labelText = sortLabels[val] || 'Sort: Featured';
+
+    // Update label text in trigger buttons
+    document.querySelectorAll('.custom-sort-label').forEach(el => {
+      el.textContent = labelText;
+    });
+
+    // Update active options and checkmarks in custom menus
+    document.querySelectorAll('.custom-sort-option').forEach(opt => {
+      const isMatch = opt.getAttribute('data-value') === val;
+      opt.classList.toggle('active', isMatch);
+      opt.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+    });
+
+    // Keep native selects synced
     const sortDesktop = document.getElementById('sort-select');
     const sortMobile = document.getElementById('mobile-sort-select');
     const sortSidebar = document.getElementById('sidebar-sort-select');
     if (sortDesktop && sortDesktop.value !== val) sortDesktop.value = val;
     if (sortMobile && sortMobile.value !== val) sortMobile.value = val;
     if (sortSidebar && sortSidebar.value !== val) sortSidebar.value = val;
+  },
+
+  toggleSortDropdown(e, dropdownId) {
+    if (e) e.stopPropagation();
+    const dropdown = typeof dropdownId === 'string' 
+      ? document.getElementById(dropdownId) 
+      : (e ? e.target.closest('.custom-sort-dropdown') : null);
+    if (!dropdown) return;
+
+    const isOpen = dropdown.classList.contains('open');
+
+    // Close all other dropdowns
+    document.querySelectorAll('.custom-sort-dropdown.open').forEach(d => {
+      if (d !== dropdown) {
+        d.classList.remove('open');
+        const t = d.querySelector('.custom-sort-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    if (isOpen) {
+      dropdown.classList.remove('open');
+      const t = dropdown.querySelector('.custom-sort-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    } else {
+      dropdown.classList.add('open');
+      const t = dropdown.querySelector('.custom-sort-trigger');
+      if (t) t.setAttribute('aria-expanded', 'true');
+    }
+  },
+
+  selectSortOption(e, val) {
+    if (e) e.stopPropagation();
+    document.querySelectorAll('.custom-sort-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      const t = d.querySelector('.custom-sort-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+    if (val) {
+      this.onSortChange(val);
+    }
+  },
+
+  onSortChange(val) {
+    this.currentSort = val;
+    this.updateSortUI(val);
     this.applySort();
     this.renderResults();
   },
 
   applyFilters() {
+    this.displayedCount = this.pageSize;
     this.filteredProducts = this.allProducts.filter(p => {
       // Category filter
       if (this.activeFilters.category.length > 0) {
@@ -760,22 +859,47 @@ const FilterController = {
     if (!grid) return;
 
     if (visibleCount === 0) {
+      const q = (this.activeFilters.query || '').trim();
+      const safeQ = q.replace(/[<>&"]/g, s => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[s]));
       grid.innerHTML = `
         <div style="grid-column: 1 / -1;">
-          <div class="empty-state">
-            <div class="empty-state-icon">
-              <i class="fa-solid fa-filter-circle-xmark"></i>
+          <div class="empty-state" style="padding: 3rem 1.5rem; text-align: center; background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--radius-lg); margin-top: 0.5rem; box-shadow: var(--shadow-sm);">
+            <div class="empty-state-icon" style="width: 64px; height: 64px; margin: 0 auto 1.25rem; border-radius: 50%; background: rgba(234, 88, 12, 0.12); color: var(--deal-orange); display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+              <i class="fa-solid fa-magnifying-glass-xmark"></i>
             </div>
-            <h3 class="empty-state-title">No products match your filters</h3>
-            <p class="empty-state-desc">Try clearing category or adjusting the price range to discover more items.</p>
-            <button class="btn btn-primary btn-sm" onclick="FilterController.resetFilters()">Reset All Filters</button>
+            <h3 class="empty-state-title" style="font-weight: 800; font-size: 1.35rem; color: var(--text); margin-bottom: 0.5rem;">
+              ${q ? `"${safeQ}" ke liye koi product nahi mila` : 'No products match your filters'}
+            </h3>
+            <p class="empty-state-desc" style="color: var(--muted); font-size: 0.92rem; max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.6;">
+              ${q 
+                ? `Aapka search kiya gaya brand ya product filhal catalog me uplabdh nahi hai. Kripya in popular brands me se chuney ya filters reset karein:` 
+                : 'Try clearing category or adjusting the price range to discover more items.'}
+            </p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.25rem;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('Realme')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">📱 Realme</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('Samsung')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">📱 Samsung</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('iPhone')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">🍎 Apple iPhone</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('Nothing')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">⚡ Nothing Phone</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('OnePlus')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">🔴 OnePlus</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="FilterController.setQuery('iQOO')" style="border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;">⚡ iQOO</button>
+            </div>
+            <button class="btn btn-primary btn-sm" style="border-radius: var(--radius-full); font-weight: 700; padding: 0.5rem 1.25rem;" onclick="FilterController.resetFilters()">Browse All Products &rarr;</button>
           </div>
         </div>
       `;
       return;
     }
 
-    grid.innerHTML = this.filteredProducts.map(p => renderProductCard(p)).join('');
+    const visibleItems = this.filteredProducts.slice(0, this.displayedCount);
+    const hasMore = this.filteredProducts.length > this.displayedCount;
+
+    grid.innerHTML = visibleItems.map(p => renderProductCard(p)).join('') + (hasMore ? `
+      <div class="load-more-wrap" style="grid-column: 1 / -1; text-align: center; padding: 1.75rem 0 0.5rem;">
+        <button type="button" class="btn btn-outline" onclick="FilterController.loadMore()" style="border-radius: var(--radius-full); padding: 0.65rem 2.25rem; font-weight: 700; gap: 0.5rem; display: inline-flex; align-items: center; border-color: var(--primary); color: var(--primary);">
+          <i class="fa-solid fa-arrow-down"></i> Load More Products (${this.filteredProducts.length - this.displayedCount} remaining)
+        </button>
+      </div>
+    ` : '');
   },
 
   resetFilters() {
@@ -808,6 +932,8 @@ const FilterController = {
 
     const sortSidebar = document.getElementById('sidebar-sort-select');
     if (sortSidebar) sortSidebar.value = 'relevance';
+    this.currentSort = 'relevance';
+    this.updateSortUI('relevance');
 
     this.isCategoryDropdownOpen = false;
     this.updateHeaderAndUrl();

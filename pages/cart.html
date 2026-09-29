@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Shopping Cart — ShopScout</title>
   <meta name="description" content="View items in your cart, calculate total savings, and transfer your multi-item bundle directly to Amazon India with 1 click.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛒%3C/text%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -18,27 +18,27 @@
 <body>
 
   <!-- ==================== CLEAN BRANDED PLATFORM HEADER ==================== -->
-  <header class="site-header" id="main-header" style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.85rem 0;">
-    <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+  <header class="site-header inner-page-header" id="main-header">
+    <div class="inner-header-container">
       
       <!-- Back to Shopping -->
-      <a href="products.html" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-full); padding: 0.45rem 1.1rem; text-decoration: none;">
-        <i class="fa-solid fa-arrow-left"></i> <span>Continue Shopping</span>
+      <a href="products.html" class="inner-header-back-btn" title="Continue Shopping" aria-label="Continue Shopping">
+        <i class="fa-solid fa-arrow-left"></i> <span class="back-btn-text">Continue Shopping</span>
       </a>
 
       <!-- Prominent Platform Branding (Center) -->
-      <a href="../index.html" class="brand-logo" style="font-size: 1.6rem; display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none;">
-        <span class="brand-icon-wrap" style="width: 42px; height: 42px; font-size: 1.25rem; background: var(--primary); color: #fff; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"><i class="fa-solid fa-bag-shopping"></i></span>
-        <span style="font-family: var(--font-heading); font-weight: 800; color: var(--text); letter-spacing: -0.02em;">ShopScout<span style="color: var(--deal-orange);">.</span></span>
+      <a href="../index.html" class="inner-header-logo">
+        <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
+        <span class="brand-title">ShopScout<span class="brand-dot">.</span></span>
       </a>
 
       <!-- Theme Toggle & Active Cart Indicator -->
-      <div style="display: flex; align-items: center; gap: 0.65rem;">
+      <div class="inner-header-actions">
         <button class="nav-cart-btn" onclick="CartService.goToCart()" title="Shopping Cart">
           <i class="fa-solid fa-cart-shopping"></i>
           <span class="cart-count-badge" style="display: none;">0</span>
         </button>
-        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text);">
+        <button class="theme-toggle-btn" title="Toggle Theme" aria-label="Theme toggle">
           <i class="fa-regular fa-moon moon-icon"></i>
           <i class="fa-solid fa-sun sun-icon"></i>
         </button>
@@ -49,7 +49,7 @@
 
   <!-- ==================== MAIN CART VIEW ==================== -->
   <main class="main-content">
-    <div class="container" style="padding-top: 1.75rem; padding-bottom: 5rem;">
+    <div class="container" style="padding-top: 1.5rem; padding-bottom: 2rem;">
       
       <!-- Breadcrumbs -->
       <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem;">
@@ -144,31 +144,7 @@
     </div>
   </main>
 
-  <!-- Sticky Mobile Bottom Bar -->
-  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
-    <a href="../index.html" class="bottom-bar-item">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="categories.html" class="bottom-bar-item">
-      <i class="fa-solid fa-shapes"></i>
-      <span>Categories</span>
-    </a>
-    <a href="deals.html" class="bottom-bar-item">
-      <i class="fa-solid fa-fire"></i>
-      <span>Deals</span>
-    </a>
-    <a href="cart.html" class="bottom-bar-item active" title="Cart">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <span>Cart</span>
-      <span class="bottom-badge cart-count-badge" style="display: none;">0</span>
-    </a>
-    <a href="wishlist.html" class="bottom-bar-item">
-      <i class="fa-regular fa-heart"></i>
-      <span>Wishlist</span>
-      <span class="bottom-badge wishlist-badge-count" style="display: none;">0</span>
-    </a>
-  </nav>
+
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>

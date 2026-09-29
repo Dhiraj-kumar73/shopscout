@@ -827,22 +827,9 @@ const AdminController = {
         if (featuresInput) {
           features = featuresInput.split(/[\n,]+/).map(f => f.trim()).filter(Boolean);
         }
-        if (features.length === 0) {
-          features = [
-            `High performance ${category} architecture by ${brand}`,
-            'Energy efficient operation with extended durability',
-            'Full 1 Year official manufacturer warranty',
-            'Verified genuine marketplace product'
-          ];
-        }
-
         const specifications = {
           "Brand": brand,
-          "Model": name,
-          "Category": category,
-          "Warranty": "1 Year Official Warranty",
-          "Marketplace Availability": `Amazon India Verified Store`,
-          "Condition": "Brand New, Factory Sealed"
+          "Category": category
         };
 
         const discount = Math.round(((originalPrice - amazonPrice) / originalPrice) * 100);

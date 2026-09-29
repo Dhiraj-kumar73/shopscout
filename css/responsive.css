@@ -186,17 +186,198 @@ img, video, iframe {
     box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.25);
   }
 
+  /* ─── Premium Compact Catalog Hero Banner (< 992px / Mobile) ─── */
+  .catalog-hero-banner {
+    padding: 1rem 1.15rem !important;
+    margin-bottom: 0.85rem !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .catalog-hero-inner {
+    gap: 0.5rem !important;
+  }
+
+  .catalog-hero-text {
+    flex: 1 1 100% !important;
+  }
+
+  .catalog-hero-breadcrumb {
+    font-size: 0.76rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .catalog-deal-tag-pill {
+    font-size: 0.68rem !important;
+    padding: 0.2rem 0.6rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .catalog-hero-banner h1 {
+    font-size: 1.45rem !important;
+    margin-bottom: 0.2rem !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.25 !important;
+  }
+
+  .catalog-hero-banner p {
+    font-size: 0.82rem !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Feature Highlight Pills: Sleek 1-line horizontal touch swipe, NO vertical stacking */
+  .catalog-feature-pills {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 0.4rem !important;
+    padding: 0.15rem 0 0.25rem !important;
+    margin: 0 !important;
+  }
+
+  .catalog-feature-pills::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .feat-pill {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 0.72rem !important;
+    padding: 0.22rem 0.6rem !important;
+    border-radius: var(--radius-full) !important;
+  }
+
+  /* Hide bulky orphaned card on mobile (< 992px) to maximize screen real estate for products */
+  .catalog-hero-badge-card {
+    display: none !important;
+  }
+
   /* Mobile Catalog Toolbar */
   .mobile-catalog-toolbar {
     display: flex !important;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem !important;
     padding: 0.65rem 0.85rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+  }
+
+  /* ─── Quick Budget Filter Pills: Smooth, swipeable 1-line rail (< 992px) ─── */
+  .catalog-price-pills-wrap {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 0.45rem !important;
+    padding: 0.15rem 0 0.5rem !important;
+    margin-bottom: 0.85rem !important;
+    align-items: center !important;
+  }
+
+  .catalog-price-pills-wrap::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .catalog-price-pills-label,
+  .catalog-price-pills-wrap > span {
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: var(--muted) !important;
+    padding-right: 0.2rem !important;
+  }
+
+  .catalog-price-pills-wrap .price-pill-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 0.76rem !important;
+    padding: 0.35rem 0.8rem !important;
+    border-radius: var(--radius-full) !important;
+  }
+
+  /* ─── Compact Deals Page Hero Banner & Countdown (< 992px) ─── */
+  .deals-hero-banner {
+    padding: 1rem 1.15rem !important;
+    margin-bottom: 0.85rem !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .deals-hero-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .deals-hero-title {
+    font-size: 1.45rem !important;
+    margin-bottom: 0.25rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  .deals-hero-desc {
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .deals-countdown-card {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 0.55rem 0.85rem !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--surface-subtle) !important;
+    border: 1px solid var(--border) !important;
+    text-align: left !important;
+  }
+
+  .deals-countdown-label {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+  }
+
+  .deal-timer-value {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    color: #DC2626 !important;
+  }
+
+  /* ─── Deals Tier Tabs: Smooth swipe rail (< 992px) ─── */
+  .deals-tier-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 0.45rem !important;
+    padding: 0.15rem 0 0.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .deals-tier-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .deal-tier-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-size: 0.78rem !important;
+    padding: 0.38rem 0.85rem !important;
+    border-radius: var(--radius-full) !important;
   }
 
   .mobile-filter-open-btn {
@@ -233,24 +414,20 @@ img, video, iframe {
     align-items: center;
   }
 
-  .mobile-sort-select-wrap i {
-    position: absolute;
-    left: 0.85rem;
-    color: var(--muted);
+  .custom-sort-trigger {
+    padding: 0.44rem 0.78rem;
     font-size: 0.8rem;
-    pointer-events: none;
+    gap: 0.45rem;
   }
 
-  .mobile-sort-select-wrap select {
-    background: var(--surface-subtle);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-weight: 600;
-    font-size: 0.825rem;
-    padding: 0.5rem 0.85rem 0.5rem 2.1rem;
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    outline: none;
+  .custom-sort-trigger .custom-sort-label {
+    max-width: 125px;
+  }
+
+  .custom-sort-menu {
+    min-width: 215px;
+    max-width: calc(100vw - 24px);
+    right: 0;
   }
 
   .catalog-desktop-sort-bar {
@@ -359,8 +536,7 @@ img, video, iframe {
   }
 
   body {
-    /* Safe padding for fixed mobile bottom navigation bar */
-    padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: 0 !important;
   }
 
   /* Top announcement bar on mobile */
@@ -375,35 +551,16 @@ img, video, iframe {
     justify-content: center;
   }
 
-  /* Mobile Sticky Bottom Bar */
+  /* Mobile Sticky Bottom Bar (Removed) */
   .mobile-bottom-bar {
-    display: flex !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: calc(58px + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    z-index: 999;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    will-change: transform;
-    touch-action: none;
-  }
-
-  [data-theme="dark"] .mobile-bottom-bar {
-    background: #111726;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    display: none !important;
+    visibility: hidden !important;
   }
 
   /* Smart Community Speed-Dial FAB on Mobile */
   .floating-deals-community {
-    bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 12px !important;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 14px !important;
     z-index: 1000 !important;
     pointer-events: none !important;
   }
@@ -879,22 +1036,24 @@ img, video, iframe {
   }
 
   .main-image-viewport {
-    height: 310px !important;
-    max-height: 340px !important;
-    min-height: 260px !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: 290px !important;
+    max-height: 400px !important;
     border-radius: 12px;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 0.75rem !important;
+    padding: 0.25rem !important;
   }
 
   .main-image-viewport img,
   #main-image-display {
-    max-width: 90% !important;
-    max-height: 90% !important;
-    width: auto !important;
-    height: auto !important;
+    max-width: 98% !important;
+    max-height: 98% !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: contain !important;
     margin: auto !important;
   }
@@ -975,8 +1134,12 @@ img, video, iframe {
 
   /* Compare Drawer on Mobile */
   .compare-drawer {
-    bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
+    bottom: 0 !important;
     padding: 0.75rem 1rem !important;
+  }
+
+  .compare-drawer:not(.active) {
+    display: none !important;
   }
 
   .compare-drawer-content {
@@ -1155,11 +1318,58 @@ img, video, iframe {
   }
 
   /* ─── Premium Mobile App Footer (< 768px) ─── */
-  .site-footer,
-  footer {
-    padding-top: 2.75rem !important;
-    /* Safe padding so fixed mobile bottom navigation bar NEVER covers copyright or links! */
-    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+  .site-footer {
+    padding-top: 0 !important;
+    padding-bottom: 1rem !important;
+    background-color: var(--surface) !important;
+    border-top: 1px solid var(--border) !important;
+  }
+
+  .site-footer > .container {
+    padding-top: 1.25rem !important;
+  }
+
+  .footer-back-to-top {
+    padding: 0.65rem 1rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .footer-middle-rail {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.65rem !important;
+    padding: 0.85rem 0 !important;
+    margin: 1rem 0 !important;
+  }
+
+  .footer-middle-brand {
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+
+  .footer-mini-brand {
+    font-size: 0.92rem !important;
+  }
+
+  .footer-tagline {
+    font-size: 0.74rem !important;
+  }
+
+  .footer-middle-pills {
+    justify-content: center !important;
+    gap: 0.4rem !important;
+  }
+
+  .footer-pill-item {
+    font-size: 0.72rem !important;
+    padding: 0.25rem 0.6rem !important;
+  }
+
+  footer:not(.site-footer) {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
     background-color: var(--surface) !important;
     border-top: 1px solid var(--border) !important;
   }
@@ -1167,77 +1377,98 @@ img, video, iframe {
   .footer-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.75rem 1rem !important;
-    margin-bottom: 2rem !important;
+    gap: 1.15rem 0.75rem !important;
+    margin-bottom: 1.15rem !important;
   }
 
   .footer-col-brand {
     grid-column: 1 / -1 !important;
     max-width: 100% !important;
     text-align: center !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.25rem !important;
   }
 
   .footer-col-brand .brand-logo {
     justify-content: center !important;
-    margin: 0 auto 0.75rem auto !important;
+    margin: 0 auto 0.4rem auto !important;
+    font-size: 1.3rem !important;
   }
 
   .footer-brand-desc {
-    margin: 0 auto 1.25rem auto !important;
-    max-width: 320px !important;
-    font-size: 0.875rem !important;
+    margin: 0 auto 0.65rem auto !important;
+    max-width: 330px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
     text-align: center !important;
   }
 
   .footer-social-links {
     justify-content: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  .footer-social-links .social-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.82rem !important;
   }
 
   .footer-col-title {
-    font-size: 0.9rem !important;
+    font-size: 0.82rem !important;
     font-weight: 800 !important;
     color: var(--text) !important;
-    margin-bottom: 0.75rem !important;
-    letter-spacing: 0.02em !important;
+    margin-bottom: 0.45rem !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
   }
 
   .footer-link-list {
-    gap: 0.55rem !important;
-    font-size: 0.85rem !important;
+    gap: 0.35rem !important;
+    font-size: 0.8rem !important;
   }
 
   .footer-col-partner {
-    grid-column: 1 / -1 !important;
-    text-align: center !important;
-    background: var(--surface-subtle, rgba(255, 255, 255, 0.03)) !important;
-    padding: 1.1rem !important;
-    border-radius: 12px !important;
-    border: 1px solid var(--border) !important;
-    margin-top: 0.5rem !important;
+    grid-column: auto !important;
+    text-align: left !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    margin-top: 0 !important;
   }
 
   .partner-badge-card {
-    align-items: center !important;
-    justify-content: center !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 0.4rem !important;
+  }
+
+  .partner-badge-card .store-pill.amazon {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.6rem !important;
+  }
+
+  .partner-guarantee {
+    font-size: 0.75rem !important;
+    gap: 0.35rem !important;
   }
 
   .footer-bottom {
-    padding-top: 1.5rem !important;
-    font-size: 0.76rem !important;
+    padding-top: 1rem !important;
+    font-size: 0.72rem !important;
     text-align: center !important;
   }
 
   .footer-transparency-notice {
-    font-size: 0.74rem !important;
-    line-height: 1.55 !important;
-    margin-bottom: 1rem !important;
+    font-size: 0.7rem !important;
+    line-height: 1.42 !important;
+    margin-bottom: 0.65rem !important;
   }
 
   .footer-credits-row {
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
     flex-direction: column !important;
-    gap: 0.35rem !important;
+    gap: 0.25rem !important;
   }
 
   .footer-credits-row .dot-sep {

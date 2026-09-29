@@ -7,8 +7,7 @@
   <title>ShopScout — India's Premier Product Discovery & Multi-Store Price Comparison</title>
   <meta name="description"
     content="Discover products, compare real-time prices across Amazon India, and get verified deals before you checkout.">
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛍️%3C/text%3E%3C/svg%3E">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -97,8 +96,7 @@
   <header class="site-header" id="main-header">
     <div class="container header-main-row">
 
-      <!-- Brand Logo & Mobile Toggle -->
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="header-brand-wrap" style="display: flex; align-items: center; gap: 0.75rem;">
         <button class="mobile-menu-toggle" aria-label="Open Navigation Menu">
           <i class="fa-solid fa-bars"></i>
         </button>
@@ -111,7 +109,7 @@
       <!-- Mega Search Bar with Category Selector -->
       <div class="mega-search-container">
         <form class="mega-search-bar" id="header-search-form"
-          onsubmit="event.preventDefault(); const q = this.querySelector('input').value.trim(); if(q) window.location.href='pages/products.html?q='+encodeURIComponent(q);">
+          onsubmit="event.preventDefault(); var searchVal = this.querySelector('input').value.trim(); if(searchVal) window.location.href='pages/products.html?q='+encodeURIComponent(searchVal);">
           <select class="search-dept-select" id="header-dept-select"
             onchange="if(this.value) window.location.href='pages/products.html?category='+encodeURIComponent(this.value)">
             <option value="">All Categories</option>
@@ -220,10 +218,13 @@
       </a>
       <button class="drawer-close-btn">&times;</button>
     </div>
-    <div style="padding: 1rem 1.25rem;">
-      <div class="mega-search-bar" style="border-radius: var(--radius-sm);">
-        <input type="text" class="mega-search-input header-search-input" placeholder="Search products..."
-          onkeydown="if(event.key==='Enter') { const q = this.value.trim(); if(q) window.location.href='pages/products.html?q='+encodeURIComponent(q); }">
+    <div style="padding: 0.85rem 1.25rem;">
+      <div class="mega-search-bar">
+        <input type="text" class="mega-search-input header-search-input" placeholder="Search products, brands..."
+          onkeydown="if(event.key==='Enter') { var drawerVal = this.value.trim(); if(drawerVal) window.location.href='pages/products.html?q='+encodeURIComponent(drawerVal); }">
+        <button type="button" class="mega-search-btn" aria-label="Search" onclick="var dInput = this.parentElement.querySelector('input'); var btnVal = dInput ? dInput.value.trim() : ''; if(btnVal) window.location.href='pages/products.html?q='+encodeURIComponent(btnVal);">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </div>
     </div>
     <nav class="drawer-nav-list">
@@ -549,14 +550,10 @@
       </div>
     </section>
 
-
-
-
-
     <!-- ==================== TODAY'S BEST DEALS ==================== -->
-    <section class="home-deals-section" style="padding: 3rem 0; background: var(--surface);">
+    <section class="home-deals-section" style="padding: 1.5rem 0 2.25rem 0; background: var(--surface);">
       <div class="container">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
           <div>
             <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; color:#FF5200; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.35rem;">
               <span style="width:8px;height:8px;border-radius:50%;background:#FF5200;animation:pulse 1.5s ease infinite;display:inline-block;"></span>
@@ -580,14 +577,14 @@
     </section>
 
     <!-- ==================== TRENDING PRODUCTS ==================== -->
-    <section class="home-trending-section" style="padding: 3rem 0; background: var(--bg);">
+    <section class="home-trending-section" style="padding: 2.25rem 0; background: var(--bg);">
       <div class="container">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
           <div>
             <span style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.35rem;">
               <i class="fa-solid fa-chart-line" style="font-size:0.7rem;"></i> Trending Now
             </span>
-            <h2 style="font-size:1.6rem; font-weight:800; color:var(--text); margin:0; line-height:1.2;">🔥 Trending Products</h2>
+            <h2 style="font-size:1.6rem; font-weight:800; color:var(--text); margin:0; line-height:1.2; display:flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-fire" style="color:#FF5200; font-size:1.35rem;"></i> Trending Products</h2>
             <p style="color:var(--muted); font-size:0.875rem; margin:0.25rem 0 0;">Most searched & wishlisted products right now</p>
           </div>
           <a href="pages/products.html" style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.875rem; font-weight:700; color:var(--primary); text-decoration:none; padding:0.5rem 1rem; border:2px solid var(--primary); border-radius:var(--radius-sm); transition:all 0.2s ease;" onmouseover="this.style.background='var(--primary)';this.style.color='#fff';" onmouseout="this.style.background='transparent';this.style.color='var(--primary)';">
@@ -611,35 +608,154 @@
           <span class="ss-trust-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why ShopScout?</span>
           <h2 class="ss-trust-title">India's Most Trusted Deal Discovery Platform</h2>
           <p class="ss-trust-sub">Every deal, every click — 100% verified and safe.</p>
+          <div style="margin-top: 0.6rem;">
+            <span class="ss-trust-pill-hint"><i class="fa-solid fa-arrows-left-right"></i> Auto-sliding &bull; Hover / Touch to pause</span>
+          </div>
         </div>
-        <div class="ss-trust-grid">
-          <div class="ss-trust-card">
-            <div class="ss-trust-icon-wrap ss-icon-blue">
-              <i class="fa-solid fa-badge-check"></i>
+
+        <div class="ss-trust-slider-container" id="ss-trust-slider">
+          <div class="ss-trust-track">
+            <!-- Set 1 -->
+            <div class="ss-trust-group">
+              <!-- Card 1: Verified Deals -->
+              <a href="pages/deals.html" class="ss-trust-card ss-card-blue" title="Browse Verified Amazon Deals">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-blue">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-blue">Daily Audited</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>100% Verified Deals</h3>
+                  <p>Every product and discount is manually verified. No expired links, no fake prices — only genuine Amazon discounts.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">Explore Deals <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 2: Lowest Price Tracking -->
+              <a href="#budget-deals-hub" class="ss-trust-card ss-card-green" title="View Lowest Price Drops">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-green">
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-green">Price History</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Lowest Price Tracking</h3>
+                  <p>We track 30-day price history graphs so you immediately know if it's a real all-time low or a fake price drop.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">Track Price Drops <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 3: Direct Amazon Checkout -->
+              <a href="pages/affiliate-disclosure.html" class="ss-trust-card ss-card-orange" title="Learn About Amazon Safe Checkout">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-orange">
+                    <i class="fa-brands fa-amazon"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-orange">Official Partner</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Direct Amazon Checkout</h3>
+                  <p>Pay directly on Amazon with full Prime benefits, buyer protection, and easy returns — zero middlemen, zero risk.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">How It Works <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 4: Zero Cost, Always Free -->
+              <a href="pages/about.html" class="ss-trust-card ss-card-purple" title="Learn More About ShopScout">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-purple">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-purple">Lifetime Free</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Zero Cost, Always Free</h3>
+                  <p>ShopScout is 100% free forever. No signup required, no subscriptions — just transparent savings every single day.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">About ShopScout <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
             </div>
-            <h3>100% Verified Deals</h3>
-            <p>Every product and discount is manually verified. No expired links, no fake prices — only genuine Amazon India discounts.</p>
-          </div>
-          <div class="ss-trust-card">
-            <div class="ss-trust-icon-wrap ss-icon-green">
-              <i class="fa-solid fa-chart-line-down"></i>
+
+            <!-- Set 2 (Clone for infinite seamless loop) -->
+            <div class="ss-trust-group" aria-hidden="true">
+              <!-- Card 1: Verified Deals -->
+              <a href="pages/deals.html" class="ss-trust-card ss-card-blue" tabindex="-1">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-blue">
+                    <i class="fa-solid fa-circle-check"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-blue">Daily Audited</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>100% Verified Deals</h3>
+                  <p>Every product and discount is manually verified. No expired links, no fake prices — only genuine Amazon discounts.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">Explore Deals <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 2: Lowest Price Tracking -->
+              <a href="#budget-deals-hub" class="ss-trust-card ss-card-green" tabindex="-1">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-green">
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-green">Price History</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Lowest Price Tracking</h3>
+                  <p>We track 30-day price history graphs so you immediately know if it's a real all-time low or a fake price drop.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">Track Price Drops <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 3: Direct Amazon Checkout -->
+              <a href="pages/affiliate-disclosure.html" class="ss-trust-card ss-card-orange" tabindex="-1">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-orange">
+                    <i class="fa-brands fa-amazon"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-orange">Official Partner</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Direct Amazon Checkout</h3>
+                  <p>Pay directly on Amazon with full Prime benefits, buyer protection, and easy returns — zero middlemen, zero risk.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">How It Works <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
+
+              <!-- Card 4: Zero Cost, Always Free -->
+              <a href="pages/about.html" class="ss-trust-card ss-card-purple" tabindex="-1">
+                <div class="ss-trust-card-top">
+                  <div class="ss-trust-icon-wrap ss-icon-purple">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                  </div>
+                  <span class="ss-trust-tag ss-tag-purple">Lifetime Free</span>
+                </div>
+                <div class="ss-trust-card-content">
+                  <h3>Zero Cost, Always Free</h3>
+                  <p>ShopScout is 100% free forever. No signup required, no subscriptions — just transparent savings every single day.</p>
+                </div>
+                <div class="ss-trust-card-footer">
+                  <span class="ss-trust-link">About ShopScout <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+              </a>
             </div>
-            <h3>Lowest Price Tracking</h3>
-            <p>We track 30-day price history so you always know if it's a real deal or a fake discount before you buy.</p>
-          </div>
-          <div class="ss-trust-card">
-            <div class="ss-trust-icon-wrap ss-icon-orange">
-              <i class="fa-brands fa-amazon"></i>
-            </div>
-            <h3>Direct Amazon Checkout</h3>
-            <p>Pay directly on Amazon with full Prime benefits, buyer protection, easy returns — zero middlemen, zero risk.</p>
-          </div>
-          <div class="ss-trust-card">
-            <div class="ss-trust-icon-wrap ss-icon-purple">
-              <i class="fa-solid fa-indian-rupee-sign"></i>
-            </div>
-            <h3>Zero Cost, Always Free</h3>
-            <p>ShopScout is 100% free forever. No signup required, no subscriptions — just savings, every single day.</p>
           </div>
         </div>
       </div>
@@ -651,11 +767,17 @@
 
   <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
+    <!-- Back to top Strip -->
+    <a href="#" class="footer-back-to-top" id="footer-back-to-top" title="Scroll back to top">
+      <i class="fa-solid fa-chevron-up"></i>
+      <span>Back to top</span>
+    </a>
+
     <div class="container">
       <div class="footer-grid">
 
         <div class="footer-col footer-col-brand">
-          <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
+          <a href="index.html" class="brand-logo" style="margin-bottom: 0.85rem;">
             <span class="brand-icon-wrap"><i class="fa-solid fa-bag-shopping"></i></span>
             <span>ShopScout</span>
           </a>
@@ -713,6 +835,21 @@
 
       </div>
 
+      <!-- ShopScout Signature Middle Trust Rail -->
+      <div class="footer-middle-rail">
+        <div class="footer-middle-brand">
+          <span class="footer-mini-brand">
+            <i class="fa-solid fa-bolt text-primary"></i> ShopScout
+          </span>
+          <span class="footer-tagline">India's Independent Price Comparison Engine</span>
+        </div>
+        <div class="footer-middle-pills">
+          <span class="footer-pill-item"><span class="flag-icon">🇮🇳</span> India</span>
+          <span class="footer-pill-item"><i class="fa-solid fa-indian-rupee-sign text-primary"></i> Verified Prices</span>
+          <span class="footer-pill-item"><i class="fa-solid fa-shield-halved text-success"></i> 100% Safe Links</span>
+        </div>
+      </div>
+
       <div class="footer-bottom">
         <p class="footer-transparency-notice">
           <strong>Affiliate Transparency Notice:</strong> ShopScout is a participant in affiliate marketing programs. When you click outbound marketplace links and complete qualifying purchases, we may earn an affiliate commission at zero additional cost to you.
@@ -726,31 +863,6 @@
     </div>
   </footer>
 
-  <!-- Sticky Mobile Bottom Bar (Public App Experience) -->
-  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
-    <a href="index.html" class="bottom-bar-item active">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="pages/categories.html" class="bottom-bar-item">
-      <i class="fa-solid fa-shapes"></i>
-      <span>Categories</span>
-    </a>
-    <a href="pages/deals.html" class="bottom-bar-item">
-      <i class="fa-solid fa-fire"></i>
-      <span>Deals</span>
-    </a>
-    <a href="javascript:void(0)" onclick="CartService.openDrawer()" class="bottom-bar-item" title="Cart">
-      <i class="fa-solid fa-bag-shopping"></i>
-      <span>Cart</span>
-      <span class="bottom-badge cart-count-badge" style="display: none;">0</span>
-    </a>
-    <a href="pages/wishlist.html" class="bottom-bar-item">
-      <i class="fa-regular fa-heart"></i>
-      <span>Wishlist</span>
-      <span class="bottom-badge wishlist-badge-count" style="display: none;">0</span>
-    </a>
-  </nav>
 
   <!-- Floating WhatsApp & Telegram Loot Deals Bubbles -->
   <div class="floating-deals-community">

@@ -388,7 +388,7 @@
 
 .ss-tb-header i { font-size: 0.95rem; }
 
-.ss-trust-grid {
+.ss-trust-badges-section .ss-trust-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0;
@@ -398,7 +398,7 @@
 }
 
 @media (max-width: 600px) {
-  .ss-trust-grid {
+  .ss-trust-badges-section .ss-trust-grid {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
@@ -514,7 +514,7 @@
 [data-theme="dark"] .ss-trust-item { border-color: #1E293B; }
 [data-theme="dark"] .ss-trust-item:hover { background: #1E293B; }
 [data-theme="dark"] .ss-trust-text strong { color: #F1F5F9; }
-[data-theme="dark"] .ss-trust-grid { background: #0F172A; }
+[data-theme="dark"] .ss-trust-badges-section .ss-trust-grid { background: #0F172A; }
 [data-theme="dark"] .ss-tb-footer { background: rgba(255,153,0,0.08); border-color: #334155; }
 
 [data-theme="dark"] .ss-ti-amazon { background: rgba(255,153,0,0.15); }
@@ -555,7 +555,7 @@
     right: 8px;
     max-width: none;
   }
-  .ss-trust-grid {
+  .ss-trust-badges-section .ss-trust-grid {
     grid-template-columns: 1fr 1fr;
     width: 100% !important;
     box-sizing: border-box !important;

@@ -74,7 +74,7 @@ const ShopScout = {
       if (saved && saved.amazonTag) return saved;
     } catch (e) {}
     return {
-      amazonTag: 'shopscout-21'
+      amazonTag: 'dhirajkuma05e-21'
     };
   },
 
@@ -398,7 +398,7 @@ const ShopScout = {
     }
 
     const affConfig = this.getAffiliateConfig();
-    const activeAmzTag = affConfig.amazonTag || 'shopscout-21';
+    const activeAmzTag = affConfig.amazonTag || 'dhirajkuma05e-21';
 
     if (!finalUrl || finalUrl === '#' || finalUrl.includes('example.com') || finalUrl.includes('ref=cs_404_link')) {
       finalUrl = `https://www.amazon.in/s?k=${cleanSearchQuery}&tag=${activeAmzTag}`;
@@ -443,19 +443,22 @@ const ShopScout = {
       return;
     }
 
-    let drawer = document.getElementById('compare-drawer');
     const compareIds = this.getCompare();
+    let drawer = document.getElementById('compare-drawer');
+
+    if (compareIds.length === 0) {
+      if (drawer) {
+        drawer.classList.remove('active');
+        drawer.remove();
+      }
+      return;
+    }
 
     if (!drawer) {
       drawer = document.createElement('div');
       drawer.id = 'compare-drawer';
       drawer.className = 'compare-drawer';
       document.body.appendChild(drawer);
-    }
-
-    if (compareIds.length === 0) {
-      drawer.classList.remove('active');
-      return;
     }
 
     // Determine correct relative path for compare.html based on location
@@ -795,59 +798,71 @@ const ShopScout = {
   },
 
   // Match a query token against a target word in product fields
+  // Match a query token against a target word in product fields
   matchTokenAgainstWord(token, word) {
     if (!token || !word) return 0;
     if (token === word) return 100; // Exact match
 
+    // Direct mobile/phone ecosystem equivalence
+    const phoneSyns = new Set(['phone', 'phones', 'mobile', 'mobiles', 'smartphone', 'smartphones']);
+    if (phoneSyns.has(token) && phoneSyns.has(word)) {
+      return 95;
+    }
+
     // Check synonym dictionary
     const syn = this.SEARCH_SYNONYMS[token];
-    if (syn && (syn === word || word.includes(syn))) return 95;
+    if (syn && syn === word) return 95;
     const wordSyn = this.SEARCH_SYNONYMS[word];
-    if (wordSyn && (wordSyn === token || token.includes(wordSyn))) return 95;
+    if (wordSyn && wordSyn === token) return 95;
 
-    // Prefix match (e.g., "gam" -> "gaming", "len" -> "lenovo")
+    // False positive guard: 'phone' must never match earphones, headphones, microphones
+    if ((token === 'phone' || token === 'phones') && (word.includes('earphone') || word.includes('headphone') || word.includes('microphone'))) {
+      return 0;
+    }
+
+    // Prefix match (e.g., "appl" -> "apple", "sams" -> "samsung", "len" -> "lenovo")
     if (token.length >= 2 && word.startsWith(token)) return 85;
-    if (word.length >= 2 && token.startsWith(word)) return 80;
 
-    // Substring match
-    if (token.length >= 3 && word.includes(token)) return 75;
-    if (word.length >= 3 && token.includes(word)) return 70;
+    // Substring match (minimum 4 characters to prevent random 3-letter collisions)
+    if (token.length >= 4 && word.includes(token)) return 70;
 
-    // Length-adaptive Typo / Levenshtein distance
+    // Length-adaptive Typo / Levenshtein distance (only when length difference <= 1)
     const tLen = token.length;
-    let maxDist = 0;
-    if (tLen >= 3 && tLen <= 4) maxDist = 1;      // e.g. "mose" -> "mouse", "snoy" -> "sony"
-    else if (tLen >= 5 && tLen <= 8) maxDist = 2; // e.g. "lenvo" -> "lenovo", "spekar" -> "speaker", "wireles" -> "wireless"
-    else if (tLen >= 9) maxDist = 3;              // e.g. "splashprof" -> "splashproof"
-
-    if (maxDist > 0) {
+    const wLen = word.length;
+    if (Math.abs(tLen - wLen) <= 1 && tLen >= 3) {
       const dist = this.editDistance(token, word);
-      if (dist <= maxDist) {
-        if (dist === 1) return 65;
-        if (dist === 2) return 45;
-        if (dist === 3) return 30;
-      }
-
-      // Check fuzzy prefix (e.g., user wrote "gamig" vs "gaming")
-      if (word.length > tLen && tLen >= 4) {
-        const prefixDist = this.editDistance(token, word.slice(0, tLen));
-        if (prefixDist <= 1) return 55;
-      }
+      if (dist === 1) return 65;
+    } else if (Math.abs(tLen - wLen) <= 2 && tLen >= 6) {
+      const dist = this.editDistance(token, word);
+      if (dist <= 2) return 45;
     }
 
     return 0;
   },
 
-  // Score a product against query tokens
-  scoreProduct(product, queryTokens, rawQuery) {
+  // Score a product against query tokens with Brand & Category awareness
+  scoreProduct(product, queryTokens, rawQuery, matchedBrand, isPureBrandQuery) {
     if (!product || !queryTokens || queryTokens.length === 0) return 0;
 
-    const brand = (product.brand || '').toLowerCase();
-    const name = (product.name || '').toLowerCase();
-    const category = (product.category || '').toLowerCase();
+    const brand = (product.brand || '').toLowerCase().trim();
+    const name = (product.name || '').toLowerCase().trim();
+    const category = (product.category || '').toLowerCase().trim();
     const description = (product.description || '').toLowerCase();
     const features = Array.isArray(product.features) ? product.features.join(' ').toLowerCase() : '';
     const specs = product.specifications ? Object.values(product.specifications).join(' ').toLowerCase() : '';
+
+    const cleanRaw = rawQuery.toLowerCase().trim();
+
+    // ── Pure Brand Query (e.g. user typed "Apple", "Samsung", "Nothing", "boAt", "Sony", "iQOO", "Redmi", "Xiaomi", "Realme") ──
+    if (isPureBrandQuery && matchedBrand) {
+      const brandMatch = brand === matchedBrand || (brand.length >= 4 && (brand.includes(matchedBrand) || matchedBrand.includes(brand)));
+      if (!brandMatch) {
+        return 0; // Strictly exclude other brands even if mentioned in title or compatibility notes!
+      }
+      let score = 600;
+      if (name.includes(cleanRaw)) score += 150;
+      return score;
+    }
 
     const brandWords = this.tokenize(brand);
     const nameWords = this.tokenize(name);
@@ -857,36 +872,47 @@ const ShopScout = {
     let totalScore = 0;
     let matchedTokensCount = 0;
 
-    // Full query substring match bonus
-    const cleanRaw = rawQuery.toLowerCase().trim();
-    if (cleanRaw.length >= 3) {
-      if (name.includes(cleanRaw)) totalScore += 180;
-      else if (brand.includes(cleanRaw)) totalScore += 150;
-      else if (category.includes(cleanRaw)) totalScore += 140;
+    // ── Multi-word query with an explicit Brand (e.g. "Apple phone", "Samsung mobile", "Realme phone", "Sony phone") ──
+    if (matchedBrand) {
+      const isProductBrand = brand === matchedBrand || (brand.length >= 4 && (brand.includes(matchedBrand) || matchedBrand.includes(brand)));
+      if (!isProductBrand) {
+        return 0; // Strictly exclude other brands (e.g. Realme phone with Sony sensor is NOT a Sony phone!)
+      }
+      totalScore += 350;
     }
 
-    // Direct phone/mobile query intent boost for smartphones
-    const isMobileQuery = queryTokens.some(t => ['phone', 'phones', 'mobile', 'mobiles', 'smartphone', 'smartphones'].includes(t));
-    if (isMobileQuery && category === 'mobiles') {
-      totalScore += 80;
-      // Extra boost if product is an actual smartphone vs an accessory
-      const isHandset = ['samsung galaxy', 'iphone', 'oppo', 'redmi', 'oneplus', 'iqoo', 'nothing phone'].some(b => name.includes(b));
-      if (isHandset) totalScore += 120;
+    // Full query substring match in title or brand
+    if (cleanRaw.length >= 3) {
+      if (name.includes(cleanRaw)) totalScore += 240;
+      else if (brand.includes(cleanRaw)) totalScore += 200;
+      else if (category.includes(cleanRaw)) totalScore += 120;
+    }
+
+    // Phone / Smartphone Query Intent
+    const isPhoneQuery = queryTokens.some(t => ['phone', 'phones', 'mobile', 'mobiles', 'smartphone', 'smartphones'].includes(t));
+    if (isPhoneQuery) {
+      const isCaseOrCover = name.includes('case') || name.includes('cover') || name.includes('protector') || name.includes('earphone') || name.includes('cable');
+      if (isCaseOrCover) {
+        totalScore -= 200; // Demote accessories when user is looking for a phone
+      } else {
+        const isHandset = ['galaxy', 'iphone', 'oppo', 'redmi', 'oneplus', 'iqoo', 'nothing phone', 'realme'].some(b => name.includes(b));
+        if (isHandset) totalScore += 260;
+      }
     }
 
     // Match each token
     queryTokens.forEach(token => {
       let bestTokenScore = 0;
 
-      // Check Brand (Weight 2.5)
+      // Check Brand (Weight 3.0)
       for (const bw of brandWords) {
-        const s = this.matchTokenAgainstWord(token, bw) * 2.5;
+        const s = this.matchTokenAgainstWord(token, bw) * 3.0;
         if (s > bestTokenScore) bestTokenScore = s;
       }
 
-      // Check Name / Title (Weight 2.2)
+      // Check Name / Title (Weight 2.5)
       for (const nw of nameWords) {
-        const s = this.matchTokenAgainstWord(token, nw) * 2.2;
+        const s = this.matchTokenAgainstWord(token, nw) * 2.5;
         if (s > bestTokenScore) bestTokenScore = s;
       }
 
@@ -916,23 +942,26 @@ const ShopScout = {
     }
 
     // Multi-word queries:
-    if (matchedTokensCount === numTokens) {
-      totalScore += 160; // Huge bonus for matching all user search terms
-    } else if (matchedTokensCount >= Math.ceil(numTokens * 0.5)) {
-      totalScore += 40 * matchedTokensCount;
+    if (numTokens === 2) {
+      if (matchedTokensCount < 2) return 0; // Both tokens must match (e.g. "realme" AND "phone")
+      totalScore += 180;
     } else {
-      return 0; // Filter out products that matched too few tokens
+      const minRequired = Math.ceil(numTokens * 0.7);
+      if (matchedTokensCount < minRequired) return 0;
+      if (matchedTokensCount === numTokens) totalScore += 180;
+      else totalScore += 40 * matchedTokensCount;
     }
 
     return totalScore;
   },
 
-  // Main intelligent search entry point: returns products sorted by relevance
+  // Main intelligent search entry point: returns products sorted by relevance with deduplication
   fuzzySearch(products, query) {
     if (!products || !Array.isArray(products)) return [];
     if (!query || typeof query !== 'string' || !query.trim()) return products;
 
     const rawQuery = query.trim();
+    const rawLower = rawQuery.toLowerCase();
     const allTokens = this.tokenize(rawQuery);
     if (allTokens.length === 0) return products;
 
@@ -941,9 +970,15 @@ const ShopScout = {
     let tokens = allTokens.filter(t => !stopWords.has(t));
     if (tokens.length === 0) tokens = allTokens;
 
+    // Identify known catalog brands + popular tech/mobile brands
+    const KNOWN_BRANDS = ['realme', 'apple', 'samsung', 'nothing', 'oneplus', 'iqoo', 'oppo', 'redmi', 'xiaomi', 'sony', 'boat', 'jbl', 'lg', 'motorola', 'vivo', 'google', 'pixel', 'lenovo', 'hp', 'dell', 'asus', 'noise', 'titan', 'casio', 'desidiya', 'tied ribbons'];
+    const catalogBrands = [...new Set([...products.map(p => (p.brand || '').toLowerCase().trim()), ...KNOWN_BRANDS])].filter(Boolean);
+    const matchedBrand = catalogBrands.find(b => b === rawLower || (b.length >= 3 && (rawLower === b || tokens.includes(b) || b.split(/\s+/).some(bw => tokens.includes(bw)))));
+    const isPureBrandQuery = matchedBrand && (rawLower === matchedBrand || (tokens.length === 1 && (tokens[0] === matchedBrand || matchedBrand.includes(tokens[0]))));
+
     const scoredList = [];
     for (const p of products) {
-      const score = this.scoreProduct(p, tokens, rawQuery);
+      const score = this.scoreProduct(p, tokens, rawQuery, matchedBrand, isPureBrandQuery);
       if (score > 0) {
         scoredList.push({ product: p, score });
       }
@@ -951,7 +986,19 @@ const ShopScout = {
 
     // Sort descending by relevance score
     scoredList.sort((a, b) => b.score - a.score);
-    return scoredList.map(item => item.product);
+
+    // Deduplicate products by normalized name
+    const seenNames = new Set();
+    const uniqueProducts = [];
+    for (const item of scoredList) {
+      const normKey = (item.product.name || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 42);
+      if (!seenNames.has(normKey)) {
+        seenNames.add(normKey);
+        uniqueProducts.push(item.product);
+      }
+    }
+
+    return uniqueProducts;
   },
 
   // Global Bootstrapper
@@ -995,7 +1042,7 @@ const ShopScout = {
  * Consolidates WhatsApp & Telegram floating buttons into a single unobtrusive FAB
  * Features: auto-hide on scroll-down, smooth expand popover, minimize/dismiss option
  */
-const DealsCommunityFAB = {
+var DealsCommunityFAB = {
   container: null,
   wrapper: null,
   popover: null,
@@ -1192,5 +1239,16 @@ const DealsCommunityFAB = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  ShopScout.init();
+  if (typeof ShopScout !== 'undefined' && ShopScout.init) {
+    ShopScout.init();
+  }
+
+  // Footer Back To Top Smooth Scroll
+  const backToTopBtn = document.getElementById('footer-back-to-top');
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });

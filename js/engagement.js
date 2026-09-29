@@ -257,44 +257,22 @@ const ShopScoutEngagement = {
   },
 
   injectTrustBadges(product) {
-    if (document.getElementById('ss-trust-badges')) return;
-    const isElec = product && ['Mobiles','Laptops','Audio','Gadgets','Watches'].indexOf(product.category) !== -1;
-    const section = document.createElement('div');
-    section.id = 'ss-trust-badges';
-    section.className = 'ss-trust-badges-section';
-    let bhtml = '<div class="ss-tb-header"><i class="fa-solid fa-shield-halved"></i>';
-    bhtml += '<span>100% Safe and Genuine - Fulfilled by Amazon India</span></div>';
-    bhtml += '<div class="ss-trust-grid">';
-    bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-amazon"><i class="fa-brands fa-amazon"></i></div><div class="ss-trust-text"><strong>Fulfilled by Amazon</strong><span>Stored, packed and shipped by Amazon</span></div></div>';
-    bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-prime"><i class="fa-solid fa-bolt"></i></div><div class="ss-trust-text"><strong>Prime Delivery</strong><span>FREE 1-day delivery for Prime</span></div></div>';
-    bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-cod"><i class="fa-solid fa-indian-rupee-sign"></i></div><div class="ss-trust-text"><strong>Cash on Delivery</strong><span>Pay on delivery - No advance needed</span></div></div>';
-    bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-return"><i class="fa-solid fa-rotate-left"></i></div><div class="ss-trust-text"><strong>7-Day Easy Return</strong><span>Hassle-free, no questions asked</span></div></div>';
-    if (isElec) {
-      bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-warranty"><i class="fa-solid fa-certificate"></i></div><div class="ss-trust-text"><strong>Brand Warranty</strong><span>Official 1 Year warranty included</span></div></div>';
-    }
-    bhtml += '<div class="ss-trust-item"><div class="ss-trust-icon ss-ti-secure"><i class="fa-solid fa-lock"></i></div><div class="ss-trust-text"><strong>Secure Checkout</strong><span>256-bit encrypted Amazon payment</span></div></div>';
-    bhtml += '</div>';
-    bhtml += '<div class="ss-tb-footer"><i class="fa-brands fa-amazon"></i> Clicking Buy on Amazon takes you to official Amazon India product page.</div>';
-    section.innerHTML = bhtml;
-    const anchor = document.getElementById('ss-share-section') || document.querySelector('.detail-action-buttons');
-    if (anchor) anchor.parentNode.insertBefore(section, anchor.nextSibling);
+    // Disabled: Do not show fabricated features or promises not verified on original platform
+    const existing = document.getElementById('ss-trust-badges');
+    if (existing) existing.remove();
   },
 
   init(product) {
-    if (product) this.injectProductPageTimer(product);
+    // Authentic presentation: only genuine utilities (like share button)
     const self = this;
-    setTimeout(function() { self.addTimerToProductCards(); }, 2000);
-    if (product) this.initSocialProof(product.name);
-    if (product) setTimeout(function() { self.injectShareButtons(product); }, 400);
+    if (product) setTimeout(function() { self.injectShareButtons(product); }, 300);
     this.addShareToProductCards();
-    if (product) setTimeout(function() { self.injectTrustBadges(product); }, 600);
   }
 };
 
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', function() {
     if (window.location.pathname.indexOf('product-details') === -1) {
-      setTimeout(function() { ShopScoutEngagement.addTimerToProductCards(); }, 2000);
       ShopScoutEngagement.addShareToProductCards();
     }
   });

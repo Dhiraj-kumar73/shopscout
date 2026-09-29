@@ -171,7 +171,7 @@ const ProductDetailsController = {
       <div class="gallery-zoom-trigger" onclick="ProductDetailsController.openFullZoom('${activeItem.url}')" title="Zoom image in full screen">
         <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom
       </div>
-      <img id="main-image-display" src="${activeItem.url}" alt="${product.name} - ${activeItem.angle}" style="max-width: 84%; max-height: 84%; width: auto; height: auto; object-fit: contain; margin: auto; display: block;">
+      <img id="main-image-display" src="${activeItem.url}" alt="${product.name} - ${activeItem.angle}" style="max-width: 98%; max-height: 98%; width: 100%; height: 100%; object-fit: contain; margin: auto; display: block;">
     `;
 
     if (angleChipsContainer) {

@@ -405,6 +405,7 @@
 
 /* Floating Comparison Drawer */
 .compare-drawer {
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -419,6 +420,7 @@
 }
 
 .compare-drawer.active {
+  display: block;
   transform: translateY(0);
 }
 

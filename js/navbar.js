@@ -49,30 +49,112 @@ const NavbarController = {
     });
   },
 
-  // Mobile Drawer Toggle
+  // Mobile Drawer Toggle with Complete Background Scroll Lock
   bindMobileDrawer() {
-    const toggleBtn = document.querySelector('.mobile-menu-toggle');
+    const toggleBtns = document.querySelectorAll('.mobile-menu-toggle');
     const drawer = document.querySelector('.mobile-nav-drawer');
     const closeBtn = document.querySelector('.drawer-close-btn');
 
-    if (toggleBtn && drawer) {
-      toggleBtn.addEventListener('click', () => {
-        drawer.classList.add('active');
-      });
+    if (!drawer) return;
+
+    // Ensure backdrop exists in DOM
+    let backdrop = document.querySelector('.mobile-drawer-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'mobile-drawer-backdrop';
+      document.body.appendChild(backdrop);
     }
 
-    if (closeBtn && drawer) {
-      closeBtn.addEventListener('click', () => {
-        drawer.classList.remove('active');
-      });
-    }
+    let scrollPosition = 0;
+    let isLocked = false;
 
-    // Close when clicking outside
-    document.addEventListener('click', (e) => {
-      if (drawer && drawer.classList.contains('active')) {
-        if (!drawer.contains(e.target) && !toggleBtn?.contains(e.target)) {
-          drawer.classList.remove('active');
+    const openDrawer = () => {
+      if (isLocked) return;
+      isLocked = true;
+      scrollPosition = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+      drawer.classList.add('active');
+      backdrop.classList.add('active');
+
+      // Comprehensive iOS / Android / Desktop body scroll lock
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    };
+
+    const closeDrawer = () => {
+      if (!isLocked && !drawer.classList.contains('active')) return;
+      isLocked = false;
+
+      drawer.classList.remove('active');
+      backdrop.classList.remove('active');
+
+      // Restore body position without jump
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.scrollTo(0, scrollPosition);
+    };
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (drawer.classList.contains('active')) {
+          closeDrawer();
+        } else {
+          openDrawer();
         }
+      });
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeDrawer();
+      });
+    }
+
+    backdrop.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeDrawer();
+    });
+
+    // Prevent backdrop touch gestures from moving the viewport
+    backdrop.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    // Close when clicking outside drawer
+    document.addEventListener('click', (e) => {
+      if (drawer.classList.contains('active')) {
+        let isToggle = false;
+        toggleBtns.forEach(btn => {
+          if (btn.contains(e.target)) isToggle = true;
+        });
+        if (!drawer.contains(e.target) && !isToggle) {
+          closeDrawer();
+        }
+      }
+    });
+
+    // Close on link click inside drawer
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('active')) {
+        closeDrawer();
       }
     });
   },
@@ -95,19 +177,40 @@ const NavbarController = {
         wrapper.appendChild(dropdown);
       }
 
-      // Enter key submits to products page
+      // Submit search query to products/catalog page
+      const performSubmit = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        const query = input.value.trim();
+        dropdown.classList.remove('active');
+        const deptSelect = wrapper.querySelector('.mega-search-category') || wrapper.querySelector('.search-dept-select');
+        const catVal = deptSelect && deptSelect.value && deptSelect.value !== 'all' ? deptSelect.value : null;
+
+        if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
+          if (catVal && FilterController.setCategory) {
+            FilterController.setCategory(catVal);
+          }
+          FilterController.setQuery(query);
+        } else if (query || catVal) {
+          let target = `${searchUrl}?q=${encodeURIComponent(query || '')}`;
+          if (catVal) target += `&category=${encodeURIComponent(catVal)}`;
+          window.location.href = target;
+        }
+      };
+
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-          e.preventDefault();
-          const query = input.value.trim();
-          dropdown.classList.remove('active');
-          if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
-            FilterController.setQuery(query);
-          } else if (query) {
-            window.location.href = `${searchUrl}?q=${encodeURIComponent(query)}`;
-          }
+          performSubmit(e);
         }
       });
+
+      const searchForm = input.closest('form');
+      if (searchForm) {
+        searchForm.addEventListener('submit', performSubmit);
+      }
+      const searchBtn = wrapper.querySelector('.mega-search-btn');
+      if (searchBtn && (!searchForm || searchBtn.type !== 'submit')) {
+        searchBtn.addEventListener('click', performSubmit);
+      }
 
       // Realtime search preview
       let debounceTimer;
@@ -127,39 +230,47 @@ const NavbarController = {
             const matched = ShopScout.fuzzySearch(products, val).slice(0, 6);
 
             if (matched.length > 0) {
+              const valEsc = val.replace(/[<>&"]/g, s => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[s]));
               dropdown.innerHTML = `
-                <div style="padding: 0.4rem 0.85rem; font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
-                  <span><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> Instant Matches</span>
-                  <span style="font-size: 0.68rem; color: var(--deal-orange); font-weight: 800;">${matched.length} items</span>
+                <a href="${searchUrl}?q=${encodeURIComponent(val)}" class="suggestion-keyword-row">
+                  <i class="fa-solid fa-magnifying-glass suggestion-search-icon"></i>
+                  <div style="flex: 1; min-width: 0;">
+                    <span style="color: var(--text);">Search for "<strong>${valEsc}</strong>"</span>
+                  </div>
+                  <i class="fa-solid fa-arrow-right suggestion-arrow"></i>
+                </a>
+                <div style="padding: 0.45rem 1.15rem 0.25rem; font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: space-between;">
+                  <span>Matching Products</span>
+                  <span style="font-size: 0.68rem; color: var(--muted); font-weight: 600;">${matched.length} found</span>
                 </div>
               ` + matched.map(item => `
                 <a href="${detailUrlPrefix}${item.id}" class="suggestion-item">
                   <img src="${item.image}" alt="${item.name}">
                   <div style="flex: 1; min-width: 0;">
                     <div style="font-weight: 600; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text);">${item.name}</div>
-                    <div style="font-size: 0.72rem; color: var(--muted); display:flex; align-items:center; gap:0.4rem;">
+                    <div style="font-size: 0.72rem; color: var(--muted); display:flex; align-items:center; gap:0.4rem; margin-top: 2px;">
                       <span><i class="fa-solid fa-tag" style="font-size:0.65rem;"></i> ${item.brand || 'ShopScout'} &bull; ${item.category}</span>
-                      ${item.discount ? `<span style="color:var(--deal-orange); font-weight:700; font-size:0.7rem;">${item.discount}% OFF</span>` : ''}
                     </div>
                   </div>
-                  <span class="suggestion-price" style="font-weight: 800; font-size: 0.86rem; color: var(--primary);">${ShopScout.formatPrice(item.price)}</span>
+                  <i class="fa-solid fa-arrow-right suggestion-arrow"></i>
                 </a>
               `).join('') + `
-                <a href="${searchUrl}?q=${encodeURIComponent(val)}" class="suggestion-view-all-link" style="display: block; text-align: center; padding: 0.55rem; font-size: 0.8rem; font-weight: 800; color: var(--primary); background: var(--surface-subtle); border-top: 1px solid var(--border); text-decoration: none;">
-                  View all results for "${val}" &rarr;
+                <a href="${searchUrl}?q=${encodeURIComponent(val)}" class="suggestion-view-all-link" style="display: block; text-align: center; padding: 0.6rem; font-size: 0.8rem; font-weight: 700; color: var(--primary); background: var(--surface-subtle); border-top: 1px solid var(--border); text-decoration: none;">
+                  View all results for "${valEsc}" &rarr;
                 </a>
               `;
               
               var viewAllBtn = dropdown.querySelector('.suggestion-view-all-link');
-              if (viewAllBtn) {
-                viewAllBtn.addEventListener('click', (ev) => {
-                  if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
-                    ev.preventDefault();
-                    dropdown.classList.remove('active');
-                    FilterController.setQuery(val);
-                  }
-                });
-              }
+              var keywordRow = dropdown.querySelector('.suggestion-keyword-row');
+              const handleDirectSearch = (ev) => {
+                if (window.location.pathname.includes('products.html') && typeof FilterController !== 'undefined' && FilterController.setQuery) {
+                  ev.preventDefault();
+                  dropdown.classList.remove('active');
+                  FilterController.setQuery(val);
+                }
+              };
+              if (viewAllBtn) viewAllBtn.addEventListener('click', handleDirectSearch);
+              if (keywordRow) keywordRow.addEventListener('click', handleDirectSearch);
 
               dropdown.classList.add('active');
             } else {
@@ -211,8 +322,27 @@ const NavbarController = {
         }
       });
     });
+  },
+
+
+
+  // Universal Smart Back Navigation
+  goBack() {
+    if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+      window.history.back();
+    } else {
+      const isPagesDir = window.location.pathname.toLowerCase().includes('/pages/');
+      const isSubdir = isPagesDir || window.location.pathname.toLowerCase().includes('/admin/');
+      if (isSubdir) {
+        window.location.href = '../index.html';
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
   }
 };
+
+window.goBack = () => NavbarController.goBack();
 
 document.addEventListener('DOMContentLoaded', () => {
   NavbarController.init();

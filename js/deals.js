@@ -33,15 +33,24 @@ const DealsController = {
     }, 1000);
   },
 
+  displayedCount: 16,
+  pageSize: 16,
+
   bindTierTabs() {
     document.querySelectorAll('.deal-tier-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.deal-tier-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         this.currentTier = btn.getAttribute('data-tier');
+        this.displayedCount = this.pageSize;
         this.renderDeals();
       });
     });
+  },
+
+  loadMore() {
+    this.displayedCount += this.pageSize;
+    this.renderDeals();
   },
 
   renderDeals() {
@@ -73,7 +82,16 @@ const DealsController = {
       return;
     }
 
-    grid.innerHTML = filtered.map(p => renderProductCard(p)).join('');
+    const visibleItems = filtered.slice(0, this.displayedCount);
+    const hasMore = filtered.length > this.displayedCount;
+
+    grid.innerHTML = visibleItems.map(p => renderProductCard(p)).join('') + (hasMore ? `
+      <div class="load-more-wrap" style="grid-column: 1 / -1; text-align: center; padding: 1.5rem 0 0.5rem;">
+        <button type="button" class="btn btn-outline" onclick="DealsController.loadMore()" style="border-radius: var(--radius-full); padding: 0.65rem 2rem; font-weight: 700; gap: 0.5rem; display: inline-flex; align-items: center; border-color: var(--primary); color: var(--primary);">
+          <i class="fa-solid fa-arrow-down"></i> Show More Deals (${filtered.length - this.displayedCount} remaining)
+        </button>
+      </div>
+    ` : '');
   }
 };
 
