@@ -140,7 +140,6 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-overflow-scrolling: touch;
-  transition: background-color 0.25s ease, color 0.25s ease;
   -webkit-font-smoothing: antialiased;
 }
 

@@ -23,58 +23,18 @@
   <link rel="stylesheet" href="css/engagement.css">
   <link rel="stylesheet" href="css/responsive.css">
 
-  <!-- FOUC Fix: Hide body until CSS loads -->
-  <style>
-    body { opacity: 0; transition: opacity 0.3s ease; }
-    #page-loader {
-      position: fixed; inset: 0; z-index: 99999;
-      background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 12px;
-      transition: opacity 0.4s ease;
-    }
-    #page-loader .loader-logo {
-      font-size: 2rem; font-weight: 800;
-      color: #2563EB; letter-spacing: -1px;
-    }
-    #page-loader .loader-logo span { color: #FF5200; }
-    #page-loader .loader-bar {
-      width: 160px; height: 3px;
-      background: #E2E8F0; border-radius: 99px; overflow: hidden;
-    }
-    #page-loader .loader-bar-fill {
-      height: 100%; width: 0;
-      background: linear-gradient(90deg, #2563EB, #FF5200);
-      border-radius: 99px;
-      animation: loaderFill 0.6s ease forwards;
-    }
-    @keyframes loaderFill {
-      to { width: 100%; }
-    }
-  </style>
+  <!-- Instant Anti-Flicker Theme Detection (Zero White/Black Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('shopscout_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
-
-  <!-- Page Loader (FOUC Fix) -->
-  <div id="page-loader">
-    <div class="loader-logo">Shop<span>Scout.</span></div>
-    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-  </div>
-
-  <script>
-    // Remove loader and show body once page is ready
-    window.addEventListener('DOMContentLoaded', function() {
-      document.body.style.opacity = '1';
-      setTimeout(function() {
-        var loader = document.getElementById('page-loader');
-        if (loader) {
-          loader.style.opacity = '0';
-          setTimeout(function() { loader.remove(); }, 400);
-        }
-      }, 300);
-    });
-  </script>
 
   <!-- ==================== TOP ANNOUNCEMENT STRIP ==================== -->
   <div class="top-announcement-bar">

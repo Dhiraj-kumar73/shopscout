@@ -12,6 +12,16 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/navbar.css">
   <link rel="stylesheet" href="../css/responsive.css">
+
+  <!-- Instant Anti-Flicker Theme Detection (Zero White/Black Flash) -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('shopscout_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
