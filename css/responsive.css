@@ -1250,6 +1250,21 @@ img, video, iframe {
   .admin-topbar > div:first-child {
     width: 100%;
     justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .admin-topbar > div:first-child > div:nth-child(2) {
+    font-size: 1rem !important;
+    white-space: nowrap;
+  }
+
+  .admin-topbar .badge-live-catalog {
+    font-size: 0.68rem !important;
+    padding: 0.15rem 0.45rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
   }
 
   .admin-topbar > div:last-child {

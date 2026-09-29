@@ -247,7 +247,7 @@ const AdminController = {
     this.updateCounters = () => {
       const prods = this.allProducts || [];
       const topCountEl = document.getElementById('topbar-live-count');
-      if (topCountEl) topCountEl.textContent = `${prods.length} Active Products`;
+      if (topCountEl) topCountEl.textContent = `${prods.length} Active`;
       const allCountEl = document.getElementById('cat-count-all');
       if (allCountEl) allCountEl.textContent = prods.length;
       const totalProdsEl = document.getElementById('metric-total-prods');

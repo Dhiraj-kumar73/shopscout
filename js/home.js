@@ -4,7 +4,47 @@
  */
 
 document.addEventListener("DOMContentLoaded", async function() {
-  var allProducts = await ProductService.getAllProducts();
+  var allProducts = [];
+  try {
+    allProducts = await ProductService.getAllProducts();
+  } catch (err) {
+    console.error("[Home] Error loading products:", err);
+  }
+
+  // Double fallback: If still empty, pull live products from FakeStoreAPI
+  if (!Array.isArray(allProducts) || allProducts.length === 0) {
+    try {
+      var fakeRes = await fetch("https://fakestoreapi.com/products?limit=10");
+      if (fakeRes.ok) {
+        var fakeItems = await fakeRes.json();
+        allProducts = fakeItems.map(function(item, idx) {
+          var inr = Math.round(Number(item.price || 20) * 85);
+          var orig = Math.round(inr * 1.35);
+          return {
+            id: "fake-" + item.id,
+            name: item.title,
+            category: item.category || "Deals",
+            brand: "Amazon Featured",
+            price: inr,
+            originalPrice: orig,
+            discount: Math.round(((orig - inr) / orig) * 100),
+            image: item.image,
+            rating: item.rating?.rate || 4.5,
+            reviewsCount: item.rating?.count || 135,
+            marketplace: "Amazon",
+            affiliateUrl: "https://www.amazon.in/s?k=" + encodeURIComponent(item.title) + "&tag=dhirajkuma05e-21",
+            isDeal: true,
+            isTrending: true,
+            badge: idx % 2 === 0 ? "Deal of the Day" : "Trending"
+          };
+        });
+      }
+    } catch (e) {
+      console.warn("[Home] FakeStore fallback warning:", e);
+    }
+  }
+
+  if (!Array.isArray(allProducts)) allProducts = [];
 
   // 1. Render Today Best Deals Grid (Top 10 curated deals)
   var dealsGrid = document.getElementById("home-deals-grid");

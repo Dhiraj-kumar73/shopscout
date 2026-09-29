@@ -23,3 +23,8 @@ Thumbs.db
 *.sublime-workspace
 
 .vercel
+
+# Python & Databases
+__pycache__/
+*.pyc
+*.db

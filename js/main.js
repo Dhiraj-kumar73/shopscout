@@ -35,6 +35,15 @@ const ShopScout = {
     REGISTERED_USERS: 'shopscout_registered_users'
   },
 
+  init() {
+    this.updateBadges();
+    this.renderCompareDrawer();
+    window.addEventListener('storage', () => this.updateBadges());
+    window.addEventListener('shopscout:cart_updated', () => this.updateBadges());
+    window.addEventListener('shopscout:wishlist_updated', () => this.updateBadges());
+    window.addEventListener('shopscout:compare_updated', () => this.updateBadges());
+  },
+
   // State Getters
   getWishlist() {
     try {
@@ -268,20 +277,41 @@ const ShopScout = {
     }, 3200);
   },
 
-  // Header Counters Update
+  // Header Counters Dynamic Update (Wishlist, Compare, Cart)
   updateBadges() {
     const wishlistCount = this.getWishlist().length;
     const compareCount = this.getCompare().length;
 
-    document.querySelectorAll('.wishlist-badge-count').forEach(el => {
-      el.textContent = wishlistCount;
-      el.style.display = wishlistCount > 0 ? 'flex' : 'none';
-    });
+    // Get Cart count from localStorage
+    let cartCount = 0;
+    try {
+      const cart = JSON.parse(localStorage.getItem('shopscout_cart')) || [];
+      cartCount = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+    } catch (e) {
+      cartCount = 0;
+    }
 
-    document.querySelectorAll('.compare-badge-count').forEach(el => {
-      el.textContent = compareCount;
-      el.style.display = compareCount > 0 ? 'flex' : 'none';
-    });
+    const animateBadge = (el, count) => {
+      const prevCount = el.textContent;
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+      if (String(prevCount) !== String(count) && count > 0) {
+        el.style.transform = 'scale(1.4)';
+        el.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        setTimeout(() => {
+          el.style.transform = 'scale(1)';
+        }, 220);
+      }
+    };
+
+    // 1. Wishlist Badge
+    document.querySelectorAll('.wishlist-badge-count').forEach(el => animateBadge(el, wishlistCount));
+
+    // 2. Compare Badge
+    document.querySelectorAll('.compare-badge-count').forEach(el => animateBadge(el, compareCount));
+
+    // 3. Cart Badge
+    document.querySelectorAll('.cart-count-badge, .cart-badge-count').forEach(el => animateBadge(el, cartCount));
   },
 
   // Outbound Affiliate Interstitial Flow

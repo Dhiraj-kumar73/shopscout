@@ -27,6 +27,18 @@ const CartService = {
     }
   },
 
+  updateBadges() {
+    const cart = this.getCart();
+    const count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+    document.querySelectorAll('.cart-count-badge, .cart-badge-count').forEach(el => {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+      el.style.transform = 'scale(1.4)';
+      el.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      setTimeout(() => { el.style.transform = 'scale(1)'; }, 220);
+    });
+  },
+
   // Helper to extract Amazon 10-char ASIN (e.g. B0HGQWJDCW)
   extractAsin(item) {
     if (!item) return null;

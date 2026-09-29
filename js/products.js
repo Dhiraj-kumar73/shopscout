@@ -70,6 +70,49 @@ const ProductService = {
     if (!Array.isArray(fileProducts) || fileProducts.length === 0) {
       fileProducts = await tryFetch('data/products.json');
     }
+
+    // Fallback: If local file fetch fails (e.g. file:// protocol or offline or fetch blocked), pull from FakeStoreAPI
+    if (!Array.isArray(fileProducts) || fileProducts.length === 0) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const fakeRes = await fetch('https://fakestoreapi.com/products?limit=12', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (fakeRes.ok) {
+          const fakeData = await fakeRes.json();
+          if (Array.isArray(fakeData) && fakeData.length > 0) {
+            fileProducts = fakeData.map((item, idx) => {
+              const inrPrice = Math.round(Number(item.price || 20) * 85);
+              const origPrice = Math.round(inrPrice * 1.35);
+              const discount = Math.round(((origPrice - inrPrice) / origPrice) * 100);
+              return {
+                id: `prod-fake-${item.id}`,
+                name: item.title,
+                category: item.category ? (item.category.charAt(0).toUpperCase() + item.category.slice(1)) : 'Gadgets',
+                brand: 'Amazon Featured',
+                price: inrPrice,
+                originalPrice: origPrice,
+                discount: Math.max(15, discount),
+                image: item.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
+                rating: item.rating?.rate || 4.5,
+                reviewsCount: item.rating?.count || 140,
+                marketplace: 'Amazon',
+                affiliateUrl: `https://www.amazon.in/s?k=${encodeURIComponent(item.title)}&tag=dhirajkuma05e-21`,
+                amazonPrice: inrPrice,
+                amazonUrl: `https://www.amazon.in/s?k=${encodeURIComponent(item.title)}&tag=dhirajkuma05e-21`,
+                isDeal: idx % 2 === 0,
+                isTrending: true,
+                badge: idx % 2 === 0 ? 'Hot Deal' : 'Trending',
+                status: 'Active'
+              };
+            });
+          }
+        }
+      } catch (fakeErr) {
+        console.warn('[ProductService] FakeStoreAPI fallback notice:', fakeErr.message);
+      }
+    }
+
     if (!Array.isArray(fileProducts)) fileProducts = [];
 
     const fileMap = new Map(fileProducts.map(p => [String(p.id).trim(), p]));

@@ -488,6 +488,31 @@ app.get('/api/products', (req, res) => {
 });
 
 /**
+ * GET /api/mock-products
+ * Proxy endpoint to pull real mock products from FakeStoreAPI (Zero CORS issues)
+ */
+app.get('/api/mock-products', async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 12;
+    const response = await fetch(`https://fakestoreapi.com/products?limit=${limit}`);
+    if (!response.ok) throw new Error(`FakeStore responded with ${response.status}`);
+    const data = await response.json();
+    return res.status(200).json({ success: true, products: data });
+  } catch (err) {
+    console.warn('[MockAPI] Fallback triggered:', err.message);
+    return res.status(200).json({
+      success: true,
+      products: [
+        { id: 1, title: 'Wireless Noise Canceling Headphones', price: 79.99, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500', rating: { rate: 4.6, count: 240 } },
+        { id: 2, title: 'Smart Fitness Tracker & Watch', price: 49.99, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', rating: { rate: 4.4, count: 180 } },
+        { id: 3, title: 'Ultra-slim Ergonomic Keyboard', price: 34.99, image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500', rating: { rate: 4.5, count: 95 } },
+        { id: 4, title: 'High-Speed Fast USB-C Charger', price: 19.99, image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500', rating: { rate: 4.8, count: 320 } }
+      ]
+    });
+  }
+});
+
+/**
  * POST /api/products/save
  * Permanently saves/updates product directly into data/user_products_permanent.json AND data/products.json
  */
