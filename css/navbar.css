@@ -903,12 +903,12 @@
     display: none !important;
   }
   .mega-search-bar {
-    height: 42px !important;
+    height: 38px !important;
     border-radius: 9999px !important;
     background: var(--surface) !important;
     border: 1.5px solid var(--border) !important;
     box-shadow: 0 2px 6px -1px rgba(15, 23, 42, 0.05) !important;
-    padding: 3px 5px 3px 0.85rem !important;
+    padding: 2px 4px 2px 0.8rem !important;
     transition: all 0.2s ease !important;
   }
   .mega-search-bar:focus-within {
@@ -927,22 +927,22 @@
     background: #18233C !important;
   }
   .mega-search-input {
-    font-size: 0.86rem !important;
-    padding: 0.4rem 0.5rem !important;
+    font-size: 0.84rem !important;
+    padding: 0.35rem 0.5rem !important;
     color: var(--text) !important;
     font-weight: 500 !important;
   }
   .mega-search-input::placeholder {
     color: var(--muted-light, #94A3B8) !important;
-    font-size: 0.82rem !important;
+    font-size: 0.8rem !important;
   }
   [data-theme="dark"] .mega-search-input::placeholder {
     color: #64748B !important;
   }
   .mega-search-btn {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: 0.85rem !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.8rem !important;
     border-radius: 50% !important;
     background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25) !important;
@@ -990,32 +990,61 @@
   .category-subnav {
     display: none !important;
   }
-  .top-bar-links {
-    display: none !important;
+  .top-bar-inner {
+    padding: 0 0.75rem !important;
+    justify-content: flex-start !important;
   }
   .top-announcement-bar {
     height: 30px !important;
   }
   .top-bar-ticker {
     font-size: 0.72rem !important;
-    justify-content: center;
-    width: 100%;
-    text-align: center;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+  .top-bar-ticker > span:last-child {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
   }
 }
 
-@media (max-width: 480px) {
-  /* On compact mobile, hide Wishlist icon from header so Brand Logo and Cart have plenty of space */
+@media (max-width: 640px) {
+  /* On phones and narrow screens, keep header ultra clean: Hamburger, Logo, Cart & Theme Toggle */
   .header-action-item[title*="Wishlist"],
   .header-action-item[title*="Saved"] {
     display: none !important;
   }
   .brand-logo {
-    font-size: 1.05rem !important;
+    font-size: 1.08rem !important;
   }
   .header-brand-wrap,
   .header-main-row > div:first-child {
-    max-width: calc(100% - 78px) !important;
+    max-width: calc(100% - 80px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo {
+    font-size: 1.02rem !important;
+  }
+  .mega-search-bar {
+    height: 38px !important;
+  }
+  .mega-search-btn {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .header-brand-wrap,
+  .header-main-row > div:first-child {
+    max-width: calc(100% - 76px) !important;
   }
 }
 
