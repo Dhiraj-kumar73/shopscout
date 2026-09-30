@@ -1572,8 +1572,8 @@ img, video, iframe {
 
   /* Navbar Logo on Compact Phones */
   .brand-logo {
-    font-size: 1.05rem !important;
-    gap: 0.35rem !important;
+    font-size: 0.96rem !important;
+    gap: 0.3rem !important;
   }
 
   .brand-icon-wrap {

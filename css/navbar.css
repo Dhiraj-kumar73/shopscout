@@ -823,38 +823,38 @@
 
 @media (max-width: 768px) {
   .site-header {
-    padding-bottom: 0.45rem;
+    padding-bottom: 0.35rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     z-index: 1050 !important;
   }
   .header-main-row {
     height: auto !important;
     min-height: unset !important;
-    padding: 0.35rem 0.75rem 0.25rem !important;
+    padding: 0.25rem 0.65rem 0.2rem !important;
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
-    row-gap: 0.45rem !important;
-    column-gap: 0.4rem !important;
+    row-gap: 0.35rem !important;
+    column-gap: 0.35rem !important;
   }
   .header-brand-wrap,
   .header-main-row > div:first-child {
     display: flex !important;
     align-items: center !important;
-    gap: 0.4rem !important;
+    gap: 0.35rem !important;
     min-width: 0 !important;
     flex: 1 1 auto !important;
-    max-width: calc(100% - 85px) !important;
+    max-width: calc(100% - 75px) !important;
   }
   .mobile-menu-toggle {
     display: flex !important;
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
     color: var(--text) !important;
     border-radius: var(--radius-sm) !important;
     border: 1px solid var(--border) !important;
@@ -863,17 +863,17 @@
     padding: 0 !important;
   }
   .header-back-btn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    font-size: 0.85rem !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    font-size: 0.82rem !important;
     flex-shrink: 0 !important;
   }
   .brand-logo {
     display: flex !important;
     align-items: center !important;
-    font-size: 1.12rem !important;
-    gap: 0.35rem !important;
+    font-size: 1.05rem !important;
+    gap: 0.3rem !important;
     min-width: 0 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
@@ -884,11 +884,11 @@
     white-space: nowrap !important;
   }
   .brand-icon-wrap {
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
-    font-size: 0.85rem !important;
-    border-radius: 7px !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    font-size: 0.8rem !important;
+    border-radius: 6px !important;
     flex-shrink: 0 !important;
   }
   /* Search Container: Full 100% width row directly below Logo */
@@ -897,18 +897,18 @@
     max-width: 100% !important;
     flex: 1 0 100% !important;
     order: 3 !important;
-    margin: 0.1rem 0 0 !important;
+    margin: 0.05rem 0 0 !important;
   }
   .search-dept-select {
     display: none !important;
   }
   .mega-search-bar {
-    height: 38px !important;
+    height: 35px !important;
     border-radius: 9999px !important;
     background: var(--surface) !important;
     border: 1.5px solid var(--border) !important;
     box-shadow: 0 2px 6px -1px rgba(15, 23, 42, 0.05) !important;
-    padding: 2px 4px 2px 0.8rem !important;
+    padding: 2px 3px 2px 0.75rem !important;
     transition: all 0.2s ease !important;
   }
   .mega-search-bar:focus-within {
@@ -927,22 +927,22 @@
     background: #18233C !important;
   }
   .mega-search-input {
-    font-size: 0.84rem !important;
-    padding: 0.35rem 0.5rem !important;
+    font-size: 0.82rem !important;
+    padding: 0.25rem 0.4rem !important;
     color: var(--text) !important;
     font-weight: 500 !important;
   }
   .mega-search-input::placeholder {
     color: var(--muted-light, #94A3B8) !important;
-    font-size: 0.8rem !important;
+    font-size: 0.78rem !important;
   }
   [data-theme="dark"] .mega-search-input::placeholder {
     color: #64748B !important;
   }
   .mega-search-btn {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 0.8rem !important;
+    width: 29px !important;
+    height: 29px !important;
+    font-size: 0.78rem !important;
     border-radius: 50% !important;
     background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25) !important;
@@ -954,16 +954,16 @@
     align-items: center !important;
     justify-content: flex-end !important;
     margin-left: auto !important;
-    gap: 0.3rem !important;
+    gap: 0.25rem !important;
     flex: 0 0 auto !important;
   }
   .header-action-label {
     display: none !important;
   }
   .header-action-item {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     padding: 0 !important;
     border-radius: 50% !important;
     display: flex !important;
@@ -971,7 +971,7 @@
     justify-content: center !important;
   }
   .header-action-icon-wrap {
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
   }
   /* Hide compare in top header on mobile because it is already in the mobile bottom bar */
   .header-action-item[title*="Compare"],
@@ -979,10 +979,10 @@
     display: none !important;
   }
   .theme-toggle-btn {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    font-size: 0.85rem !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    font-size: 0.82rem !important;
   }
   .mobile-bottom-bar {
     display: none !important;
@@ -1023,28 +1023,28 @@
     display: none !important;
   }
   .brand-logo {
-    font-size: 1.08rem !important;
+    font-size: 1.02rem !important;
   }
   .header-brand-wrap,
   .header-main-row > div:first-child {
-    max-width: calc(100% - 80px) !important;
+    max-width: calc(100% - 75px) !important;
   }
 }
 
 @media (max-width: 480px) {
   .brand-logo {
-    font-size: 1.02rem !important;
+    font-size: 0.96rem !important;
   }
   .mega-search-bar {
-    height: 38px !important;
+    height: 35px !important;
   }
   .mega-search-btn {
-    width: 30px !important;
-    height: 30px !important;
+    width: 28px !important;
+    height: 28px !important;
   }
   .header-brand-wrap,
   .header-main-row > div:first-child {
-    max-width: calc(100% - 76px) !important;
+    max-width: calc(100% - 72px) !important;
   }
 }
 
