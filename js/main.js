@@ -1295,18 +1295,4 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
-
-  // Detect and assist desktop users with accidental browser zoom > 150%
-  try {
-    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const dpr = window.devicePixelRatio || 1;
-    if (isDesktop && dpr >= 1.75 && !sessionStorage.getItem('shopscout_zoom_dismissed')) {
-      const banner = document.createElement('div');
-      banner.id = 'ss-zoom-notice';
-      banner.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:999999;background:#0F172A;color:#F8FAFC;padding:7px 14px;border-radius:9999px;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;font-family:sans-serif;border:1.5px solid #38BDF8;animation:fadeIn 0.3s ease;';
-      banner.innerHTML = '<span>🔍 Zoom bada hai (' + Math.round(dpr * 100) + '%). Normal size dekhne ke liye <kbd style="background:#1E293B;padding:2px 7px;border-radius:4px;border:1px solid #64748B;color:#38BDF8;font-weight:700;">Ctrl + 0</kbd> dabayein.</span>' +
-        '<button onclick="this.parentElement.remove();sessionStorage.setItem(\'shopscout_zoom_dismissed\',\'true\');" title="Dismiss" style="background:none;border:none;color:#94A3B8;cursor:pointer;font-size:16px;line-height:1;padding:0 4px;font-weight:bold;">&times;</button>';
-      document.body.appendChild(banner);
-    }
-  } catch (err) {}
 });
