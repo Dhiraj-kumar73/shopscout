@@ -1095,6 +1095,20 @@ var DealsCommunityFAB = {
   },
 
   render() {
+    const isPagesSubdir = typeof window !== 'undefined' && window.location.pathname.includes('/pages/');
+    const dealsUrl = isPagesSubdir ? 'deals.html' : 'pages/deals.html';
+
+    // Strip index.html from website URL so a clean site link is shared
+    let cleanWebsiteUrl = 'https://shopscout.in';
+    if (typeof window !== 'undefined' && window.location.origin) {
+      const origin = window.location.origin;
+      const cleanPath = window.location.pathname.replace(/\/index\.html$/i, '').replace(/\/+$/, '');
+      cleanWebsiteUrl = origin + (cleanPath ? cleanPath : '');
+    }
+
+    // WhatsApp Community invite link (supports custom community URL from localStorage/admin)
+    const waCommunityUrl = (typeof window !== 'undefined' && localStorage.getItem('shopscout_wa_community')) || 'https://chat.whatsapp.com/invite';
+
     this.container.innerHTML = `
       <div class="community-fab-wrapper" id="community-fab-wrapper">
         <!-- Expandable Popover Card -->
@@ -1102,27 +1116,27 @@ var DealsCommunityFAB = {
           <div class="community-popover-header">
             <div class="popover-title-row">
               <span class="live-pulse-dot"></span>
-              <strong>VIP Deals Community</strong>
+              <strong>Live Deals &amp; Price Drops</strong>
             </div>
             <button class="popover-close-btn" id="community-popover-close" title="Close" aria-label="Close">&times;</button>
           </div>
-          <p class="community-popover-desc">Join 25,000+ smart shoppers for instant loot drops &amp; flash alerts:</p>
+          <p class="community-popover-desc">Verified Amazon India discounts updated in real-time:</p>
           <div class="community-popover-channels">
-            <a href="https://whatsapp.com/channel/0029VaShopScoutAlerts" target="_blank" rel="noopener noreferrer" class="channel-card wa-card">
+            <a href="${dealsUrl}" class="channel-card loot-card">
+              <div class="channel-badge loot"><i class="fa-solid fa-fire"></i></div>
+              <div class="channel-text">
+                <span class="channel-title">Today's 70%+ Amazon Deals</span>
+                <span class="channel-sub">⚡ Live verified price drops &amp; offers</span>
+              </div>
+              <i class="fa-solid fa-arrow-right channel-arrow" style="color: #FF9900;"></i>
+            </a>
+            <a href="${waCommunityUrl}" target="_blank" rel="noopener noreferrer" class="channel-card wa-card" id="wa-community-link" title="Join WhatsApp Community">
               <div class="channel-badge wa"><i class="fa-brands fa-whatsapp"></i></div>
               <div class="channel-text">
-                <span class="channel-title">WhatsApp Loot Channel</span>
-                <span class="channel-sub">⚡ Daily verified 70%+ loot deals</span>
+                <span class="channel-title">Join WhatsApp Community</span>
+                <span class="channel-sub">⚡ Daily verified 70%+ Amazon loot drops</span>
               </div>
-              <i class="fa-solid fa-arrow-up-right-from-square channel-arrow"></i>
-            </a>
-            <a href="https://t.me/ShopScoutDeals" target="_blank" rel="noopener noreferrer" class="channel-card tg-card">
-              <div class="channel-badge tg"><i class="fa-brands fa-telegram"></i></div>
-              <div class="channel-text">
-                <span class="channel-title">Telegram Loot Channel</span>
-                <span class="channel-sub">🚀 Instant price drop bot alerts</span>
-              </div>
-              <i class="fa-solid fa-arrow-up-right-from-square channel-arrow"></i>
+              <i class="fa-solid fa-arrow-up-right-from-square channel-arrow" style="color: #25D366;"></i>
             </a>
           </div>
           <div class="community-popover-footer">
@@ -1133,13 +1147,13 @@ var DealsCommunityFAB = {
         </div>
 
         <!-- Single Smart Trigger Button -->
-        <button class="community-fab-trigger" id="community-fab-trigger" aria-label="Open Deals Community" title="Join WhatsApp & Telegram Loot Channels">
+        <button class="community-fab-trigger" id="community-fab-trigger" aria-label="Open Deals Community" title="Explore Live Amazon Loot Deals">
           <span class="fab-icons">
+            <i class="fa-solid fa-fire icon-loot" style="color: #FF9900;"></i>
             <i class="fa-brands fa-whatsapp icon-wa"></i>
-            <i class="fa-brands fa-telegram icon-tg"></i>
           </span>
-          <span class="fab-text">Deals Alerts</span>
-          <span class="fab-badge">LIVE</span>
+          <span class="fab-text">Live Deals</span>
+          <span class="fab-badge">70% OFF</span>
         </button>
 
         <!-- Discreet Minimized Edge Tab (when dismissed) -->
