@@ -106,7 +106,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 15px;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -115,6 +115,18 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: auto;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13.5px;
+  }
 }
 
 /* Smooth scroll only on desktop/mouse to prevent mobile touch velocity stutter */
