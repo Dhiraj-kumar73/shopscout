@@ -1,5 +1,466 @@
 [
   {
+    "id": "prod-1790938591866",
+    "name": "Boldfit Sneakers for Man Lightweight Shoes for Men Comfortable Sneakers for Men Air Mesh Casual Shoes Mens Soft Cushion Insole Lace Up Casual Boys Shoe Sneaker DripBloc",
+    "brand": "Boldfit",
+    "category": "Home & Kitchen",
+    "price": 899,
+    "originalPrice": 4499,
+    "discount": 80,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/B08vVmDDI",
+    "amazonPrice": 899,
+    "amazonUrl": "https://link.amazon/B08vVmDDI",
+    "image": "https://m.media-amazon.com/images/I/61wyIknxy9L._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/61wyIknxy9L._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/61OIlGNji9L._SL1500_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/61LE0UGLgOL._SL1500_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71rNQihh-pL._SL1500_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/61I4p9z3pRL._SL1500_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/616eY7x64sL._SL1500_.jpg",
+        "angle": "Ports & Box",
+        "icon": "fa-plug"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 402,
+    "badge": "Hot Deal",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "Boldfit introducing the DripBloc mens Sneakers. Experience all-day comfort with a premium synthetic leather upper and soft suede accents, offering a sleek, durable, and stylish look. The Lycra lining provides a supremely soft, snug, and irritation-free fit for casual wear. Engineered for responsiveness, the lightweight TRP sole delivers superior cushioning and shock absorption, ideal for daily commutes or light activity. A high-performance rubber outsole guarantees exceptional stability and grip on any urban surface. These versatile sneaker shoes effortlessly transition from casual outings to active routines, blending durable function with a modern lifestyle look. The perfect sneaker shoes for men. Step up your style and comfort.",
+    "features": [
+      "Next-Gen Home & Kitchen Engineering with Premium Build by Boldfit",
+      "High-Efficiency Endurance Performance with Rapid Fast Charging",
+      "Full 1 Year Official Boldfit Manufacturer Warranty Coverage",
+      "100% Genuine Certified Product with Rapid Express Delivery"
+    ],
+    "specifications": {
+      "Brand": "Boldfit",
+      "Category": "Home & Kitchen"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 899,
+        "originalPrice": 4499,
+        "url": "https://link.amazon/B08vVmDDI",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 899,
+        "originalPrice": 4499,
+        "url": "https://link.amazon/B08vVmDDI",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 899,
+        "affiliateUrl": "https://link.amazon/B08vVmDDI",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-10-02T10:56:32.487Z"
+  },
+  {
+    "id": "prod-1790938472951",
+    "name": "Cruiser Sneaker for Men | Lightweight & Comfortable | Stylish Lace-Up Casual Footwear with Cushioned Insole | Perfect for Versatile Outfits 2642-1",
+    "brand": "Cruiser",
+    "category": "Home & Kitchen",
+    "price": 899,
+    "originalPrice": 2499,
+    "discount": 64,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/B0ft0MY1a",
+    "amazonPrice": 899,
+    "amazonUrl": "https://link.amazon/B0ft0MY1a",
+    "image": "https://m.media-amazon.com/images/I/71vbWIAReNL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/71vbWIAReNL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71gKDrkntyL._SL1500_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71T-iv8c+KL._SL1500_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81cQEL3mH1L._SL1500_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71nTHOUKrvL._SL1500_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 452,
+    "badge": "Hot Deal",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "Introducing Cruiser Sneakers, the epitome of style, comfort, and durability. Crafted with meticulous attention to detail, these sneakers are designed to exceed your expectations in every way. Made from premium quality materials, Cruiser Sneakers boast unparalleled durability. The sturdy construction ensures longevity, making them your go-to choice for any adventure, whether it's a stroll in the city or a weekend getaway in the great outdoors. But durability is just the beginning. Slip into a pair of Cruiser Sneakers, and you'll discover a whole new level of comfort. Featuring cushioned insoles and breathable fabric, they provide all-day support and relief, keeping your feet happy and energized no matter where life takes you. And let's not forget about style. With their sleek design and timeless appeal, Cruiser Sneakers are the perfect combination of fashion and function. Available in a range of versatile colors, they effortlessly complement any outfit, from casual jeans to tailored trousers. So why settle for ordinary sneakers when you can step up your game with Cruiser? Experience the ultimate blend of quality, comfort, and style with Cruiser Sneakers. Your feet will thank you.",
+    "features": [
+      "Next-Gen Home & Kitchen Engineering with Premium Build by Cruiser",
+      "High-Efficiency Endurance Performance with Rapid Fast Charging",
+      "Full 1 Year Official Cruiser Manufacturer Warranty Coverage",
+      "100% Genuine Certified Product with Rapid Express Delivery"
+    ],
+    "specifications": {
+      "Brand": "Cruiser",
+      "Category": "Home & Kitchen"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 899,
+        "originalPrice": 2499,
+        "url": "https://link.amazon/B0ft0MY1a",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 899,
+        "originalPrice": 2499,
+        "url": "https://link.amazon/B0ft0MY1a",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 899,
+        "affiliateUrl": "https://link.amazon/B0ft0MY1a",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-10-02T10:54:33.488Z"
+  },
+  {
+    "id": "prod-1790938341954",
+    "name": "ASIAN Men THUNDER-07 Stylish Casual Mid Top Sneaker and Trendy Shoes with Laces for Men & Boys, Perfect, College, Parties and Outings, Lightweight, Comfortable, and Durable for All-Day Use",
+    "brand": "ASIAN",
+    "category": "Home & Kitchen",
+    "price": 637,
+    "originalPrice": 1099,
+    "discount": 42,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/B0cdNm6yg",
+    "amazonPrice": 637,
+    "amazonUrl": "https://link.amazon/B0cdNm6yg",
+    "image": "https://m.media-amazon.com/images/I/71ivYMOzncL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/71ivYMOzncL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71PrO3mfYQL._SL1500_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81jFsp5mo2L._SL1500_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71Kj1PKkSnL._SL1500_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/715RCGMt2tL._SL1500_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71OFT4IKDFL._SL1500_.jpg",
+        "angle": "Ports & Box",
+        "icon": "fa-plug"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 437,
+    "badge": "Hot Deal",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "These shoes perform excellent in durability and are also slip resistant. It provides push cushioning comfort for foot pain relief and helps relieve pressure while conforming to your every step",
+    "features": [
+      "Next-Gen Home & Kitchen Engineering with Premium Build by ASIAN",
+      "High-Efficiency Endurance Performance with Rapid Fast Charging",
+      "Full 1 Year Official ASIAN Manufacturer Warranty Coverage",
+      "100% Genuine Certified Product with Rapid Express Delivery"
+    ],
+    "specifications": {
+      "Brand": "ASIAN",
+      "Category": "Home & Kitchen"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 637,
+        "originalPrice": 1099,
+        "url": "https://link.amazon/B0cdNm6yg",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 637,
+        "originalPrice": 1099,
+        "url": "https://link.amazon/B0cdNm6yg",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 637,
+        "affiliateUrl": "https://link.amazon/B0cdNm6yg",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-10-02T10:52:22.465Z"
+  },
+  {
+    "id": "prod-1790937998244",
+    "name": "ASIAN Men's White Casual Sneaker Shoes with Synthetic Upper Lightweight Comfortable Mid Top Sneaker Shoes for Men's & Boy's Tarzan-05",
+    "brand": "ASIAN",
+    "category": "Fashion",
+    "price": 599,
+    "originalPrice": 1499,
+    "discount": 60,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/B08K5ubnV",
+    "amazonPrice": 599,
+    "amazonUrl": "https://link.amazon/B08K5ubnV",
+    "image": "https://m.media-amazon.com/images/I/71aCQiA7tOL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/71aCQiA7tOL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/712w2TAUY3L._SL1500_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81Y35blK0oL._SL1500_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/711XjEOe8mL._SL1500_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71bB8+RSb6L._SL1500_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 348,
+    "badge": "Hot Deal",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "ASIAN ASIAN Men's White Casual Sneaker Shoes with Synthetic Upper Lightweight Comfortable Mid Top Sneaker Shoes for Men's & Boy's Tarzan-05. Official authentic product offering top-tier performance, sleek modern design, and 100% verified marketplace guarantee.",
+    "features": [
+      "Next-Gen Fashion Engineering with Premium Build by ASIAN",
+      "High-Efficiency Endurance Performance with Rapid Fast Charging",
+      "Full 1 Year Official ASIAN Manufacturer Warranty Coverage",
+      "100% Genuine Certified Product with Rapid Express Delivery"
+    ],
+    "specifications": {
+      "Brand": "ASIAN",
+      "Category": "Fashion"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 599,
+        "originalPrice": 1499,
+        "url": "https://link.amazon/B08K5ubnV",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 599,
+        "originalPrice": 1499,
+        "url": "https://link.amazon/B08K5ubnV",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 599,
+        "affiliateUrl": "https://link.amazon/B08K5ubnV",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-10-02T10:46:38.844Z"
+  },
+  {
+    "id": "prod-1790936951390",
+    "name": "SANDISK Ultra Flair 128GB, USB 3.0, Flash Drive, Upto 150MB/s R, Pendrive, Metal, 5Y Warranty (SDCZ73-128G-I35)",
+    "brand": "SanDisk",
+    "category": "Gadgets",
+    "price": 1500,
+    "originalPrice": 0,
+    "discount": 0,
+    "marketplace": "Amazon",
+    "affiliateUrl": "https://link.amazon/A03gIUTnn",
+    "amazonPrice": 1500,
+    "amazonUrl": "https://link.amazon/A03gIUTnn",
+    "image": "https://m.media-amazon.com/images/I/61DaP3ryRKL._SL1500_.jpg",
+    "gallery": [
+      {
+        "url": "https://m.media-amazon.com/images/I/61DaP3ryRKL._SL1500_.jpg",
+        "angle": "Front & Back View",
+        "icon": "fa-mobile-screen"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/71hPsRlm+IL._SL1500_.jpg",
+        "angle": "Back 3D Finish",
+        "icon": "fa-rotate"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/61ydHLnCoHL._SL1500_.jpg",
+        "angle": "Side Profile",
+        "icon": "fa-arrows-left-right"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81k+fboaoEL._SL1500_.jpg",
+        "angle": "Display View",
+        "icon": "fa-sun"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81CpwmKpsSL._SL1500_.jpg",
+        "angle": "In-Hand Lifestyle",
+        "icon": "fa-hand"
+      },
+      {
+        "url": "https://m.media-amazon.com/images/I/81BlTxxSQTL._SL1500_.jpg",
+        "angle": "Ports & Box",
+        "icon": "fa-plug"
+      }
+    ],
+    "rating": 4.6,
+    "reviewsCount": 489,
+    "badge": "Popular",
+    "isDeal": true,
+    "dealEndsInHours": 24,
+    "isTrending": true,
+    "status": "Active",
+    "description": "SanDisk SANDISK Ultra Flair 128GB, USB 3.0, Flash Drive, Upto 150MB/s R, Pendrive, Metal, 5Y Warranty (SDCZ73-128G-I35). Official authentic product offering top-tier performance, sleek modern design, and 100% verified marketplace guarantee.",
+    "features": [
+      "Spend less time waiting to transfer files and enjoy high-speed USB 3.0 performance of up to 150MB/s",
+      "Transfer a full-length movie in less than 30 seconds",
+      "Secure file encryption and password protection with included SanDisk SecureAccess software",
+      "Recover lost or corrupted files with a year’s subscription to RescuePRO software",
+      "5-year warranty by SanDisk"
+    ],
+    "specifications": {
+      "Brand": "SanDisk",
+      "Category": "Gadgets"
+    },
+    "marketplacePrices": [
+      {
+        "store": "Amazon Prime",
+        "price": 1500,
+        "originalPrice": 0,
+        "url": "https://link.amazon/A03gIUTnn",
+        "inStock": true,
+        "badge": "Best Deal"
+      },
+      {
+        "store": "Amazon Standard",
+        "price": 1500,
+        "originalPrice": 0,
+        "url": "https://link.amazon/A03gIUTnn",
+        "inStock": true,
+        "badge": "Verified Seller"
+      }
+    ],
+    "stores": [
+      {
+        "name": "Amazon India",
+        "price": 1500,
+        "affiliateUrl": "https://link.amazon/A03gIUTnn",
+        "inStock": true
+      }
+    ],
+    "isUserCreated": true,
+    "isPermanent": true,
+    "author": "Dhiraj Kumar (Founder)",
+    "savedAt": "2026-10-02T10:29:12.095Z"
+  },
+  {
     "id": "prod-1790684199114",
     "name": "Joy Hydra Refresh Ultra Light Gel, Oil Free Moisturizer with Hyaluronic Acid & Vitamin E 250ml - Non Sticky & Lightweight Face Cream for Oily Skin for 48hr Moisturization",
     "brand": "JOY",
